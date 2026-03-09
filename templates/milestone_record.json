@@ -1,0 +1,19 @@
+{
+  "ts": "",
+  "period": "",
+  "domain_stats": [],
+  "overall_ito_ratio": {
+    "input": 0,
+    "think": 0,
+    "output": 0
+  },
+  "total_sessions": 0,
+  "total_duration_min": 0,
+  "new_nodes_added": 0,
+  "nodes_depth_upgraded": [],
+  "dormant_domains": [],
+  "deposits_created": 0,
+  "deposits_updated": 0,
+  "diet_spectrum": {},
+  "growth_highlights": ""
+}

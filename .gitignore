@@ -1,0 +1,42 @@
+# === 隐私/数据目录 ===
+memory/
+inbox/
+ontology/
+output/
+scripts/
+
+# === 初始化模板中的对应目录 ===
+_init/inbox/
+_init/memory/
+_init/ontology/
+_init/output/
+_init/scripts/
+
+# === 缓存 ===
+.cache/
+
+# === Claude 本地配置 ===
+.claude/settings.local.json
+
+# === 系统文件 ===
+.DS_Store
+Thumbs.db
+
+# === 编辑器/IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.venv/
+venv/
+env/
+
+# === 日志 ===
+*.log

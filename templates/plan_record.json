@@ -1,0 +1,26 @@
+{
+  "ts": "",
+  "period": "",
+  "goal_progress": [
+    {
+      "goal_id": "",
+      "focus_this_week": "",
+      "related_domains": []
+    }
+  ],
+  "domain_allocations": [
+    {
+      "domain": "",
+      "target_sessions": 0,
+      "ito_emphasis": {
+        "input": "",
+        "think": "",
+        "output": ""
+      },
+      "focus": ""
+    }
+  ],
+  "balance_notes": "",
+  "reflection": "",
+  "derived_from_milestone": ""
+}

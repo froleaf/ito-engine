@@ -1,0 +1,5082 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITO 知识图谱可视化</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0e17; overflow: hidden; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  svg { display: block; }
+  .tooltip {
+    position: absolute; pointer-events: none; opacity: 0;
+    background: rgba(15, 20, 35, 0.95); border: 1px solid rgba(120, 140, 200, 0.3);
+    border-radius: 8px; padding: 12px 16px; max-width: 360px;
+    color: #c8d0e0; font-size: 13px; line-height: 1.6;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+    transition: opacity 0.15s;
+  }
+  .tooltip .tt-name { font-size: 15px; font-weight: 600; color: #e8ecf4; margin-bottom: 6px; }
+  .tooltip .tt-type { font-size: 11px; color: #8090b0; margin-bottom: 4px; }
+  .tooltip .tt-desc { margin-bottom: 4px; }
+  .tooltip .tt-depth { color: #f0a860; }
+  .tooltip .tt-role { color: #80b0d0; }
+  .tooltip .tt-insight { color: #a0d0a0; font-style: italic; margin-top: 4px; }
+  .tooltip .tt-status { color: #34d399; margin-top: 2px; }
+  .sidebar {
+    position: absolute; top: 20px; left: 20px; bottom: 20px;
+    width: 220px; overflow-y: auto; overflow-x: hidden;
+    display: flex; flex-direction: column; gap: 12px;
+    scrollbar-width: thin; scrollbar-color: rgba(120,140,200,0.3) transparent;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(120,140,200,0.3); border-radius: 2px; }
+  .panel {
+    background: rgba(15, 20, 35, 0.9); border: 1px solid rgba(120, 140, 200, 0.2);
+    border-radius: 10px; padding: 16px 18px; color: #c8d0e0; font-size: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4); flex-shrink: 0;
+  }
+  .panel h3 { font-size: 14px; margin-bottom: 12px; color: #e8ecf4; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; }
+  .panel h3 .toggle { font-size: 10px; color: #8090b0; transition: transform 0.2s; }
+  .panel h3 .toggle.collapsed { transform: rotate(-90deg); }
+  .panel-body { overflow: hidden; transition: max-height 0.3s ease; }
+  .panel-body.collapsed { max-height: 0 !important; }
+  .section { margin-bottom: 12px; }
+  .section h4 { font-size: 11px; color: #8090b0; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .legend-item { display: flex; align-items: center; margin-bottom: 6px; line-height: 1; }
+  .legend-circle { width: 12px; height: 12px; min-width: 12px; min-height: 12px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; flex-grow: 0; }
+  .legend-line { width: 24px; height: 2px; margin-right: 8px; flex-shrink: 0; }
+  .legend-line.dashed { background: repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 8px); height: 2px; }
+  .filter-item { display: flex; align-items: center; margin-bottom: 7px; cursor: pointer; user-select: none; line-height: 1; }
+  .filter-item input[type="checkbox"] { display: none; }
+  .filter-item .check-box {
+    width: 14px; height: 14px; min-width: 14px; min-height: 14px; border-radius: 3px; margin-right: 8px; flex-shrink: 0; flex-grow: 0;
+    border: 1.5px solid rgba(120,140,200,0.4); display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .filter-item input:checked + .check-box { border-color: rgba(120,140,200,0.8); }
+  .filter-item input:checked + .check-box::after { content: "✓"; font-size: 10px; color: #e8ecf4; }
+  .filter-item input:not(:checked) + .check-box { opacity: 0.4; }
+  .filter-item .dot { width: 8px; height: 8px; min-width: 8px; min-height: 8px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; flex-grow: 0; }
+  .filter-item span { flex: 1; }
+  .title {
+    position: absolute; top: 20px; right: 20px;
+    color: #e8ecf4; font-size: 20px; font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+  .title span { font-size: 12px; color: #8090b0; display: block; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="tooltip" id="tooltip"></div>
+
+<div class="sidebar">
+  <!-- Legend panel -->
+  <div class="panel">
+    <h3 onclick="togglePanel(this)">图例 <span class="toggle">▼</span></h3>
+    <div class="panel-body" style="max-height:400px">
+      <div class="section">
+        <h4>节点类型</h4>
+        <div class="legend-item"><div class="legend-circle" style="background:#3b82f6"></div>领域根节点（核心）</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#22c55e"></div>领域根节点（基础）</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#64748b"></div>领域根节点（补充）</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#94a3b8; width:10px; height:10px"></div>领域分支</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#f59e0b; width:10px; height:10px"></div>知识节点</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#60a5fa; width:8px; height:8px"></div>学习材料</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#34d399; width:8px; height:8px"></div>知识沉淀</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#fbbf24; width:8px; height:8px"></div>思考沉淀</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#a855f7; width:8px; height:8px"></div>跨域连接</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#f472b6; width:8px; height:8px"></div>思维脚本</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#ef4444; width:6px; height:6px"></div>歧义模式</div>
+      </div>
+      <div class="section">
+        <h4>连线类型</h4>
+        <div class="legend-item"><div class="legend-line" style="background:#4b5563"></div>领域→分支</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#f59e0b"></div>归属/引用</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#a855f7"></div>跨域连接</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#60a5fa"></div>材料关联</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#34d399"></div>产出关联</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#eab308"></div>派生/启发</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter panel: types -->
+  <div class="panel">
+    <h3 onclick="togglePanel(this)">节点筛选 <span class="toggle">▼</span></h3>
+    <div class="panel-body" style="max-height:400px">
+      <div class="section">
+        <h4>节点类型</h4>
+        <div id="type-filters"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="title" id="title">ITO 知识图谱<span id="stats"></span></div>
+
+<script>
+// Panel toggle
+function togglePanel(h3) {
+  const body = h3.nextElementSibling;
+  const arrow = h3.querySelector('.toggle');
+  body.classList.toggle('collapsed');
+  arrow.classList.toggle('collapsed');
+}
+
+// ============================================================
+// DATA — auto-generated by scripts/build_visualization.py
+// ============================================================
+const graphNodes = [
+  {
+    "id": "domain_music_production",
+    "type": "DomainRoot",
+    "depth": "理解",
+    "name": "音乐编曲",
+    "description": "音乐创作与制作——从基础理论到编曲实践，目标是创作能感动他人的作品",
+    "priority": "primary",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "branch_mu_theory",
+    "type": "BranchScaffold",
+    "depth": "理解",
+    "name": "音乐基础理论",
+    "description": "乐理、和声学、调式、节奏理论、音乐史与起源",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "branch_mu_production",
+    "type": "BranchScaffold",
+    "depth": "浅读",
+    "name": "音乐制作技术",
+    "description": "DAW工作流(Logic Pro)、音频工程、频谱分析、EQ均衡、混音母带",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "branch_mu_sound_design",
+    "type": "BranchScaffold",
+    "depth": "浅读",
+    "name": "声音设计",
+    "description": "音色合成、采样、音色选择与资源库、声音处理效果",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "branch_mu_composition",
+    "type": "BranchScaffold",
+    "name": "编曲与作曲",
+    "description": "编曲技法、配器法、曲式结构、风格化写作",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "branch_mu_healing",
+    "type": "BranchScaffold",
+    "name": "音乐疗愈",
+    "description": "音乐治疗理论、音乐与情绪的神经科学基础、疗愈实践方法",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "domain_cognitive_science",
+    "type": "DomainRoot",
+    "depth": "有独立见解",
+    "name": "认知科学",
+    "description": "研究心智与认知过程的跨学科领域——用户思维模式的底层学科",
+    "priority": "primary",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "branch_cs_foundations",
+    "type": "BranchScaffold",
+    "depth": "有独立见解",
+    "name": "认知科学基础",
+    "description": "认知科学的核心问题、研究范式、多学科交叉框架",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "branch_cs_consciousness",
+    "type": "BranchScaffold",
+    "depth": "理解",
+    "name": "意识与自我指涉",
+    "description": "意识的本质、自指与怪圈、心身问题、主观体验",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "branch_cs_learning",
+    "type": "BranchScaffold",
+    "name": "学习与记忆",
+    "description": "学习机制、记忆系统、知识表征与迁移、元认知",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "branch_cs_embodied",
+    "type": "BranchScaffold",
+    "name": "具身认知",
+    "description": "认知的身体基础、情境嵌入、感知-行动耦合",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "branch_cs_language",
+    "type": "BranchScaffold",
+    "name": "语言与思维",
+    "description": "语言认知、概念隐喻、类比与范畴化",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "branch_cs_computation",
+    "type": "BranchScaffold",
+    "name": "计算与认知",
+    "description": "计算理论of mind、人工智能与认知建模、符号与连接主义",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "domain_ai_agent",
+    "type": "DomainRoot",
+    "depth": "有独立见解",
+    "name": "AI Agent",
+    "description": "AI智能体的设计、架构与产品化——新技术与认知科学/系统论的融合探索",
+    "priority": "primary",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "branch_ai_frameworks",
+    "type": "Branch",
+    "depth": "有独立见解",
+    "name": "Agent框架与架构",
+    "description": "Agent设计模式、工具调用、多Agent协作、编排框架",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "branch_ai_ml_foundations",
+    "type": "BranchScaffold",
+    "depth": "理解",
+    "name": "机器学习基础",
+    "description": "监督/无监督学习、神经网络、深度学习基础(CNN/RNN/Transformer)",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "branch_ai_llm",
+    "type": "BranchScaffold",
+    "name": "大语言模型",
+    "description": "LLM原理、Prompt工程、微调、RLHF、上下文学习",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "branch_ai_memory_systems",
+    "type": "BranchScaffold",
+    "depth": "有独立见解",
+    "name": "知识与记忆系统",
+    "description": "知识图谱、向量数据库、RAG、Agent记忆架构设计",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "branch_ai_product",
+    "type": "BranchScaffold",
+    "name": "AI产品设计",
+    "description": "AI产品方法论、用户体验、商业化、产品经理视角",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "branch_ai_cognitive",
+    "type": "BranchScaffold",
+    "name": "认知架构与AI",
+    "description": "认知科学启发的AI设计、类脑计算、人机协作模型",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "domain_systems_theory",
+    "type": "DomainRoot",
+    "depth": "有独立见解",
+    "name": "系统论",
+    "description": "系统思维与系统科学——用户思维模式底层之一",
+    "priority": "foundation",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "branch_st_thinking",
+    "type": "BranchScaffold",
+    "depth": "有独立见解",
+    "name": "系统思维",
+    "description": "整体论、系统边界、反直觉行为、心智模型",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "branch_st_architecture",
+    "type": "BranchScaffold",
+    "depth": "理解",
+    "name": "系统架构",
+    "description": "系统分解与集成、架构决策、涌现属性、形式与功能映射",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "branch_st_dynamics",
+    "type": "BranchScaffold",
+    "name": "系统动力学",
+    "description": "反馈回路、存量流量、延迟、非线性行为、杠杆点",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "branch_st_complexity",
+    "type": "BranchScaffold",
+    "name": "复杂性科学",
+    "description": "涌现、自组织、适应性系统、混沌与分形",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "branch_st_cybernetics",
+    "type": "BranchScaffold",
+    "name": "控制论",
+    "description": "反馈控制、信息论基础、通信与控制",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "domain_data_analysis",
+    "type": "DomainRoot",
+    "depth": "可教授他人",
+    "name": "数据分析",
+    "description": "数据驱动的决策方法——已内化为用户的核心思维工具",
+    "priority": "foundation",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "branch_da_methodology",
+    "type": "Branch",
+    "depth": "可教授他人",
+    "name": "分析方法论",
+    "description": "分析框架设计、指标体系、数据结构与数字化建模",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "branch_da_sql",
+    "type": "BranchScaffold",
+    "depth": "可教授他人",
+    "name": "SQL与数据工程",
+    "userInsight": "查询与统计母语级，工程调优方面待加强",
+    "description": "SQL查询与统计、数据管道、数据库设计、工程调优",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "branch_da_product",
+    "type": "BranchScaffold",
+    "depth": "可教授他人",
+    "name": "产品与增长分析",
+    "description": "产品分析、增长分析、A/B测试、用户行为分析",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "branch_da_visualization",
+    "type": "BranchScaffold",
+    "name": "数据可视化",
+    "description": "可视化设计原则、可视化套件、信息图表",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "branch_da_statistics",
+    "type": "BranchScaffold",
+    "name": "统计学基础",
+    "description": "描述统计、推断统计、概率论、假设检验",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "domain_psychology",
+    "type": "DomainRoot",
+    "depth": "理解",
+    "name": "心理学",
+    "description": "以应用为主的心理学关注——聚焦主体性培养与情绪健康",
+    "priority": "foundation",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "branch_ps_cognitive",
+    "type": "BranchScaffold",
+    "depth": "浅读",
+    "name": "认知心理学",
+    "description": "注意、知觉、记忆、思维、决策等认知过程研究",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "branch_ps_social",
+    "type": "BranchScaffold",
+    "depth": "浅读",
+    "name": "社会心理学",
+    "description": "社会认知、群体行为、态度与说服、人际关系",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "branch_ps_clinical",
+    "type": "BranchScaffold",
+    "name": "临床与变态心理学",
+    "description": "精神病理学、心理治疗流派(精神分析/CBT/人本)、心理健康",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "branch_ps_developmental",
+    "type": "BranchScaffold",
+    "name": "发展心理学",
+    "description": "个体发展、青少年心理、主体性发展、自我同一性",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "branch_ps_individual",
+    "type": "BranchScaffold",
+    "depth": "理解",
+    "name": "个体心理学",
+    "description": "阿德勒个体心理学、目的论、社会兴趣、自卑与超越",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "domain_education",
+    "type": "DomainRoot",
+    "depth": "有独立见解",
+    "name": "教育",
+    "description": "知识与信息基于时间维度的传播——关注元层面教育加速方法与主体性培养",
+    "priority": "foundation",
+    "domain": "domain_education"
+  },
+  {
+    "id": "branch_ed_theory",
+    "type": "BranchScaffold",
+    "name": "教育学基础理论",
+    "description": "教育哲学、学习理论、建构主义、教学设计",
+    "domain": "domain_education"
+  },
+  {
+    "id": "branch_ed_metacognition",
+    "type": "BranchScaffold",
+    "name": "元认知与学习科学",
+    "description": "元认知策略、自我调节学习、学习迁移、认知负荷理论",
+    "domain": "domain_education"
+  },
+  {
+    "id": "branch_ed_game_based",
+    "type": "BranchScaffold",
+    "name": "游戏化教育",
+    "description": "游戏化学习设计、严肃游戏、教育游戏机制",
+    "domain": "domain_education"
+  },
+  {
+    "id": "branch_ed_subjectivity",
+    "type": "BranchScaffold",
+    "depth": "有独立见解",
+    "name": "主体性教育",
+    "description": "学生主体性培养、批判性思维教育、自主学习能力发展",
+    "domain": "domain_education"
+  },
+  {
+    "id": "branch_ed_curriculum",
+    "type": "BranchScaffold",
+    "name": "课程与知识组织",
+    "description": "课程设计、知识体系化、跨学科整合",
+    "domain": "domain_education"
+  },
+  {
+    "id": "domain_economics",
+    "type": "DomainRoot",
+    "depth": "理解",
+    "name": "经济学与博弈论",
+    "description": "作为系统论的延伸视角——理解社会系统运行的经济学框架",
+    "priority": "supplementary",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "branch_ec_micro",
+    "type": "BranchScaffold",
+    "depth": "理解",
+    "name": "微观经济学",
+    "description": "供需理论、市场结构、消费者与厂商行为、福利经济学",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "branch_ec_macro",
+    "type": "BranchScaffold",
+    "depth": "理解",
+    "name": "宏观经济学",
+    "description": "GDP与国民收入、货币与财政政策、经济增长、国际贸易",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "branch_ec_game_theory",
+    "type": "BranchScaffold",
+    "name": "博弈论",
+    "description": "策略互动、纳什均衡、合作与非合作博弈、机制设计",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "branch_ec_behavioral",
+    "type": "BranchScaffold",
+    "name": "行为经济学",
+    "description": "有限理性、前景理论、助推、认知偏差与经济决策",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "branch_ec_institutional",
+    "type": "BranchScaffold",
+    "name": "制度经济学",
+    "description": "制度与经济表现、交易成本、产权理论",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "domain_western_philosophy",
+    "type": "DomainRoot",
+    "depth": "理解",
+    "name": "西方哲学",
+    "description": "理解道德观、宗教与西方科学思想根源的哲学框架",
+    "priority": "supplementary",
+    "domain": "domain_western_philosophy"
+  },
+  {
+    "id": "branch_ph_ancient",
+    "type": "BranchScaffold",
+    "name": "古代哲学",
+    "description": "古希腊哲学、苏格拉底柏拉图亚里士多德、斯多葛学派",
+    "domain": "domain_western_philosophy"
+  },
+  {
+    "id": "branch_ph_modern",
+    "type": "BranchScaffold",
+    "name": "近现代哲学",
+    "description": "理性主义与经验主义、康德、现象学、存在主义、分析哲学",
+    "domain": "domain_western_philosophy"
+  },
+  {
+    "id": "branch_ph_ethics",
+    "type": "BranchScaffold",
+    "name": "伦理学",
+    "description": "道德哲学、义务论、功利主义、美德伦理",
+    "domain": "domain_western_philosophy"
+  },
+  {
+    "id": "branch_ph_epistemology",
+    "type": "BranchScaffold",
+    "name": "认识论",
+    "description": "知识的本质与边界、怀疑论、证成理论",
+    "domain": "domain_western_philosophy"
+  },
+  {
+    "id": "branch_ph_philosophy_of_science",
+    "type": "BranchScaffold",
+    "name": "科学哲学",
+    "description": "科学方法论、证伪主义、范式转换、科学实在论",
+    "domain": "domain_western_philosophy"
+  },
+  {
+    "id": "domain_game_design",
+    "type": "DomainRoot",
+    "depth": "浅读",
+    "name": "游戏创作理论",
+    "description": "游戏设计的理论与实践——用户视游戏为未来教育方式的核心载体",
+    "priority": "supplementary",
+    "domain": "domain_game_design"
+  },
+  {
+    "id": "branch_gd_mechanics",
+    "type": "BranchScaffold",
+    "depth": "浅读",
+    "name": "游戏机制设计",
+    "description": "核心机制、规则系统、资源管理、决策空间",
+    "domain": "domain_game_design"
+  },
+  {
+    "id": "branch_gd_narrative",
+    "type": "BranchScaffold",
+    "name": "游戏叙事",
+    "description": "互动叙事、分支剧情、世界观构建、环境叙事",
+    "domain": "domain_game_design"
+  },
+  {
+    "id": "branch_gd_board_games",
+    "type": "BranchScaffold",
+    "name": "桌游设计",
+    "description": "桌游机制分类、策略与运气平衡、玩家互动模式",
+    "domain": "domain_game_design"
+  },
+  {
+    "id": "branch_gd_digital",
+    "type": "BranchScaffold",
+    "name": "数字游戏设计",
+    "description": "电子游戏设计原则、关卡设计、平台特性",
+    "domain": "domain_game_design"
+  },
+  {
+    "id": "branch_gd_player_experience",
+    "type": "BranchScaffold",
+    "name": "玩家体验",
+    "description": "心流理论、玩家动机、游戏心理学、用户测试",
+    "domain": "domain_game_design"
+  },
+  {
+    "id": "domain_health_wellness",
+    "type": "DomainRoot",
+    "depth": "浅读",
+    "name": "健康与情绪健康",
+    "description": "健康长寿与情绪健康——结合数据分析和音乐探索疗愈方向",
+    "priority": "supplementary",
+    "domain": "domain_health_wellness"
+  },
+  {
+    "id": "branch_hw_longevity",
+    "type": "BranchScaffold",
+    "name": "健康长寿",
+    "description": "寿命与健康寿命、衰老机制、预防医学、长寿策略",
+    "domain": "domain_health_wellness"
+  },
+  {
+    "id": "branch_hw_emotional",
+    "type": "BranchScaffold",
+    "name": "情绪健康",
+    "description": "情绪调节、压力管理、心理韧性、正念",
+    "domain": "domain_health_wellness"
+  },
+  {
+    "id": "branch_hw_sleep",
+    "type": "BranchScaffold",
+    "name": "睡眠科学",
+    "description": "睡眠生理学、睡眠质量评估、睡眠障碍、数据化追踪",
+    "domain": "domain_health_wellness"
+  },
+  {
+    "id": "branch_hw_nutrition",
+    "type": "BranchScaffold",
+    "name": "营养学",
+    "description": "营养素、饮食模式、代谢健康",
+    "domain": "domain_health_wellness"
+  },
+  {
+    "id": "branch_hw_exercise",
+    "type": "BranchScaffold",
+    "name": "运动科学",
+    "description": "运动生理学、训练原则、体适能评估",
+    "domain": "domain_health_wellness"
+  },
+  {
+    "id": "mat_geb",
+    "type": "Material",
+    "name": "哥德尔、艾舍尔、巴赫：集异璧之大成",
+    "author": [
+      "Douglas Hofstadter"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "mat_surfaces_and_essences",
+    "type": "Material",
+    "name": "表象与本质",
+    "author": [
+      "Douglas Hofstadter",
+      "Emmanuel Sander"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "mat_system_architecture",
+    "type": "Material",
+    "name": "系统架构",
+    "author": [
+      "Edward Crawley",
+      "Bruce Cameron",
+      "Daniel Selva"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "mat_thinking_in_systems",
+    "type": "Material",
+    "name": "系统之美",
+    "author": [
+      "Donella Meadows"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "mat_intro_general_systems",
+    "type": "Material",
+    "name": "系统化思维导论",
+    "author": [
+      "Gerald Weinberg"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "mat_cs231n",
+    "type": "Material",
+    "name": "Stanford CS231N",
+    "readingStatus": "completed",
+    "materialType": "online_course",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "mat_mankiw_micro",
+    "type": "Material",
+    "name": "经济学原理：微观经济学分册",
+    "author": [
+      "N. Gregory Mankiw"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "mat_mankiw_macro",
+    "type": "Material",
+    "name": "经济学原理：宏观经济学分册",
+    "author": [
+      "N. Gregory Mankiw"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "mat_crash_course_econ",
+    "type": "Material",
+    "name": "Crash Course Economics",
+    "readingStatus": "completed",
+    "materialType": "video_course",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "mat_courage_to_be_disliked",
+    "type": "Material",
+    "name": "被讨厌的勇气",
+    "author": [
+      "岸见一郎",
+      "古贺史健"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "mat_courage_to_be_happy",
+    "type": "Material",
+    "name": "幸福的勇气",
+    "author": [
+      "岸见一郎",
+      "古贺史健"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "mat_outlive",
+    "type": "Material",
+    "name": "超越百岁",
+    "author": [
+      "Peter Attia",
+      "Bill Gifford"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_health_wellness"
+  },
+  {
+    "id": "mat_stumpf_western_philosophy",
+    "type": "Material",
+    "name": "西方哲学史",
+    "author": [
+      "Samuel Enoch Stumpf",
+      "James Fieser"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_western_philosophy"
+  },
+  {
+    "id": "mat_crash_course_games",
+    "type": "Material",
+    "name": "Crash Course Games",
+    "readingStatus": "completed",
+    "materialType": "video_course",
+    "domain": "domain_game_design"
+  },
+  {
+    "id": "mat_crash_course_cs",
+    "type": "Material",
+    "name": "Crash Course Computer Science",
+    "readingStatus": "completed",
+    "materialType": "video_course",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "mat_short_history_of_world",
+    "type": "Material",
+    "name": "世界简史",
+    "author": [
+      "Geoffrey Blainey"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_history"
+  },
+  {
+    "id": "mat_short_history_20th_century",
+    "type": "Material",
+    "name": "二十世纪简史",
+    "author": [
+      "Geoffrey Blainey"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_history"
+  },
+  {
+    "id": "mat_antifragile",
+    "type": "Material",
+    "name": "反脆弱",
+    "author": [
+      "Nassim Nicholas Taleb"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "mat_game_theory_book",
+    "type": "Material",
+    "name": "博弈论",
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "mat_story_of_your_life",
+    "type": "Material",
+    "name": "你一生的故事",
+    "author": [
+      "Ted Chiang"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "mat_whole_brain_book",
+    "type": "Material",
+    "name": "大脑全书",
+    "progress": "已读完",
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "link_music_emotion_healing",
+    "type": "CrossDomainLink",
+    "name": "音乐×情绪健康 → 音乐疗愈",
+    "description": "将音乐创作能力与情绪健康理解结合，探索音乐疗愈方向",
+    "domain": null
+  },
+  {
+    "id": "link_cogsci_ai_agent",
+    "type": "CrossDomainLink",
+    "name": "认知科学×AI Agent → 认知架构设计",
+    "description": "将认知科学对人类大脑的理解融入AI Agent架构设计，ITO引擎为核心实践",
+    "domain": null
+  },
+  {
+    "id": "link_game_education",
+    "type": "CrossDomainLink",
+    "name": "游戏×教育 → 游戏化教育",
+    "description": "游戏作为未来教育方式的核心载体——用户的信仰级关注",
+    "domain": null
+  },
+  {
+    "id": "link_data_health",
+    "type": "CrossDomainLink",
+    "name": "数据分析×健康 → 数据化健康管理",
+    "description": "数据分析技能应用于睡眠数据app设计等健康数据化场景",
+    "domain": null
+  },
+  {
+    "id": "link_systems_economics",
+    "type": "CrossDomainLink",
+    "name": "系统论×经济学 → 社会系统视角",
+    "description": "基于系统论认为经济学与博弈论是理解社会系统必须充实的互补视角",
+    "domain": null
+  },
+  {
+    "id": "td_education_as_temporal_transfer",
+    "type": "ThinkingDeposit",
+    "name": "教育即知识的时间传播",
+    "depositType": "thinking",
+    "userInsight": "信息与知识基于空间的传播称为传播学，基于时间的传播称为教育",
+    "outputStatus": "deposited",
+    "description": "将知识/信息基于空间的传播定义为传播学，基于时间的传播定义为教育。一个原创的概念框架，重新定义了教育的本质。",
+    "domain": null
+  },
+  {
+    "id": "td_breaking_mind_and_status_quo",
+    "type": "ThinkingDeposit",
+    "name": "打破思维与现状的限制",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2022.12 提出的个人使命框架——思维（人类大脑决定的思维方式）是根本，现状（语言/文字/学习方式）是土壤也是局限。认清后去打破它，帮助渴求改变的人。将脑科学/心理学（理解思维）、艺术/音乐（感官共鸣）、教育（跨时空交流打破限制）、效率工具（产品承载价值观）四条线统一在这个使命下。2023.04演化：明确'研究解决科学问题，应用解决人的问题'——不是要搞清注意力/意识/记忆的全部，而是用对认知能力的了解切实帮助人。目标群体聚焦18-25岁（离开父母庇护、身体与大脑巅峰的转型期），核心隐喻'后悔药/时空穿梭'——让人在鼎盛时期就明白重要道理。",
+    "domain": null
+  },
+  {
+    "id": "mat_beauty_of_math",
+    "type": "Material",
+    "name": "数学之美",
+    "author": [
+      "吴军"
+    ],
+    "progress": "已读完",
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "mat_piano_czerny599",
+    "type": "Material",
+    "name": "钢琴课（车尔尼599）",
+    "progress": "暂时中断",
+    "readingStatus": "paused",
+    "materialType": "online_course",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "mat_voice_lessons",
+    "type": "Material",
+    "name": "声乐课",
+    "readingStatus": "paused",
+    "materialType": "online_course",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "td_iceberg_model_learning",
+    "type": "ThinkingDeposit",
+    "name": "冰山模型与学习方法论——术源于道",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.01.19 重新发现麦克利兰冰山模型（Events→Patterns→Structures→Mental Models），用它解释自己坚持读源头教科书的学习偏好：速成版材料只覆盖最浅的两层（事件→反应、模式→预测），而从结构和系统层入手才能获得设计能力，从心理模式层才能获得真正改变的能力。'术源于道，且枝叶繁茂永远也学不尽；道才是根，是一切事物融会贯通的根本。'",
+    "domain": null
+  },
+  {
+    "id": "td_information_intake_dimensions",
+    "type": "ThinkingDeposit",
+    "name": "信息摄入维度论",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.02.05 提出的原创框架。分析不同信息媒介的摄入效率：文字阅读是一维线性的，但眼睛接收二维信息，注意力机制让大脑能在二维视野中优化一维信息摄入效率，且可通过练习提升阅读速度；音频也是一维但难以优化；图像是二维的，注意力机制提效空间小。同时区分静态信息（文字/图像，与时间无关）和动态信息（视频/音频，与时间相关）。",
+    "domain": null
+  },
+  {
+    "id": "link_cogsci_ai_natural_language",
+    "type": "CrossDomainLink",
+    "name": "认知科学×AI → 自然语言交互的准确性悖论",
+    "description": "2023.02.12洞察：ChatGPT本质是人机沟通方式的变革（编程语言→自然语言），但完全自然语言有全知全能错觉风险，应牺牲部分自然性换取准确性，如图灵离散状态机用信息密度换可靠性",
+    "domain": null
+  },
+  {
+    "id": "mat_why_buddhism_is_true",
+    "type": "Material",
+    "name": "Why Buddhism is True",
+    "userInsight": "谭总推荐。引发关于'虚幻的美好vs痛苦的现实'的思考——用户最终的答案是：人来世界一趟是为了体验真实的自己，不是只有美好才值得拥抱，一切都值得。",
+    "author": [
+      "Robert Wright"
+    ],
+    "readingStatus": "paused",
+    "materialType": "book",
+    "domain": "domain_western_philosophy"
+  },
+  {
+    "id": "cs_research_vs_application",
+    "type": "KnowledgeNode",
+    "outputPotential": "high",
+    "depth": "有独立见解",
+    "name": "认知科学：研究vs应用",
+    "userInsight": "2023.04.10：'同样是解决问题，研究解决的是科学问题，而应用解决的才是人的问题。'这标志着用户从学习认知科学转向思考如何应用认知科学。",
+    "description": "研究解决科学问题，应用解决人的问题。用户在读完认知科学教科书后的核心转向——不追求搞清所有概念，而是用认知能力的了解切实帮助人。",
+    "nodeRole": "personally_critical",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "ps_perfectionism_output_barrier",
+    "type": "KnowledgeNode",
+    "depth": "有独立见解",
+    "name": "完美主义与输出障碍",
+    "userInsight": "2023.04.17首篇公众号发布后的自我觉察。与'直觉型vs深究型'的认知风格自我认知相关（04.07与徐羊的讨论）。",
+    "description": "用户识别出的个人认知模式：但凡分享有对错之分的内容就背上巨大压力，害怕'做错'导致畏首畏尾。学语言、工作、剪辑视频、知识分享都受此影响。",
+    "nodeRole": "personal_growth",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "mat_courage_to_be_disliked",
+    "type": "Material",
+    "name": "被讨厌的勇气",
+    "userInsight": "多处引用：'货币是被铸造的自由'、'self interest→social interest'、'课题分离→共同体'。启发用户反思理解范围vs包容程度——自己做得好的只是前者（见多识广所以接受范围大），但对不理解的范围缺乏包容/信任。",
+    "author": [
+      "岸见一郎",
+      "古贺史健"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "td_motivation_five_sources",
+    "type": "ThinkingDeposit",
+    "name": "动机来源五维框架",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.05 构建的个人动机分析框架：内在需求、个人优势、社会认可、有用、价值观五个维度。核心结论是需求+有用+价值观为最重要的三个动机源，可暂时抛开社会认可和个人优势。同时提出技术浪潮三种人（创造者/冲浪者/投机者）——有效追逐浪潮基于对应用需求的深刻感知。",
+    "domain": null
+  },
+  {
+    "id": "td_cognitive_four_components",
+    "type": "ThinkingDeposit",
+    "name": "信息处理四器模型",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.05 构建的认知信息处理框架：感应器（感知/情绪）、处理器（模型/认知）、存储器（记忆/硬件）、效应器（行动/改变世界），映射为 input→encode→manipulate→decode→output 流程。核心洞察：不是只有处理器重要，四器缺一不可。感应器包含共情和艺术，效应器才是真正改变世界的部分。",
+    "domain": null
+  },
+  {
+    "id": "td_model_taxonomy",
+    "type": "ThinkingDeposit",
+    "name": "模型分类三维论",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.05 发现的模型分类体系：流程模型（同层流动/流程图，考验经验总结）、层级模型（向上抽象/模块化，考验范畴抽象）、维度模型（向下拆解/星型，考验维度拆解）。四象限图和表格法是维度模型的工具子类。用户习惯横向流程×纵向层级的二维框架，此处补全了第三维。",
+    "domain": null
+  },
+  {
+    "id": "ps_focus_and_execution_deficit",
+    "type": "KnowledgeNode",
+    "depth": "有独立见解",
+    "name": "聚焦能力与落地能力缺失",
+    "userInsight": "2023.05.11：'找到自己的动力，然后找到聚焦的方向，还要找到聚焦方向的勇气，最后找到前进的路。'价值观缺失需要真正的经验来重建。",
+    "description": "用户自我诊断：不缺发散、思考、框架搭建、类比和逻辑能力，但缺乏聚焦和落地能力。根源是损失厌恶——害怕损失机会成本让什么都想抓，害怕损失沉没成本让不敢真正投入。",
+    "nodeRole": "personal_growth",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "ec_money_vs_ideals",
+    "type": "KnowledgeNode",
+    "outputPotential": "high",
+    "depth": "有独立见解",
+    "name": "赚钱与理想的矛盾",
+    "userInsight": "2023.05.19：'不要去相信那些毒鸡汤所谓的做好自己的事钱自然会来——来了也只是巧合。'结合《被讨厌的勇气》中'货币是被铸造的自由'。",
+    "description": "赚钱是价值交换（市场规则），理想只与自己的心有关（盲目坚持）。两者的决定性因素从根本上不同：赚钱用当下时间购买未来自由，理想是体验当下。两者在抢夺时间资源。",
+    "nodeRole": "personally_critical",
+    "domain": null
+  },
+  {
+    "id": "link_cogsci_systems_model_taxonomy",
+    "type": "CrossDomainLink",
+    "name": "认知科学×系统论 → 模型作为思维工具的分类学",
+    "description": "用户将认知科学中的信息处理流程（感应→处理→存储→效应）与系统论的建模方法论（流程/层级/维度三类模型）融合，形成了一套自底向上构建思维框架的方法——不信别人的框架，从认知原理出发自己推导。",
+    "domain": null
+  },
+  {
+    "id": "mat_happiness_courage",
+    "type": "Material",
+    "name": "幸福的勇气",
+    "userInsight": "工作关系（我的幸福/安全需求）→交友关系（你的幸福/尊重归属）→爱的关系（我们的幸福/自我实现），与马斯洛需求层次对应。'人需要穷其一生去攀登，这是对幸福最基本的认知。'",
+    "author": [
+      "岸见一郎",
+      "古贺史健"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "mat_naval_almanack",
+    "type": "Material",
+    "name": "纳瓦尔宝典",
+    "userInsight": "引用核心概念：责任与杠杆与财富收入的关系——躲在无责任领域就无法获得财富。",
+    "author": [
+      "Eric Jorgenson"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_personal_growth"
+  },
+  {
+    "id": "td_trust_and_honor_past_self",
+    "type": "ThinkingDeposit",
+    "name": "信任与不负过去的自己",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.06 与阿润讨论反思过去时提出的双层框架：第一层'信任'——过去的决策在当时条件下是最优的，不需追悔；第二层'不负'——过去的经验优化了我们的决策模型，应该回看经历校正模型，在当下责无旁贷做正确的事。与阿德勒目标论一致，是一种向上的自由。同日诊断自己'用战术勤奋掩盖战略懒惰'。",
+    "domain": null
+  },
+  {
+    "id": "mat_pyramid_principle",
+    "type": "Material",
+    "name": "金字塔原理",
+    "userInsight": "不仅学习了表达方法论，更重要的是梳理了演绎/归纳推理的完整逻辑体系，并收集了MECE、TOPS、FABE、SPIN、5W2H、麦肯锡七步法等实用框架。",
+    "author": [
+      "芭芭拉·明托"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "st_structured_expression",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "结构化表达方法论",
+    "description": "以金字塔原理为核心的结构化表达体系：结论先行、以上统下、归类分组、逻辑递进。纵向用疑问-回答推进，横向用演绎/归纳建立层次，序言用背景→矛盾→疑问吸引注意。",
+    "nodeRole": "tool",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "st_logical_reasoning_taxonomy",
+    "type": "KnowledgeNode",
+    "depth": "理解",
+    "name": "逻辑推理分类体系",
+    "description": "演绎推理（三段论、假言推理、选言推理、关系推理）从一般到特殊，结论必然；归纳推理（比较、归类、分析与综合、抽象与概括）从特殊到一般，统计/概率意义上成立即有效。",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "st_mece_principle",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "MECE原则",
+    "description": "各组之间相互独立不重叠，所有组完全穷尽不遗漏。四种常用方法：二分法、流程法、要素法、象限法。是结构化思维的基础工具。",
+    "nodeRole": "tool",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "kd_pyramid_principle_notes",
+    "type": "KnowledgeDeposit",
+    "name": "金字塔原理读书笔记",
+    "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "对《金字塔原理》的系统化读书笔记，整合了逻辑学基础（演绎/归纳推理体系）、金字塔原理本体（四特点/四规则/纵横关系）、以及实用表达框架集合（MECE/TOPS/FABE/SPIN/5W2H/麦肯锡七步法）。",
+    "domain": null
+  },
+  {
+    "id": "da_metrics_framework_toc",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "toC数据指标体系模型",
+    "userInsight": "这是用户基于多年toC数据分析实战经验自主提炼的系统化方法论，不是某本书的摘录。体现了从战略到落地的完整视角。",
+    "description": "用户构建的面向消费者业务的数据指标体系框架，覆盖三个场景：业务指标拆解（投资层/决策层/执行层三层数据消费者模型）、业务目标测算（北极星→可操作变量公式四步法）、业务数据基建（框架梳理+优先级，三个梳理角度）。",
+    "nodeRole": "personally_critical",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "da_data_consumer_layers",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "数据消费者三层模型",
+    "description": "投资层（月聚合，关注盈利/规模/北极星，切片vs cohort）→ 决策层（关注用户分布/模块间协调，完整链路数据，风险监测）→ 执行层（模块内用户行为，漏斗，方案迭代反馈）。按'谁看数据→目标→看什么'三问展开。",
+    "nodeRole": "tool",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "da_north_star_decomposition",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "北极星指标拆解四步法",
+    "description": "第一步：拆解为可操作变量公式（保证业务可解释性，变量可感知，匹配组织边界，减少变量依赖）；第二步：识别变量间依赖关系与风险；第三步：基于变量状态测算目标（自上而下/自下而上）；第四步：按阶段追踪校正。区分可控变量与稳定常量。",
+    "nodeRole": "tool",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "kd_toc_metrics_framework",
+    "type": "KnowledgeDeposit",
+    "name": "toC数据指标体系模型",
+    "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "用户自主构建的toC业务数据指标体系完整框架，涵盖业务指标拆解（三层数据消费者）、业务目标测算（四步法）、业务数据基建（三角度框架梳理+优先级）。基于多年实战经验提炼，是数据分析领域'可教授他人'深度的代表性产出。",
+    "domain": null
+  },
+  {
+    "id": "mat_cogsci_bermudez",
+    "type": "Material",
+    "name": "认知科学（Bermúdez 教材第三版）",
+    "userInsight": "公众号系列文章的主要参考来源。第四版相比第三版新增了情绪与情感章节。",
+    "author": [
+      "José Luis Bermúdez"
+    ],
+    "readingStatus": "completed",
+    "materialType": "textbook",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_marr_three_levels",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "Marr 三层级框架",
+    "description": "计算层（识别问题与约束）、算法层（从初始到结果的操作）、执行层（物理/神经实现）。计算层靠近哲学/心理学，算法层靠近语言学/数学/计算机，执行层靠近解剖学/影像学。",
+    "nodeRole": "tool",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_info_processing_four_models",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "信息处理四模型",
+    "description": "物理符号系统（符号+规则，语言式逻辑推演）、神经网络（权重+阈值，亚符号分布式）、贝叶斯概率模型（先验→后验，期望效用决策）、动力学模型（无需中央大脑，组件交互构成系统）。四种模型各有擅长的问题域。",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_act_r_model",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "ACT-R 认知架构",
+    "description": "混合架构：感知-运动层 + 认知层（陈述性记忆/程序性记忆/目标系统），通过缓冲区交互。陈述性记忆以知识块存储（激活级别→神经网络模型），程序性记忆以生产规则存储（期望效用→贝叶斯模型），符号化存储层面→物理符号系统。",
+    "nodeRole": "tool",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_meta_representation",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "元表征与心智理论",
+    "description": "表征是对实体的抽象，元表征是'关于表征的表征'。TOMM三阶段：意向/情绪/眼方向检测（9月前）→共享注意力三元检测（9-14月）→扮演游戏与共情能力发展。自闭症儿童在第二阶段开始异常，缺乏元表征能力导致社交/语言损伤。",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_chinese_room",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "中文房间与图灵测试",
+    "description": "Searle的中文房间论证：仅通过规则操纵符号（语法）不等于理解语义，物理符号系统不能产生真正的智能。图灵测试：通过模仿游戏判断机器是否有思考能力。核心哲学争论：语法vs语义、系统回复vs Searle的内化反驳、机器人回复vs鸽子类比。",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_cheater_detection",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "说谎检测模块与合作进化",
+    "description": "达尔文模块假说：认知能力是进化产物，专业化模块解决特定问题。说谎检测模块使人在道义条件推理上远优于普通逻辑推理（Wason选择任务）。通过无限迭代囚徒困境证明：针锋相对策略需要说谎检测能力支撑，这是利他行为/合作行为诞生的基础。",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_chunking_miller",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "分块与抽象（Miller's 7±2）",
+    "description": "人类信息通道容量约7±2单位。分块与抽象是突破容量限制的高级能力：颜色→赤橙黄绿青蓝紫，音高→C-D-E-F-G-A-B/宫商角徵羽，数字→十进制。学习过程就是先抽象粗略的块，再逐层分层和概念扩充，连接成知识网络。下棋高手看到的是棋谱而非棋子。",
+    "nodeRole": "tool",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_selective_attention",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "选择性注意力机制",
+    "description": "鸡尾酒会效应：在嘈杂环境中选择性聚焦特定声音。注意力在感知活动完成前就已介入（ERP实验证据：P1/N1波峰关注组显著强于无视组）。Broadbent过滤器模型：注意力为信息设置瓶颈，保护有限的信息处理通道。",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_brain_anatomy_basics",
+    "type": "KnowledgeNode",
+    "depth": "理解",
+    "name": "脑解剖与活动测量技术",
+    "description": "脑损伤研究（Phineas Gage：前额叶→人格变化）→侵入性动物实验→非侵入性技术。高时间分辨率：EEG/MEG（脑电波五种：Delta深睡/Theta冥想/Alpha放松/Beta清醒/Gamma快速眼动梦境整理）。高空间分辨率：PET（放射性同位素追踪）/fMRI（血氧水平检测）。",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_language_concept_extension",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "概念的内在结构与外延",
+    "description": "侯世达《表象与本质》：概念通过范畴扩大向外延伸，越到边缘越模棱两可。概念的内在结构极复杂但使用毫不费力——不需要掌握内部方方面面。'枢纽机场'案例：属性延伸赋予母概念新的可能性，是头脑风暴的有效方法。",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "cs_machine_human_language_evolution",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "机器与人类语言的进化",
+    "description": "物理符号系统→哥德尔配数（符号规则转化为算数规则）→图灵机→机器语言→汇编语言→编译/解释型语言→NLP。人类语言具有意图/表达、创新性/歧义性/上下文依赖、文化演化性；物理符号系统则是确定/去歧义/上下文无关/恒定。两者鸿沟在于'意图'——NLP正在逼近这一关键差异。",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "st_three_problem_domains",
+    "type": "KnowledgeNode",
+    "depth": "可教授他人",
+    "name": "问题的三个域（Weinberg）",
+    "userInsight": "2023.10 国庆期间的关键领悟：'从来就不是优良的系统管理成就了系统，而是优良的系统成就了系统管理的理论。'系统理论是事后的高度抽象，不是凌驾于系统之上的真理。与音乐理论之于音乐创作的关系相同。",
+    "description": "有序的简单（方程解析，抓住主要矛盾）→无序的复杂（统计方法，大数定律）→有序的复杂（系统化思维）。方程解析受2^n方程数×计算平方律限制；统计方法受大数定律/样本量/随机性限制；现实中最常见的恰恰是第三类'有序的复杂'。",
+    "nodeRole": "tool",
+    "domain": "domain_systems_theory"
+  },
+  {
+    "id": "ps_zero_sum_life",
+    "type": "KnowledgeNode",
+    "depth": "有独立见解",
+    "name": "零和博弈人生与复利型成长",
+    "description": "将'先苦后甜vs先甜后苦'重构为现在的我与未来的我之间的零和博弈。突破路径：(1)单位时间产能非恒定——能力/学习效率/悟性三层加速度的复利；(2)面向未来的可能性而非稳定性——获得不可逆的能力增长优于积攒可消耗的存粮；(3)了解自我节律——节律里有成功也有懈怠，不是本质。",
+    "nodeRole": "personally_critical",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "ps_optimal_distinctiveness",
+    "type": "KnowledgeNode",
+    "depth": "有独立见解",
+    "name": "最优独特性模式",
+    "description": "人类同时追求归属感（平凡的慰藉）和独特性（独特的闪光）。在身份认同上：归属需求vs独特性需求。在审美上：意料之外情理之中的'甜蜜点'。在认知上：大脑过滤冗余和无法解码的信息，最有效学习发生在最近发展区（ZPD）。新旧知识连接的火花带来多巴胺愉悦。",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "aa_language_as_compression",
+    "type": "KnowledgeNode",
+    "outputPotential": "high",
+    "depth": "可教授他人",
+    "name": "语言即压缩——与AI交流的底层逻辑",
+    "description": "人类语言本质是对多维感官和功能信息的极致压缩（概念化）。关键词/术语/标签是高密度'压缩包'。与AI交流的核心：(1)关键词唤醒——不是输入信息而是唤醒AI网络中已有的知识体系，追求信息压缩率而非信噪比；(2)赋予视角——语言系统切换（领域行话）+认知视角切换（特定立场），防止AI在无限知识网络中迷失。",
+    "nodeRole": "personally_critical",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "kd_cogsci_series",
+    "type": "KnowledgeDeposit",
+    "name": "公众号「Notes for cognition」认知科学系列",
+    "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "2023.04-2023.10 在公众号发布的15篇认知科学科普系列文章。以Bermúdez《Cognitive Science》教材为主线，系统介绍了Marr三层级、信息处理四模型（物理符号系统/神经网络/贝叶斯/动力学）、ACT-R认知架构、元表征与心智理论、中文房间与图灵测试、说谎检测模块与合作进化、分块与Miller's 7±2、选择性注意力、脑解剖与测量技术、概念与语言的延伸、物理符号系统到NLP的进化、三类问题域（Weinberg系统论），以及电影芭比的多层解读。",
+    "domain": null
+  },
+  {
+    "id": "kd_zero_sum_life",
+    "type": "KnowledgeDeposit",
+    "name": "你是否过着「零和博弈」的人生？",
+    "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "2025.04发布。将人生选择困境重构为现在的我与未来的我之间的零和博弈，提出三条突破路径：复利型能力成长、面向可能性而非稳定性、了解自我节律。融合了损失厌恶、复利思维、MBTI自我认知等多维度思考。",
+    "domain": null
+  },
+  {
+    "id": "kd_optimal_distinctiveness",
+    "type": "KnowledgeDeposit",
+    "name": "人类的一个有趣模式：既要平凡的慰藉，也要独特的闪光",
+    "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "2025.09发布。观察到身份认同、作品审美、信息认知三个维度共享同一个底层模式——最优独特性。归属需求vs独特性需求、熟悉又陌生的甜蜜点、最近发展区(ZPD)学习理论。",
+    "domain": null
+  },
+  {
+    "id": "kd_ai_communication",
+    "type": "KnowledgeDeposit",
+    "name": "如何与AI交流",
+    "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "2025.12发布。从底层逻辑解析与AI交流的方法：语言本质是压缩、关键词唤醒（追求信息压缩率而非信噪比）、赋予视角（语言系统+认知视角双切换）。与用户一贯的认知科学视角一致——将语言/认知/AI串联。",
+    "domain": null
+  },
+  {
+    "id": "link_cogsci_ai_language_compression",
+    "type": "CrossDomainLink",
+    "name": "认知科学×AI → 语言压缩与知识唤醒",
+    "description": "用户将认知科学中的分块/抽象/工作记忆容量理论与AI交互实践结合，提出'语言即压缩'和'关键词唤醒'框架——人类用概念压缩突破工作记忆限制，AI用解压缩释放被语言封装的知识体系。",
+    "domain": null
+  },
+  {
+    "id": "link_economics_psychology_life_game",
+    "type": "CrossDomainLink",
+    "name": "经济学×心理学 → 人生博弈论",
+    "description": "用户将博弈论（零和博弈/囚徒困境/针锋相对策略）应用于个人成长哲学：'现在的我vs未来的我'的零和困境，通过复利型能力成长实现共赢。同时将说谎检测模块理论与合作进化联系起来。",
+    "domain": null
+  },
+  {
+    "id": "mu_mixing_fundamentals",
+    "type": "KnowledgeNode",
+    "depth": 3,
+    "name": "混音基础与效果器",
+    "userInsight": "系统性地整理了混音工作流和各效果器参数逻辑，理解了从硬件设备到软件效果器的完整链路。",
+    "description": "混音效果器体系：EQ均衡器（频率/Q值/分贝）、压缩器（阈值/压缩比/Attack/Release）、混响（直达声/早期反射/混响声/预延时/混响时间）、延时（时间同步/反馈量/乒乓延时）、侧链压缩（闪避技术）。",
+    "nodeRole": "practitioner",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "mu_audio_digital_fundamentals",
+    "type": "KnowledgeNode",
+    "depth": 3,
+    "name": "音频数字化基础",
+    "userInsight": "能向他人解释从wave信号到频谱图的完整转化过程，以及不同音色在频谱上的分布差异。",
+    "description": "音频格式（无损WAVE/AIFF vs 压缩MP3/AAC）、采样率与比特率（44.1KHz/16bit标准）、单声道与立体声、频谱分析基础、傅立叶变换与频率叠加、振幅包络ADSR（起动-衰减-维持-释放）。",
+    "nodeRole": "practitioner",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "aa_prompt_engineering",
+    "type": "KnowledgeNode",
+    "depth": 3,
+    "name": "提示词工程方法论",
+    "userInsight": "观察到算法人使用GPT时的惯性思维（先打分再排序而非直接让GPT筛选、用python格式化而非让GPT直接输出），发现传统技术思维会限制AI工具的灵活使用。",
+    "description": "DeepLearning.ai ChatGPT Prompt Engineering课程核心：两大原则（清晰具体指令+给模型思考时间）、迭代方法（Idea→Implementation→Result→Analysis）、五大功能模式（Summarizing/Inferring/Transforming/Expanding/Chatbot）、temperature参数控制随机性。",
+    "nodeRole": "practitioner",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "mat_mixing_course",
+    "type": "Material",
+    "name": "混音入门课程",
+    "readingStatus": "completed",
+    "materialType": "course",
+    "domain": null
+  },
+  {
+    "id": "mat_prompt_engineering_course",
+    "type": "Material",
+    "name": "ChatGPT Prompt Engineering (DeepLearning.ai)",
+    "readingStatus": "completed",
+    "materialType": "course",
+    "domain": null
+  },
+  {
+    "id": "kd_beauty_of_math_notes",
+    "type": "KnowledgeDeposit",
+    "name": "《数学之美》读书笔记",
+    "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "吴军《数学之美》全书架构梳理：信息源→编码→通道→解码→接收方。三大部分：NLP（统计方法/HMM/信息熵）、搜索引擎（PageRank/TF-IDF/图论/密码学）、数学模型（最大熵/贝叶斯/EM/神经网络）。",
+    "domain": null
+  },
+  {
+    "id": "kd_mixing_notes",
+    "type": "KnowledgeDeposit",
+    "name": "混音学习笔记",
+    "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "系统性的混音入门知识整理：硬件设备选择、音频格式与参数、四大效果器（EQ/压缩/混响/延时）的原理与参数设定、侧链压缩应用场景。",
+    "domain": null
+  },
+  {
+    "id": "kd_prompt_engineering_notes",
+    "type": "KnowledgeDeposit",
+    "name": "ChatGPT提示词工程笔记",
+    "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "DeepLearning.ai课程笔记：提示词两大原则、迭代方法论、五大功能（总结/推断/转换/扩展/聊天机器人）、chatbot记忆机制与点单系统示例。",
+    "domain": null
+  },
+  {
+    "id": "td_three_level_decision",
+    "type": "ThinkingDeposit",
+    "name": "人生决策三层级模型",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "从股市和毛选的交叉体验中提炼的原创模型：显著重大决策（有限选择→可预测影响）→不起眼的小决策（自由选择→难以预估影响）→毫无感知的元决策（完全自由→贯穿一生的影响）。每层可决策范围受下层限制。元决策是'决策逻辑的决策'，决定了哪些认知参与决策过程。",
+    "domain": null
+  },
+  {
+    "id": "td_attention_as_meta_resource",
+    "type": "ThinkingDeposit",
+    "name": "注意力作为元资源理论",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "注意力是比智力和勤奋更元的东西。注意力优先级分布由环境、性格（长期经历塑造的价值观）、近期经历共同决定。注意力会疲劳（时间消耗+迁移机制），需要强大外力（欲望/热情）或反复迁移机制（艺术共鸣/学习顿悟）来维持。风变营销本质上是面向社会大众的注意力迁移。",
+    "domain": null
+  },
+  {
+    "id": "td_compound_feedback_education",
+    "type": "ThinkingDeposit",
+    "name": "复利反馈与游戏化教育",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "游戏吸引人的核心不是'好玩'，而是'复利反馈'——付出成本后获得的东西能让后续追逐体验到明显的成本下降或效率提升。当前教育产品游戏化仅在自我层面（降低认知负荷），很少在本我层面达成复利反馈。结合弗洛伊德三我理论：超我（焦虑营销）、自我（认知负荷优化）、本我（复利反馈）。",
+    "domain": null
+  },
+  {
+    "id": "td_subjectivity_four_stages",
+    "type": "ThinkingDeposit",
+    "name": "主体性发展四阶段模型",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "基于生理发展的主体性建构模型：1.观察阶段（线性因果/边界确立）→2.模仿阶段（网状关联/镜像神经元/客体化自我）→3.自指阶段（静态系统/祛魅/主体化自我）→4.流动阶段（系统流动/无我/与时间和解）。每阶段含苦（成长痛/卡点）与乐（充盈体验），通过否定之否定螺旋上升。配套开发了完整的心理评估问卷。",
+    "domain": null
+  },
+  {
+    "id": "td_compression_progress",
+    "type": "ThinkingDeposit",
+    "name": "压缩进步与学习层级理论",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "基于LSTM之父Schmidhuber的compression progress论文展开：美=压缩后CB足够小（规律/熟悉），趣味=压缩优化的时间导数。发展出ABCD学习者分类：A反压缩优化（形式主义）、B补丁型（学信息本身）、C进化者（学压缩/系统性）、D智者（学压缩优化本质/元学习）。结合Piaget的同化/顺应、表面复杂度/可展开性概念。",
+    "domain": null
+  },
+  {
+    "id": "td_civilization_five_stages",
+    "type": "ThinkingDeposit",
+    "name": "西方文明五阶段与道术回路",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "与AI共创的文明演进模型：图腾（敬畏→巫术教条）→哲学（理性→诡辩）→宗教（虔诚→赎罪券）→艺术（美与人本→浪漫无力）→科学（客观→机械决定论/AI）。每阶段良质（道）实体化为朴质（术）后僵化，引发下一轮良质涌现。AI是第五阶段的封棺之作，人类被迫走向第六阶段：意义感与存在美学。延伸出'道与术教育六环节'模型。",
+    "domain": null
+  },
+  {
+    "id": "td_procrastination_dynamics",
+    "type": "ThinkingDeposit",
+    "name": "拖延动因动力学模型",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "拖延的力学模型：驱动力（问题驱动/目标驱动/他人期待/从众意识，即'自我后推/自我前拉/他人后推/他人前拉'）vs 阻碍力（主观：生理精神健康程度 + 客观：事情难度与卡点）。钩子是改变静态现状的干预手段，可作用于驱动力或阻碍力。",
+    "domain": null
+  },
+  {
+    "id": "td_storytelling_as_life_skill",
+    "type": "ThinkingDeposit",
+    "name": "讲故事作为人生底层能力",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "从《Show Your Work!》阅读中顿悟：故事性本身具有可衡量的价值（同一幅画因故事不同价值不同）。讲故事不是写作技巧而是人生修行——从自我介绍到社区发言到路演到教学。三种故事结构的整理。从'学习social'转变为'学习讲故事的能力'。",
+    "domain": null
+  },
+  {
+    "id": "td_gender_self_acceptance",
+    "type": "ThinkingDeposit",
+    "name": "性别化自我接纳的否定之否定",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "性别社会化让男孩女孩各'减半自己'：女孩保留共情但被压制自信主张，男孩被鼓励自信但被推离情感深度。女性课题：否定（认识人性自私等本质，打破粉红泡泡）→否定的否定（这些不是缺点而是本质，真正接纳自己）→在人性基础上构建让世界美好的东西。男性课题：学习重构（视角切换/共情），打破大自我。好的亲密关系是最好的课堂。",
+    "domain": null
+  },
+  {
+    "id": "td_medicine_3_0",
+    "type": "ThinkingDeposit",
+    "name": "医学3.0与预防性健康框架",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "从《超越百岁》提炼：医学2.0是接鸡蛋系统（只治急性病，不找楼顶扔鸡蛋的人），慢性病是连续光谱而非黑白。四大慢性病+情绪问题框架。健康数据四维度对比：睡眠（简单，人脑可处理）vs 运动/营养/情绪（数据爆炸，需技术辅助）。基因检测的社会阻碍在于阶级分层恐惧。",
+    "domain": null
+  },
+  {
+    "id": "td_founder_vs_manager",
+    "type": "ThinkingDeposit",
+    "name": "创始人模式与经理人模式辩证",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "创始人模式关心过程/价值导向，经理人模式关心结果/形式导向。经理人假设存在完美指标体系能从结果推演过程好坏，但现实中好过程可产生坏结果、反之亦然。创业不同阶段主要矛盾在两种模式间迁移。类比毛泽东的一腔热血+系统知识的辩证关系。",
+    "domain": null
+  },
+  {
+    "id": "td_practice_theory_integration",
+    "type": "ThinkingDeposit",
+    "name": "实践论与冰山渗透模型",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "从毛泽东实践论出发：感性→理性→实践校正的循环。与冰山模型结合：冰山上小下大是价值模型，但启发性模型应上大下小（足够多实践才渗透认知）。渗透由两变量决定：实践量（眼）× 思考能力（脑），对应系统论的眼-脑定律。两者互相影响，形成螺旋上升回路。",
+    "domain": null
+  },
+  {
+    "id": "ec_macro_fiscal_monetary",
+    "type": "KnowledgeNode",
+    "depth": 3,
+    "name": "宏观经济政策工具",
+    "description": "财政政策（扩张/紧缩、赤字支出/国债、乘数效应MPC）与货币政策（美联储、准备金要求、折扣率、公开市场操作、量化宽松QE）。GDP/失业率/通胀率三大指标。",
+    "nodeRole": "learner",
+    "domain": "domain_economics"
+  },
+  {
+    "id": "cs_dmn_fpn_networks",
+    "type": "KnowledgeNode",
+    "depth": 4,
+    "name": "DMN默认模式网络与FPN任务正性网络",
+    "userInsight": "FPN模式下只能通过别人教学学新东西（一切在理性范围内），而DMN的漫游模式支撑创造力——莫名其妙的连接能力是人类创造力的核心。",
+    "description": "DMN（自我参照/自传记忆/展望未来/社会认知/走神）与FPN（任务聚焦/抑制无关信息）的交互。DMN核心节点：后扣带皮层PCC、内侧前额叶mPFC、角回。睡眠中NREM期DMN连接减弱，REM期增强。DMN过强→失眠/反刍，DMN不足→低自我关怀。",
+    "nodeRole": "integrator",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "hw_bdnf_sleep_emotion",
+    "type": "KnowledgeNode",
+    "depth": 3,
+    "name": "BDNF与睡眠-情绪-记忆关联",
+    "description": "BDNF(脑源性神经营养因子)：海马体高表达，REM期分泌增加。BDNF不足→抑郁/焦虑/噩梦。有氧运动、富含酪氨酸/omega-3饮食提升BDNF。Val66Met变异导致恐惧消退学习受损(PTSD风险)。BDNF调节深度睡眠(SWA)和REM睡眠。",
+    "nodeRole": "researcher",
+    "domain": "domain_health_wellness"
+  },
+  {
+    "id": "mu_tuning_systems",
+    "type": "KnowledgeNode",
+    "depth": 2,
+    "name": "音律体系：纯律/五度相生律/十二平均律",
+    "description": "人耳对频率和分贝的感知是等比数列，泛音排列是等差数列。纯律（泛音等差，离基频越近越清晰）、五度相生律（3/2频率关系生成旋律）、十二平均律（精致等比，近似纯律）。美感需要等差保证，秩序感需要等比保证。",
+    "nodeRole": "learner",
+    "domain": "domain_music_production"
+  },
+  {
+    "id": "ph_waves_electromagnetic_mechanical",
+    "type": "KnowledgeNode",
+    "depth": 2,
+    "name": "电磁波与机械波物理基础",
+    "userInsight": "眼睛和耳朵都是生物突破身体感知极限的工具——将身体无法察觉的细致刺激转化为可感知信号。",
+    "description": "电磁波（横波/光速/真空传播）：无线电→红外→可见光→紫外→X射线→伽马。机械波（需介质）：次声→声波→超声。眼睛特化捕捉可见光，耳朵特化捕捉空气振动。带宽概念：高频电磁波有更大带宽范围但更易被阻挡。",
+    "nodeRole": "learner",
+    "domain": "domain_western_philosophy"
+  },
+  {
+    "id": "da_oltp_vs_olap",
+    "type": "KnowledgeNode",
+    "depth": 4,
+    "name": "事务型存储与分析型存储的辩证",
+    "userInsight": "大脑做的事情之一就像把采集到的事务型信息处理成可使用的分析型信息。这个类比帮助解释了为什么底层数据库用OLTP更好。",
+    "description": "事务型(OLTP)：一事一表，数据源管理好但难聚合分析。分析型(OLAP)：数据并在一起方便分析但数据源管理复杂。类比人脑：感受器(眼耳肤)采集→大脑处理(事务→分析转换)→效应器输出。采集阶段不应直接用分析格式，因为多来源优先级和历史追溯问题。",
+    "nodeRole": "practitioner",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "da_analyst_capability_model",
+    "type": "KnowledgeNode",
+    "depth": 4,
+    "name": "数据分析师能力模型",
+    "userInsight": "大多数人对数据分析的能力模型不清楚。尤其'尾'(业务洞察/复盘)比'头'更难更重要，但新人最容易忽略。分析文档缺少业务洞察就只有分析没有推动力；方案缺少复盘就缺乏长期风险意识和经验积累。",
+    "description": "五维能力模型：1.业务知识(实际理解+指标概念拆解)、2.数据工程(库表设计/面向事务vs分析)、3.技术能力(SQL/Python/前后端基本概念)、4.可视化(工具+设计意识)、5.业务分析(统计学+分析框架+文档能力)。分析文档三段式：确定分析目标→分析→业务洞察。方案三段式：框架(时间线+决策项)→内容(含风险预案)→复盘。数据团队应面向业务拆分人员而非面向产出/功能拆分——核心能力是业务经验，产出物形态需由分析师自行判断。",
+    "nodeRole": "practitioner",
+    "domain": "domain_data_analysis"
+  },
+  {
+    "id": "ps_active_living_present",
+    "type": "KnowledgeNode",
+    "depth": 3,
+    "name": "积极心理学与活在当下",
+    "userInsight": "裸辞后发现人生不是旷野——因为被圈养的人从未学会旷野的规则。我们在别人编织的环境中都不懂观察感受并交互，又怎么能在自由中编织自己的环境？",
+    "description": "Adler积极心理学核心：活在当下而非为未来某点而活。高中不是为了高考，大学不是为了毕业。社会和父母用谎言做的泡沫驱使孩子逃离当下。精神分析让自我活在过去，父母期待让自我活在未来。心理健康一词概括：自洽。",
+    "nodeRole": "integrator",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "ps_attachment_trauma_tree",
+    "type": "KnowledgeNode",
+    "depth": 3,
+    "name": "依恋类型与创伤树",
+    "description": "创伤五类：虐待、忽视、遗弃、纠结（界限模糊）、目睹悲惨。创伤树四分支：成瘾（含工作/完美主义上瘾）、相互依赖、习惯性生存策略（如愤怒）、依恋障碍。四种依恋型：安全/痴迷(焦虑)/回避(疏离)/恐惧型。男性抑郁症：隐性表现为孤立+愤怒。",
+    "nodeRole": "learner",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "ps_zero_sum_to_positive_sum",
+    "type": "KnowledgeNode",
+    "depth": 4,
+    "name": "零和博弈到正和博弈的代际转变",
+    "userInsight": "人生的旷野需要两个维度：对内探索（找到自己的目标）+ 对外掌握正和博弈规则。教育系统在这两方面都反其道而行之。",
+    "description": "中产阶级在时代更迭中落入时间缝隙：父母在资源匮乏时代通过拼杀成长，继承了零和博弈价值观给资源充裕的下一代。底层仍在零和中，富人天然懂社交网络共赢，唯独中产既知道个人力量有限又充满竞争意识。",
+    "nodeRole": "integrator",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "gd_board_game_mechanism_exposure",
+    "type": "KnowledgeNode",
+    "depth": 3,
+    "name": "桌游机制外放与体验设计",
+    "userInsight": "玩了近十年手游都是快感为主，桌游仅两周就产生了爆发性不同——因为机制外放让我看到系统的搭建和涌现。",
+    "description": "桌游因需要手动结算，底层机制和数值设计完全暴露——对比手游的黑箱体验。机制外放缩小了玩家与制作者的距离。教育启示：做体验而不是做教育——教育是阶级的（我比你好，你来学我），体验是平等的（我来分享，你来体验）。",
+    "nodeRole": "explorer",
+    "domain": "domain_game_design"
+  },
+  {
+    "id": "mat_show_your_work",
+    "type": "Material",
+    "name": "Show Your Work!",
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": null
+  },
+  {
+    "id": "mat_mao_selected_works",
+    "type": "Material",
+    "name": "毛泽东选集（全四卷）",
+    "author": [
+      "毛泽东"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "description": "通行版共四卷四册，收录1925-1949年间229篇著作。第五卷（1949-1957）1977年出版后不再印刷。",
+    "domain": null
+  },
+  {
+    "id": "mat_zen_motorcycle",
+    "type": "Material",
+    "name": "禅与摩托车维修艺术",
+    "readingStatus": "in_progress",
+    "materialType": "book",
+    "description": "良质（道/浪漫/体验之河流）与朴质（术/知识/终点之结论）的辩证。作者用意识流记录思考的河流而非终点。",
+    "domain": null
+  },
+  {
+    "id": "mat_character_road",
+    "type": "Material",
+    "name": "品格之路 (The Road to Character)",
+    "readingStatus": "completed",
+    "materialType": "book",
+    "description": "简历美德vs悼词美德，亚当一号（创造力/竞争/短期激素）vs亚当二号（道德逻辑/否定之否定/长期价值）。",
+    "domain": null
+  },
+  {
+    "id": "mat_li_fei_fei_memoir",
+    "type": "Material",
+    "name": "我看见的世界（李飞飞）",
+    "readingStatus": "completed",
+    "materialType": "book",
+    "description": "硅谷的傲慢：被技术取代工作的人的命运，商业态度介于半心半意的再培训和不加掩饰的漠不关心之间。",
+    "domain": null
+  },
+  {
+    "id": "mat_investment_first_lesson",
+    "type": "Material",
+    "name": "投资第一课",
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": null
+  },
+  {
+    "id": "mat_designing_your_life",
+    "type": "Material",
+    "name": "斯坦福大学人生设计课",
+    "author": [
+      "Bill Burnett",
+      "Dave Evans"
+    ],
+    "readingStatus": "completed",
+    "materialType": "book",
+    "description": "斯坦福大学设计学院最受欢迎的人生规划课。运用设计思维（原型制作、头脑风暴、重新定义问题）帮助人找到人生方向。核心工具包括能量日志、奥德赛计划（3条平行人生路径）、心流地图等。",
+    "domain": "domain_personal_growth"
+  },
+  {
+    "id": "link_decision_stock_war_life",
+    "type": "CrossDomainLink",
+    "name": "股市×战争×人生 → 决策层级理论",
+    "description": "从股市体验（一次亏损可损失半年盈利）到毛选战争论（一次败仗拖垮胜仗积累）到人生决策：极低成本决策→远倍数后果。发现关联→发现矛盾→元思考→系统性建模的推理路径。",
+    "domain": null
+  },
+  {
+    "id": "link_cogsci_education_compression",
+    "type": "CrossDomainLink",
+    "name": "认知科学×教育 → 压缩与学习层级",
+    "description": "将Schmidhuber的compression progress理论与Piaget的同化/顺应、系统论的表面复杂度概念融合，发展出ABCD学习者分类（反压缩优化/补丁型/进化者/智者）和'低表面复杂度+高可展开性=宏大感动'的审美模型。",
+    "domain": null
+  },
+  {
+    "id": "link_psychology_health_sleep",
+    "type": "CrossDomainLink",
+    "name": "心理学×健康 → 睡前脑网络与睡眠质量",
+    "description": "将DMN/FPN脑网络理论应用于睡眠问题分析：四种睡前错误激活（情绪反刍/深夜加班/过度警觉/创伤侵入）+两种额外问题（过度兴奋/奖励回路）。每种对应不同的干预策略。",
+    "domain": null
+  },
+  {
+    "id": "link_philosophy_civilization_education",
+    "type": "CrossDomainLink",
+    "name": "哲学×文明史 → 道与术的教育模型",
+    "description": "从文明五阶段（图腾→哲学→宗教→艺术→科学）的良质/朴质辩证，推导出教育六环节：得道(体验领悟)→由道生术(压缩表达+传递)→学术(筛选+学习)→由术生道(融入生活)。AI作为新宗教改革的'印刷术'将实现科学平权。",
+    "domain": null
+  },
+  {
+    "id": "link_game_psychology_education",
+    "type": "CrossDomainLink",
+    "name": "游戏设计×心理学×教育 → 体验式学习",
+    "description": "桌游机制外放→教育启示：教育是阶级的(我视角比你高)，体验是平等的(来体验一下吧)。结合复利反馈理论：游戏化教育应达成本我层面的复利反馈而非仅自我层面的认知负荷优化。",
+    "domain": null
+  },
+  {
+    "id": "link_music_physics_perception",
+    "type": "CrossDomainLink",
+    "name": "音乐×物理×认知 → 感知与音律",
+    "description": "人耳感知频率/分贝为等比数列，泛音排列为等差数列——美感(等差)与秩序感(等比)的张力。三种音律体系本质是对这种张力的不同妥协。音频数字化完整链路：声波→采样→傅立叶变换→频谱→特征提取。",
+    "domain": null
+  },
+  {
+    "id": "td_ai_as_forced_opensourcing",
+    "type": "ThinkingDeposit",
+    "name": "AI作为已沉淀知识的强行开源",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "AI本质是'已沉淀为术的东西'的强行开源——破除的是知识壁垒而非创造力。拆分艺术的功能性（AI可满足）与艺术的热爱（磨练永远是应吃的苦），AI净化了创作者的动机纯度。类比20世纪扫盲运动。同时从数据主权角度揭示去中心化的权力下放暗线：ITO在数据层面、AI在知识层面做同一件事。延伸思考：AI协作产出中人类的贡献是切入角度、方向控制和压缩提炼，AI的贡献是展开和知识汇编——区分'种子vs展开'。",
+    "domain": null
+  },
+  {
+    "id": "td_human_world_interaction_model",
+    "type": "ThinkingDeposit",
+    "name": "人与世界的交互模型",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "原创框架图：人从现实世界的'对象'中感应出概念，概念间组建有机记忆结构。认知作为中枢，通过两条路径与世界交互：迭代方式（科技/规则/学习/经济不断打磨对象与虚拟对象）和表现形式（通过文/图/声/触/味/嗅等介质外化认知）。记忆分为图像记忆、形态记忆、触觉记忆、逻辑记忆、关系记忆五种类型。群体思维惯性作为系统反馈回路影响整体认知走向。底层通过层层框架实现连接、理解、创新。",
+    "domain": null
+  },
+  {
+    "id": "aa_mcp_protocol",
+    "type": "KnowledgeNode",
+    "depth": "理解",
+    "name": "Model Context Protocol (MCP)",
+    "description": "由Anthropic发起、Linux Foundation主持的开放协议，为LLM应用提供标准化的外部数据源和工具集成接口。采用Client-Server-Transport三层架构，核心功能模块包括Tools（工具调用）、Resources（资源访问）、Prompts（提示管理）、Sampling（采样）。提供TypeScript/Python/Java/Kotlin/C#/Go/Ruby/Rust/Swift/PHP共10种语言SDK。",
+    "nodeRole": "skill",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "mat_mcp_spec",
+    "type": "Material",
+    "name": "Model Context Protocol 官方文档与规范",
+    "progress": "已完成学习",
+    "readingStatus": "completed",
+    "materialType": "documentation",
+    "domain": "domain_ai_agent"
+  },
+  {
+    "id": "kd_data_analysis_doc_standard",
+    "type": "KnowledgeDeposit",
+    "name": "数据分析文档标准",
+    "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "系统化的数据分析文档写作方法论。三段式结构：背景与需求目标→分析过程详述→结论提炼与汇总。每个部分面向不同读者（写作者/需求方/协作者）。分析六步法：框架→数据源→清洗→统计可视化→总结现象→归纳结论。强调目标与手段的区分、数据现象的客观性、结论的主观性，以及疑问-回答式的阅读结构设计。引用金字塔原理和幸存者偏差案例。",
+    "domain": null
+  },
+  {
+    "id": "mat_grit",
+    "type": "Material",
+    "name": "Grit: The Power of Passion and Perseverance",
+    "author": [
+      "Angela Duckworth"
+    ],
+    "progress": "已读完并完成详细笔记",
+    "readingStatus": "completed",
+    "materialType": "book",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "ps_grit_theory",
+    "type": "KnowledgeNode",
+    "depth": "有独立见解",
+    "name": "坚毅理论 (Grit Theory)",
+    "userInsight": "Grit判断的是「半途而废」的人；适合以「从能力符合条件的人中去掉坚毅度不足的人」为目标来使用。时间窗口越长Grit影响越大。",
+    "description": "Angela Duckworth提出的成就心理学模型：talent × effort = skill, skill × effort = achievement。Grit由两个维度构成：passion（长期目标一致性，如指南针而非烟花）和perseverance（面对逆境的持续努力）。Grit与talent完全无关，但在长期时间窗口下对成就的预测力极强。西点军校实验证明Grit预测退学率，而入学分数预测学术成绩，两者正交。",
+    "nodeRole": "mental_model",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "ps_growth_mindset",
+    "type": "KnowledgeNode",
+    "depth": "有独立见解",
+    "name": "成长型思维 vs 固定型思维 (Growth/Fixed Mindset)",
+    "description": "Carol Dweck提出：固定型思维认为智力不可改变，遇挫折归因于能力不足；成长型思维认为智力可发展，遇挫折归因于努力不够。习得性无助的根源不是害怕失败，而是习惯性将失败解释为缺乏能力的证据。青春期经历强大逆境并克服的人会对习得性无助产生免疫力。语言塑造：'You're a learner' > 'You're a natural'。",
+    "nodeRole": "mental_model",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "ps_deliberate_practice",
+    "type": "KnowledgeNode",
+    "depth": "理解",
+    "name": "刻意练习 (Deliberate Practice)",
+    "description": "精通技能需要大量高质量时间投入（万小时/十年定律）。四要素：明确的挑战目标、全神贯注的努力、即时反馈、反思改进后的重复。刻意练习痛苦且疲惫（每天3-5小时上限），但与心流形成正反馈回路：刻意练习提升能力→心流体验→更多承受刻意练习的动力。Experience ≠ excellence：有的人工作20年，有的人工作20个1年。",
+    "nodeRole": "methodology",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "ps_learned_helplessness",
+    "type": "KnowledgeNode",
+    "depth": "理解",
+    "name": "习得性无助 (Learned Helplessness)",
+    "description": "Seligman的经典实验：不是痛苦本身导致无助，而是'你认为自己无法控制的痛苦'导致无助。乐观主义者将坏事归因于暂时的、具体的原因，悲观主义者归因于永久的、普遍的原因。即使在习得性无助实验中，仍有1/3的个体保持韧性（resilience）。",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "kd_grit_notes",
+    "type": "KnowledgeDeposit",
+    "name": "《Grit》读书笔记",
+    "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "Angela Duckworth《Grit》全书详细笔记。核心框架：Grit = Passion + Perseverance，talent × effort = skill, skill × effort = achievement。四层培养路径：Interest（early years, foster not follow）→ Practice（middle years, deliberate practice + flow循环）→ Purpose（later years, 利他使命感）→ Hope（growth mindset + 习得性乐观）。包含西点军校实验、Seligman习得性无助实验、Carol Dweck成长型思维实验等核心研究的完整梳理。用户注释了关于talent偏见、passion作为指南针而非烟花、以及《斯坦福大学人生设计课》的关联。",
+    "domain": null
+  },
+  {
+    "id": "td_signal_catcher",
+    "type": "ThinkingDeposit",
+    "outputPotential": "high",
+    "name": "信号捕手——认知×内容交互模型与AI产品设计",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "原创AI产品设计框架「信号捕手」。核心理念：产品不仅提供服务（Service），更提供成长（Growth）——在不打扰用户的前提下潜移默化提升认知。三大模块：1)用户状态解析器（认知带宽×结构分辨率双轴）；2)内容认知评估器（抽象阶梯×认知密度双轴，10点预算分配法）；3)认知-内容交互模型（5×5矩阵，每个密度的内容都有栖身之所）。融合Hayakawa抽象阶梯理论的哑铃策略：最有力量的沟通发生在阶梯两极（L5智慧+L1/L2感官），中间层L3是'迷雾沼泽'。针对中间层陷阱提出离心机策略：向下锚定（增加密度/真实感）+向上升维（增加深度/元规则）。",
+    "domain": null
+  },
+  {
+    "id": "cs_abstraction_ladder",
+    "type": "KnowledgeNode",
+    "depth": "有独立见解",
+    "name": "抽象阶梯 (Ladder of Abstraction)",
+    "description": "语言学家早川一会（S.I. Hayakawa）提出。从极度具象（感官/数据）到极度抽象（符号/元逻辑）的五层光谱。哑铃策略：最有力量的沟通发生在阶梯两极——顶端（L5 智慧/原理，提供解释力）和底端（L1/L2 感官/数据，提供证据和信任），中间层（L3 评价/标签）是大脑的偷懒区，丢失真实性和深刻性。",
+    "nodeRole": "mental_model",
+    "domain": "domain_cognitive_science"
+  },
+  {
+    "id": "mat_excursions_modern_math",
+    "type": "Material",
+    "name": "现代数学之旅 (Excursions in Modern Mathematics)",
+    "author": [
+      "Peter Tannenbaum"
+    ],
+    "progress": "刚开始看上册",
+    "readingStatus": "in_progress",
+    "materialType": "book",
+    "domain": "domain_mathematics"
+  },
+  {
+    "id": "mat_guns_germs_steel",
+    "type": "Material",
+    "name": "枪炮、病菌与钢铁 (Guns, Germs, and Steel)",
+    "author": [
+      "Jared Diamond"
+    ],
+    "readingStatus": "wishlist",
+    "materialType": "book",
+    "domain": "domain_history"
+  },
+  {
+    "id": "mat_third_chimpanzee",
+    "type": "Material",
+    "name": "第三类黑猩猩 (The Third Chimpanzee)",
+    "author": [
+      "Jared Diamond"
+    ],
+    "readingStatus": "wishlist",
+    "materialType": "book",
+    "domain": "domain_history"
+  },
+  {
+    "id": "mat_collapse",
+    "type": "Material",
+    "name": "崩溃 (Collapse: How Societies Choose to Fail or Succeed)",
+    "author": [
+      "Jared Diamond"
+    ],
+    "readingStatus": "wishlist",
+    "materialType": "book",
+    "domain": "domain_history"
+  },
+  {
+    "id": "domain_mathematics",
+    "type": "DomainRoot",
+    "name": "数学",
+    "description": "纯数学与应用数学的基础理论，包括数论、代数、几何、分析、离散数学、概率论等。与数据分析的统计分支有交叉但侧重不同——数据分析偏应用方法论，数学偏理论基础。",
+    "priority": "supplementary",
+    "domain": "domain_mathematics"
+  },
+  {
+    "id": "branch_math_discrete",
+    "type": "BranchScaffold",
+    "name": "离散数学",
+    "description": "图论、组合学、投票理论、博弈论数学基础等。《现代数学之旅》的主要覆盖领域。",
+    "domain": "domain_mathematics"
+  },
+  {
+    "id": "branch_math_analysis",
+    "type": "BranchScaffold",
+    "name": "数学分析与连续数学",
+    "description": "微积分、实分析、复分析、分形几何等连续数学分支。",
+    "domain": "domain_mathematics"
+  },
+  {
+    "id": "branch_math_algebra",
+    "type": "BranchScaffold",
+    "name": "代数与数论",
+    "description": "线性代数、抽象代数、数论等。音律体系中的等比/等差数列、密码学基础等与此相关。",
+    "domain": "domain_mathematics"
+  },
+  {
+    "id": "branch_math_probability",
+    "type": "BranchScaffold",
+    "name": "概率论与统计基础",
+    "description": "概率论的数学基础。与数据分析领域的统计分支互补——此处侧重数学理论，数据分析侧重应用方法。",
+    "domain": "domain_mathematics"
+  },
+  {
+    "id": "domain_history",
+    "type": "DomainRoot",
+    "name": "历史通识",
+    "description": "人类文明发展史、大历史视角、地理与环境决定论、文明兴衰规律等。侧重宏观叙事和跨文明比较，而非某一国别断代史。",
+    "priority": "supplementary",
+    "domain": "domain_history"
+  },
+  {
+    "id": "branch_hist_macro",
+    "type": "BranchScaffold",
+    "name": "大历史与文明演化",
+    "description": "从地理、生物、技术角度解释文明兴衰。Jared Diamond 的核心视角：环境决定论、社会崩溃模式等。",
+    "domain": "domain_history"
+  },
+  {
+    "id": "branch_hist_modern",
+    "type": "BranchScaffold",
+    "name": "近现代史",
+    "description": "20世纪以来的世界历史、全球化进程、技术革命与社会变迁。",
+    "domain": "domain_history"
+  },
+  {
+    "id": "branch_hist_anthropology",
+    "type": "BranchScaffold",
+    "name": "人类学与人类演化",
+    "description": "人类物种演化、行为生态学、从灵长类到文明的过渡。《第三类黑猩猩》的核心视角。",
+    "domain": "domain_history"
+  },
+  {
+    "id": "domain_personal_growth",
+    "type": "DomainRoot",
+    "name": "个人成长",
+    "description": "人生设计、财富哲学、个人效能、生活方式选择等。与心理学有交叉但侧重不同——心理学偏认知机制，个人成长偏实践智慧和人生策略。",
+    "priority": "supplementary",
+    "domain": "domain_personal_growth"
+  },
+  {
+    "id": "branch_pg_life_design",
+    "type": "BranchScaffold",
+    "name": "人生设计与决策",
+    "description": "设计思维应用于人生规划，奥德赛计划，原型制作式试错。斯坦福人生设计课的核心框架。",
+    "domain": "domain_personal_growth"
+  },
+  {
+    "id": "branch_pg_wealth_philosophy",
+    "type": "BranchScaffold",
+    "name": "财富哲学与个人杠杆",
+    "description": "纳瓦尔式的财富思考：专属知识、杠杆（代码/媒体/资本/劳动力）、长期博弈、判断力。",
+    "domain": "domain_personal_growth"
+  },
+  {
+    "id": "ps_compound_emotion_framework",
+    "type": "KnowledgeNode",
+    "depth": "理解",
+    "name": "复合情绪框架",
+    "userInsight": "用户从鬼灭之刃中提炼出前三维（温情渲染伤痛、渺小渲染永恒、仇恨渲染悲悯），后三维由 Gemini 在用户框架上扩展。用户的核心贡献是提炼方向和音乐-情绪同构的切入角度。",
+    "description": "六维复合情绪模型：(1)宏大复合细腻——温情渲染伤痛 (2)悲剧复合积极——渺小渲染永恒 (3)仇恨复合悲悯——仇恨渲染爱 (4)残缺渲染圆满——以逝去定义存在 (5)恐惧渲染勇敢——承认软弱方为史诗 (6)孤独渲染羁绊——以记忆对抗虚无。每一组都是通过极致的对立面互相渲染来产生叙事张力。",
+    "nodeRole": "knowledge",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "ps_trauma_weaponization",
+    "type": "KnowledgeNode",
+    "depth": "理解",
+    "name": "创伤武器化",
+    "description": "将极致的负面情绪（仇恨、自责、绝望、恐惧）通过极端的自我训练转化为行动力的心理机制。鬼灭之刃中九柱的共同模式：每一位都把最深的PTSD创伤转化为斩鬼的刀。在现实中对应创伤后成长(PTG)的极端形态。",
+    "domain": "domain_psychology"
+  },
+  {
+    "id": "link_music_emotion_narrative",
+    "type": "CrossDomainLink",
+    "name": "音乐×心理学 → 和弦进行与情绪叙事的同构",
+    "userInsight": "用户从炎柱配乐的和弦分析中发现了音乐结构与叙事情绪的精确对应关系。",
+    "description": "和弦进行与情绪叙事的同构性：2-5-6（小调回落）对应悲壮与阻碍终止，2-5-1（大调解决）对应向死而生的破晓。5和弦是'已解决冲突但尚未安稳'的状态。角色心理可以映射为和弦类型：主公是根音(root)，九柱是转位和变化音，三人组是正在进行的和弦进行。",
+    "domain": null
+  },
+  {
+    "id": "td_demon_slayer_emotion",
+    "type": "ThinkingDeposit",
+    "outputPotential": "high",
+    "name": "鬼灭之刃——情绪复杂性感悟",
+    "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "从炎柱配乐和弦分析出发，提炼出六维复合情绪框架，用于解构鬼灭之刃中引发共鸣的叙事张力。进一步分析了九柱(创伤武器化)、主公(至弱驾驭至强)、上弦(暗黑心理镜像)、铁三角(超我/本我/自我觉醒)的角色心理学。发现了音乐和弦进行与情绪叙事的同构性。",
+    "domain": null
+  }
+];
+
+const graphLinks = [
+  {
+    "source": "domain_music_production",
+    "target": "branch_mu_theory",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_music_production",
+    "target": "branch_mu_production",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_music_production",
+    "target": "branch_mu_sound_design",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_music_production",
+    "target": "branch_mu_composition",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_music_production",
+    "target": "branch_mu_healing",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_mu_theory",
+    "target": "domain_music_production",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_mu_production",
+    "target": "domain_music_production",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_mu_sound_design",
+    "target": "domain_music_production",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_mu_composition",
+    "target": "domain_music_production",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_mu_healing",
+    "target": "domain_music_production",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_cognitive_science",
+    "target": "branch_cs_foundations",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_cognitive_science",
+    "target": "branch_cs_consciousness",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_cognitive_science",
+    "target": "branch_cs_learning",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_cognitive_science",
+    "target": "branch_cs_embodied",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_cognitive_science",
+    "target": "branch_cs_language",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_cognitive_science",
+    "target": "branch_cs_computation",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_cs_foundations",
+    "target": "domain_cognitive_science",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_cs_consciousness",
+    "target": "domain_cognitive_science",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_cs_learning",
+    "target": "domain_cognitive_science",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_cs_embodied",
+    "target": "domain_cognitive_science",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_cs_language",
+    "target": "domain_cognitive_science",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_cs_computation",
+    "target": "domain_cognitive_science",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_ai_agent",
+    "target": "branch_ai_frameworks",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_ai_agent",
+    "target": "branch_ai_ml_foundations",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_ai_agent",
+    "target": "branch_ai_llm",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_ai_agent",
+    "target": "branch_ai_memory_systems",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_ai_agent",
+    "target": "branch_ai_product",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_ai_agent",
+    "target": "branch_ai_cognitive",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_ai_frameworks",
+    "target": "domain_ai_agent",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ai_ml_foundations",
+    "target": "domain_ai_agent",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ai_llm",
+    "target": "domain_ai_agent",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ai_memory_systems",
+    "target": "domain_ai_agent",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ai_product",
+    "target": "domain_ai_agent",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ai_cognitive",
+    "target": "domain_ai_agent",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_systems_theory",
+    "target": "branch_st_thinking",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_systems_theory",
+    "target": "branch_st_architecture",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_systems_theory",
+    "target": "branch_st_dynamics",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_systems_theory",
+    "target": "branch_st_complexity",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_systems_theory",
+    "target": "branch_st_cybernetics",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_st_thinking",
+    "target": "domain_systems_theory",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_st_architecture",
+    "target": "domain_systems_theory",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_st_dynamics",
+    "target": "domain_systems_theory",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_st_complexity",
+    "target": "domain_systems_theory",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_st_cybernetics",
+    "target": "domain_systems_theory",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_data_analysis",
+    "target": "branch_da_methodology",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_data_analysis",
+    "target": "branch_da_sql",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_data_analysis",
+    "target": "branch_da_product",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_data_analysis",
+    "target": "branch_da_visualization",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_data_analysis",
+    "target": "branch_da_statistics",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_da_methodology",
+    "target": "domain_data_analysis",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_da_sql",
+    "target": "domain_data_analysis",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_da_product",
+    "target": "domain_data_analysis",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_da_visualization",
+    "target": "domain_data_analysis",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_da_statistics",
+    "target": "domain_data_analysis",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_psychology",
+    "target": "branch_ps_cognitive",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_psychology",
+    "target": "branch_ps_social",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_psychology",
+    "target": "branch_ps_clinical",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_psychology",
+    "target": "branch_ps_developmental",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_psychology",
+    "target": "branch_ps_individual",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_ps_cognitive",
+    "target": "domain_psychology",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ps_social",
+    "target": "domain_psychology",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ps_clinical",
+    "target": "domain_psychology",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ps_developmental",
+    "target": "domain_psychology",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ps_individual",
+    "target": "domain_psychology",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_education",
+    "target": "branch_ed_theory",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_education",
+    "target": "branch_ed_metacognition",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_education",
+    "target": "branch_ed_game_based",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_education",
+    "target": "branch_ed_subjectivity",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_education",
+    "target": "branch_ed_curriculum",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_ed_theory",
+    "target": "domain_education",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ed_metacognition",
+    "target": "domain_education",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ed_game_based",
+    "target": "domain_education",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ed_subjectivity",
+    "target": "domain_education",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ed_curriculum",
+    "target": "domain_education",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_economics",
+    "target": "branch_ec_micro",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_economics",
+    "target": "branch_ec_macro",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_economics",
+    "target": "branch_ec_game_theory",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_economics",
+    "target": "branch_ec_behavioral",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_economics",
+    "target": "branch_ec_institutional",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_ec_micro",
+    "target": "domain_economics",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ec_macro",
+    "target": "domain_economics",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ec_game_theory",
+    "target": "domain_economics",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ec_behavioral",
+    "target": "domain_economics",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ec_institutional",
+    "target": "domain_economics",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_western_philosophy",
+    "target": "branch_ph_ancient",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_western_philosophy",
+    "target": "branch_ph_modern",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_western_philosophy",
+    "target": "branch_ph_ethics",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_western_philosophy",
+    "target": "branch_ph_epistemology",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_western_philosophy",
+    "target": "branch_ph_philosophy_of_science",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_ph_ancient",
+    "target": "domain_western_philosophy",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ph_modern",
+    "target": "domain_western_philosophy",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ph_ethics",
+    "target": "domain_western_philosophy",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ph_epistemology",
+    "target": "domain_western_philosophy",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_ph_philosophy_of_science",
+    "target": "domain_western_philosophy",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_game_design",
+    "target": "branch_gd_mechanics",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_game_design",
+    "target": "branch_gd_narrative",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_game_design",
+    "target": "branch_gd_board_games",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_game_design",
+    "target": "branch_gd_digital",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_game_design",
+    "target": "branch_gd_player_experience",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_gd_mechanics",
+    "target": "domain_game_design",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_gd_narrative",
+    "target": "domain_game_design",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_gd_board_games",
+    "target": "domain_game_design",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_gd_digital",
+    "target": "domain_game_design",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_gd_player_experience",
+    "target": "domain_game_design",
+    "type": "parentBranch"
+  },
+  {
+    "source": "domain_health_wellness",
+    "target": "branch_hw_longevity",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_health_wellness",
+    "target": "branch_hw_emotional",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_health_wellness",
+    "target": "branch_hw_sleep",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_health_wellness",
+    "target": "branch_hw_nutrition",
+    "type": "subBranch"
+  },
+  {
+    "source": "domain_health_wellness",
+    "target": "branch_hw_exercise",
+    "type": "subBranch"
+  },
+  {
+    "source": "branch_hw_longevity",
+    "target": "domain_health_wellness",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_hw_emotional",
+    "target": "domain_health_wellness",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_hw_sleep",
+    "target": "domain_health_wellness",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_hw_nutrition",
+    "target": "domain_health_wellness",
+    "type": "parentBranch"
+  },
+  {
+    "source": "branch_hw_exercise",
+    "target": "domain_health_wellness",
+    "type": "parentBranch"
+  },
+  {
+    "source": "mat_geb",
+    "target": "branch_cs_consciousness",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_geb",
+    "target": "branch_cs_foundations",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_geb",
+    "target": "branch_cs_computation",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_geb",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_surfaces_and_essences",
+    "target": "branch_cs_language",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_surfaces_and_essences",
+    "target": "branch_cs_foundations",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_surfaces_and_essences",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_system_architecture",
+    "target": "branch_st_architecture",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_system_architecture",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_thinking_in_systems",
+    "target": "branch_st_dynamics",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_thinking_in_systems",
+    "target": "branch_st_thinking",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_thinking_in_systems",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_intro_general_systems",
+    "target": "branch_st_thinking",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_intro_general_systems",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_cs231n",
+    "target": "branch_ai_ml_foundations",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_cs231n",
+    "target": "domain_ai_agent",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_mankiw_micro",
+    "target": "branch_ec_micro",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_mankiw_micro",
+    "target": "domain_economics",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_mankiw_macro",
+    "target": "branch_ec_macro",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_mankiw_macro",
+    "target": "domain_economics",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_crash_course_econ",
+    "target": "branch_ec_micro",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_crash_course_econ",
+    "target": "branch_ec_macro",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_crash_course_econ",
+    "target": "domain_economics",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_courage_to_be_disliked",
+    "target": "branch_ps_individual",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_courage_to_be_disliked",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_courage_to_be_happy",
+    "target": "branch_ps_individual",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_courage_to_be_happy",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_outlive",
+    "target": "branch_hw_longevity",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_outlive",
+    "target": "domain_health_wellness",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_stumpf_western_philosophy",
+    "target": "branch_ph_ancient",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_stumpf_western_philosophy",
+    "target": "branch_ph_modern",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_stumpf_western_philosophy",
+    "target": "branch_ph_ethics",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_stumpf_western_philosophy",
+    "target": "branch_ph_epistemology",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_stumpf_western_philosophy",
+    "target": "domain_western_philosophy",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_crash_course_games",
+    "target": "branch_gd_mechanics",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_crash_course_games",
+    "target": "branch_gd_digital",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_crash_course_games",
+    "target": "domain_game_design",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_crash_course_cs",
+    "target": "branch_ai_ml_foundations",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_crash_course_cs",
+    "target": "domain_ai_agent",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_short_history_of_world",
+    "target": "branch_hist_macro",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_short_history_of_world",
+    "target": "domain_history",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_short_history_20th_century",
+    "target": "branch_hist_modern",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_short_history_20th_century",
+    "target": "domain_history",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_antifragile",
+    "target": "branch_st_complexity",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_antifragile",
+    "target": "branch_st_dynamics",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_antifragile",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_game_theory_book",
+    "target": "branch_ec_game_theory",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_game_theory_book",
+    "target": "domain_economics",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_story_of_your_life",
+    "target": "branch_cs_language",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_story_of_your_life",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_whole_brain_book",
+    "target": "branch_cs_foundations",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_whole_brain_book",
+    "target": "branch_hw_sleep",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_whole_brain_book",
+    "target": "branch_hw_emotional",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_whole_brain_book",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "link_music_emotion_healing",
+    "target": "domain_music_production",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_music_emotion_healing",
+    "target": "domain_health_wellness",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_cogsci_ai_agent",
+    "target": "domain_cognitive_science",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_cogsci_ai_agent",
+    "target": "domain_ai_agent",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_game_education",
+    "target": "domain_game_design",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_game_education",
+    "target": "domain_education",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_data_health",
+    "target": "domain_data_analysis",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_data_health",
+    "target": "domain_health_wellness",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_systems_economics",
+    "target": "domain_systems_theory",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_systems_economics",
+    "target": "domain_economics",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "td_education_as_temporal_transfer",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_education_as_temporal_transfer",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_education_as_temporal_transfer",
+    "target": "branch_ed_theory",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_education_as_temporal_transfer",
+    "target": "branch_ed_subjectivity",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_education_as_temporal_transfer",
+    "target": "branch_cs_learning",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_breaking_mind_and_status_quo",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_breaking_mind_and_status_quo",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_breaking_mind_and_status_quo",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_breaking_mind_and_status_quo",
+    "target": "domain_music_production",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_breaking_mind_and_status_quo",
+    "target": "branch_cs_foundations",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_breaking_mind_and_status_quo",
+    "target": "branch_ps_developmental",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_breaking_mind_and_status_quo",
+    "target": "branch_ed_subjectivity",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_breaking_mind_and_status_quo",
+    "target": "branch_mu_healing",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "mat_beauty_of_math",
+    "target": "branch_da_statistics",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_beauty_of_math",
+    "target": "branch_cs_computation",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_beauty_of_math",
+    "target": "domain_data_analysis",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_piano_czerny599",
+    "target": "branch_mu_theory",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_piano_czerny599",
+    "target": "domain_music_production",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_voice_lessons",
+    "target": "branch_mu_theory",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_voice_lessons",
+    "target": "domain_music_production",
+    "type": "belongsTo"
+  },
+  {
+    "source": "td_iceberg_model_learning",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_iceberg_model_learning",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_iceberg_model_learning",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_iceberg_model_learning",
+    "target": "branch_st_thinking",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_iceberg_model_learning",
+    "target": "branch_cs_learning",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_iceberg_model_learning",
+    "target": "branch_ed_metacognition",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_information_intake_dimensions",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_information_intake_dimensions",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_information_intake_dimensions",
+    "target": "branch_cs_foundations",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_information_intake_dimensions",
+    "target": "branch_cs_language",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_information_intake_dimensions",
+    "target": "branch_ed_metacognition",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "link_cogsci_ai_natural_language",
+    "target": "domain_cognitive_science",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_cogsci_ai_natural_language",
+    "target": "domain_ai_agent",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "mat_why_buddhism_is_true",
+    "target": "domain_western_philosophy",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_research_vs_application",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_perfectionism_output_barrier",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_courage_to_be_disliked",
+    "target": "branch_ps_developmental",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_courage_to_be_disliked",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "td_motivation_five_sources",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_motivation_five_sources",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_motivation_five_sources",
+    "target": "branch_ps_developmental",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_cognitive_four_components",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_cognitive_four_components",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_cognitive_four_components",
+    "target": "branch_cs_foundations",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_model_taxonomy",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_model_taxonomy",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_model_taxonomy",
+    "target": "branch_ed_metacognition",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "ps_focus_and_execution_deficit",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "link_cogsci_systems_model_taxonomy",
+    "target": "domain_cognitive_science",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_cogsci_systems_model_taxonomy",
+    "target": "domain_systems_theory",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "mat_happiness_courage",
+    "target": "branch_ps_developmental",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_happiness_courage",
+    "target": "branch_ph_modern",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_happiness_courage",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_naval_almanack",
+    "target": "branch_pg_wealth_philosophy",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_naval_almanack",
+    "target": "domain_personal_growth",
+    "type": "belongsTo"
+  },
+  {
+    "source": "td_trust_and_honor_past_self",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_trust_and_honor_past_self",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_trust_and_honor_past_self",
+    "target": "branch_ps_developmental",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "mat_pyramid_principle",
+    "target": "branch_st_thinking",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_pyramid_principle",
+    "target": "branch_da_methodology",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_pyramid_principle",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "st_structured_expression",
+    "target": "kd_pyramid_principle_notes",
+    "type": "relatedDeposits"
+  },
+  {
+    "source": "st_structured_expression",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "st_logical_reasoning_taxonomy",
+    "target": "kd_pyramid_principle_notes",
+    "type": "relatedDeposits"
+  },
+  {
+    "source": "st_logical_reasoning_taxonomy",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "st_mece_principle",
+    "target": "kd_pyramid_principle_notes",
+    "type": "relatedDeposits"
+  },
+  {
+    "source": "st_mece_principle",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "kd_pyramid_principle_notes",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_pyramid_principle_notes",
+    "target": "domain_data_analysis",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_pyramid_principle_notes",
+    "target": "st_structured_expression",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_pyramid_principle_notes",
+    "target": "st_logical_reasoning_taxonomy",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_pyramid_principle_notes",
+    "target": "st_mece_principle",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "da_metrics_framework_toc",
+    "target": "kd_toc_metrics_framework",
+    "type": "relatedDeposits"
+  },
+  {
+    "source": "da_metrics_framework_toc",
+    "target": "domain_data_analysis",
+    "type": "belongsTo"
+  },
+  {
+    "source": "da_data_consumer_layers",
+    "target": "domain_data_analysis",
+    "type": "belongsTo"
+  },
+  {
+    "source": "da_north_star_decomposition",
+    "target": "domain_data_analysis",
+    "type": "belongsTo"
+  },
+  {
+    "source": "kd_toc_metrics_framework",
+    "target": "domain_data_analysis",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_toc_metrics_framework",
+    "target": "da_metrics_framework_toc",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_toc_metrics_framework",
+    "target": "da_data_consumer_layers",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_toc_metrics_framework",
+    "target": "da_north_star_decomposition",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "mat_cogsci_bermudez",
+    "target": "branch_cs_foundations",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_cogsci_bermudez",
+    "target": "branch_cs_learning",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_cogsci_bermudez",
+    "target": "branch_cs_consciousness",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_cogsci_bermudez",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_marr_three_levels",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_info_processing_four_models",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_act_r_model",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_meta_representation",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_chinese_room",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_cheater_detection",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_chunking_miller",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_selective_attention",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_brain_anatomy_basics",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_language_concept_extension",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_machine_human_language_evolution",
+    "target": "domain_cognitive_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "st_three_problem_domains",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_zero_sum_life",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_optimal_distinctiveness",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "aa_language_as_compression",
+    "target": "domain_ai_agent",
+    "type": "belongsTo"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "domain_ai_agent",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_marr_three_levels",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_info_processing_four_models",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_act_r_model",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_meta_representation",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_chinese_room",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_cheater_detection",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_chunking_miller",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_selective_attention",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_brain_anatomy_basics",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_language_concept_extension",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "cs_machine_human_language_evolution",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_cogsci_series",
+    "target": "st_three_problem_domains",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_zero_sum_life",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_zero_sum_life",
+    "target": "domain_economics",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_zero_sum_life",
+    "target": "ps_zero_sum_life",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_zero_sum_life",
+    "target": "ps_focus_and_execution_deficit",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_zero_sum_life",
+    "target": "ec_money_vs_ideals",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_optimal_distinctiveness",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_optimal_distinctiveness",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_optimal_distinctiveness",
+    "target": "ps_optimal_distinctiveness",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_ai_communication",
+    "target": "domain_ai_agent",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_ai_communication",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_ai_communication",
+    "target": "aa_language_as_compression",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_ai_communication",
+    "target": "cs_chunking_miller",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_ai_communication",
+    "target": "cs_machine_human_language_evolution",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "link_cogsci_ai_language_compression",
+    "target": "domain_cognitive_science",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_cogsci_ai_language_compression",
+    "target": "domain_ai_agent",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_economics_psychology_life_game",
+    "target": "domain_economics",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_economics_psychology_life_game",
+    "target": "domain_psychology",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "mu_mixing_fundamentals",
+    "target": "branch_mu_production",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mu_audio_digital_fundamentals",
+    "target": "branch_mu_sound_design",
+    "type": "belongsTo"
+  },
+  {
+    "source": "aa_prompt_engineering",
+    "target": "branch_ai_llm",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_mixing_course",
+    "target": "mu_mixing_fundamentals",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_mixing_course",
+    "target": "mu_audio_digital_fundamentals",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_prompt_engineering_course",
+    "target": "aa_prompt_engineering",
+    "type": "coversTopics"
+  },
+  {
+    "source": "kd_beauty_of_math_notes",
+    "target": "domain_ai_agent",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_beauty_of_math_notes",
+    "target": "domain_data_analysis",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_beauty_of_math_notes",
+    "target": "mat_beauty_of_math",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_mixing_notes",
+    "target": "domain_music_production",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_mixing_notes",
+    "target": "mu_mixing_fundamentals",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_mixing_notes",
+    "target": "mu_audio_digital_fundamentals",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_prompt_engineering_notes",
+    "target": "domain_ai_agent",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_prompt_engineering_notes",
+    "target": "aa_prompt_engineering",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_three_level_decision",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_three_level_decision",
+    "target": "domain_economics",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_three_level_decision",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_three_level_decision",
+    "target": "ps_zero_sum_life",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_three_level_decision",
+    "target": "ec_money_vs_ideals",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_three_level_decision",
+    "target": "st_three_problem_domains",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_attention_as_meta_resource",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_attention_as_meta_resource",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_attention_as_meta_resource",
+    "target": "cs_selective_attention",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_attention_as_meta_resource",
+    "target": "ps_focus_and_execution_deficit",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_compound_feedback_education",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_compound_feedback_education",
+    "target": "domain_game_design",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_compound_feedback_education",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_compound_feedback_education",
+    "target": "branch_ed_game_based",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_compound_feedback_education",
+    "target": "gd_board_game_mechanism_exposure",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_compound_feedback_education",
+    "target": "branch_ps_developmental",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_subjectivity_four_stages",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_subjectivity_four_stages",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_subjectivity_four_stages",
+    "target": "domain_western_philosophy",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_subjectivity_four_stages",
+    "target": "branch_ed_subjectivity",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_subjectivity_four_stages",
+    "target": "branch_ps_developmental",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_subjectivity_four_stages",
+    "target": "branch_ph_epistemology",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_compression_progress",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_compression_progress",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_compression_progress",
+    "target": "branch_cs_learning",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_compression_progress",
+    "target": "branch_ed_metacognition",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_compression_progress",
+    "target": "cs_chunking_miller",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_civilization_five_stages",
+    "target": "domain_western_philosophy",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_civilization_five_stages",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_civilization_five_stages",
+    "target": "branch_ph_ancient",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_civilization_five_stages",
+    "target": "branch_ph_modern",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_civilization_five_stages",
+    "target": "branch_ed_theory",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_procrastination_dynamics",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_procrastination_dynamics",
+    "target": "domain_health_wellness",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_procrastination_dynamics",
+    "target": "ps_focus_and_execution_deficit",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_procrastination_dynamics",
+    "target": "branch_hw_emotional",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_storytelling_as_life_skill",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_storytelling_as_life_skill",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_storytelling_as_life_skill",
+    "target": "st_structured_expression",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_storytelling_as_life_skill",
+    "target": "branch_ed_theory",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_gender_self_acceptance",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_gender_self_acceptance",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_gender_self_acceptance",
+    "target": "branch_ps_social",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_gender_self_acceptance",
+    "target": "branch_ps_individual",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_gender_self_acceptance",
+    "target": "branch_ed_subjectivity",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_medicine_3_0",
+    "target": "domain_health_wellness",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_medicine_3_0",
+    "target": "branch_hw_longevity",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_medicine_3_0",
+    "target": "hw_bdnf_sleep_emotion",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_medicine_3_0",
+    "target": "branch_hw_sleep",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_founder_vs_manager",
+    "target": "domain_economics",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_founder_vs_manager",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_founder_vs_manager",
+    "target": "branch_ec_institutional",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_founder_vs_manager",
+    "target": "branch_st_thinking",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_practice_theory_integration",
+    "target": "domain_western_philosophy",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_practice_theory_integration",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_practice_theory_integration",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_practice_theory_integration",
+    "target": "branch_ph_epistemology",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_practice_theory_integration",
+    "target": "branch_st_thinking",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_practice_theory_integration",
+    "target": "st_three_problem_domains",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "ec_macro_fiscal_monetary",
+    "target": "branch_ec_macro",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_dmn_fpn_networks",
+    "target": "branch_cs_foundations",
+    "type": "belongsTo"
+  },
+  {
+    "source": "hw_bdnf_sleep_emotion",
+    "target": "branch_hw_emotional",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mu_tuning_systems",
+    "target": "branch_mu_theory",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ph_waves_electromagnetic_mechanical",
+    "target": "branch_ph_philosophy_of_science",
+    "type": "belongsTo"
+  },
+  {
+    "source": "da_oltp_vs_olap",
+    "target": "branch_da_methodology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "da_analyst_capability_model",
+    "target": "branch_da_methodology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "da_analyst_capability_model",
+    "target": "da_oltp_vs_olap",
+    "type": "relatedTo"
+  },
+  {
+    "source": "ps_active_living_present",
+    "target": "branch_ps_clinical",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_attachment_trauma_tree",
+    "target": "branch_ps_clinical",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_zero_sum_to_positive_sum",
+    "target": "branch_ps_social",
+    "type": "belongsTo"
+  },
+  {
+    "source": "gd_board_game_mechanism_exposure",
+    "target": "branch_gd_board_games",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_show_your_work",
+    "target": "td_storytelling_as_life_skill",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_mao_selected_works",
+    "target": "td_practice_theory_integration",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_mao_selected_works",
+    "target": "td_founder_vs_manager",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_mao_selected_works",
+    "target": "td_three_level_decision",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_zen_motorcycle",
+    "target": "td_civilization_five_stages",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_character_road",
+    "target": "ps_active_living_present",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_li_fei_fei_memoir",
+    "target": "branch_ai_ml_foundations",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_investment_first_lesson",
+    "target": "branch_ec_macro",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_designing_your_life",
+    "target": "branch_pg_life_design",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_designing_your_life",
+    "target": "branch_ed_subjectivity",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_designing_your_life",
+    "target": "ps_active_living_present",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_designing_your_life",
+    "target": "domain_personal_growth",
+    "type": "belongsTo"
+  },
+  {
+    "source": "link_decision_stock_war_life",
+    "target": "domain_economics",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_decision_stock_war_life",
+    "target": "domain_psychology",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_decision_stock_war_life",
+    "target": "domain_systems_theory",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_cogsci_education_compression",
+    "target": "domain_cognitive_science",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_cogsci_education_compression",
+    "target": "domain_education",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_psychology_health_sleep",
+    "target": "domain_psychology",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_psychology_health_sleep",
+    "target": "domain_health_wellness",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_psychology_health_sleep",
+    "target": "domain_cognitive_science",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_philosophy_civilization_education",
+    "target": "domain_western_philosophy",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_philosophy_civilization_education",
+    "target": "domain_education",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_game_psychology_education",
+    "target": "domain_game_design",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_game_psychology_education",
+    "target": "domain_psychology",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_game_psychology_education",
+    "target": "domain_education",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_music_physics_perception",
+    "target": "domain_music_production",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_music_physics_perception",
+    "target": "domain_cognitive_science",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "td_ai_as_forced_opensourcing",
+    "target": "domain_ai_agent",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_ai_as_forced_opensourcing",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_ai_as_forced_opensourcing",
+    "target": "domain_economics",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_ai_as_forced_opensourcing",
+    "target": "branch_ai_product",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_ai_as_forced_opensourcing",
+    "target": "branch_ed_game_based",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_ai_as_forced_opensourcing",
+    "target": "branch_ec_institutional",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_ai_as_forced_opensourcing",
+    "target": "td_compound_feedback_education",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_human_world_interaction_model",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_human_world_interaction_model",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_human_world_interaction_model",
+    "target": "domain_western_philosophy",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_human_world_interaction_model",
+    "target": "branch_cs_foundations",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_human_world_interaction_model",
+    "target": "branch_cs_learning",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_human_world_interaction_model",
+    "target": "branch_cs_embodied",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_human_world_interaction_model",
+    "target": "branch_st_dynamics",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_human_world_interaction_model",
+    "target": "branch_ph_epistemology",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_human_world_interaction_model",
+    "target": "td_practice_theory_integration",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "aa_mcp_protocol",
+    "target": "branch_ai_frameworks",
+    "type": "belongsTo"
+  },
+  {
+    "source": "aa_mcp_protocol",
+    "target": "aa_language_as_compression",
+    "type": "relatedTo"
+  },
+  {
+    "source": "mat_mcp_spec",
+    "target": "aa_mcp_protocol",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_mcp_spec",
+    "target": "branch_ai_frameworks",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_mcp_spec",
+    "target": "domain_ai_agent",
+    "type": "belongsTo"
+  },
+  {
+    "source": "kd_data_analysis_doc_standard",
+    "target": "mat_pyramid_principle",
+    "type": "inspiredBy"
+  },
+  {
+    "source": "kd_data_analysis_doc_standard",
+    "target": "domain_data_analysis",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_data_analysis_doc_standard",
+    "target": "branch_da_methodology",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_data_analysis_doc_standard",
+    "target": "da_analyst_capability_model",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_data_analysis_doc_standard",
+    "target": "branch_da_visualization",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "mat_grit",
+    "target": "ps_grit_theory",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_grit",
+    "target": "ps_growth_mindset",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_grit",
+    "target": "ps_deliberate_practice",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_grit",
+    "target": "branch_ps_developmental",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_grit",
+    "target": "branch_ps_individual",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_grit",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_grit_theory",
+    "target": "branch_ps_individual",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_grit_theory",
+    "target": "ps_growth_mindset",
+    "type": "relatedTo"
+  },
+  {
+    "source": "ps_grit_theory",
+    "target": "ps_deliberate_practice",
+    "type": "relatedTo"
+  },
+  {
+    "source": "ps_growth_mindset",
+    "target": "branch_ps_developmental",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_growth_mindset",
+    "target": "ps_grit_theory",
+    "type": "relatedTo"
+  },
+  {
+    "source": "ps_deliberate_practice",
+    "target": "branch_ps_cognitive",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_deliberate_practice",
+    "target": "ps_grit_theory",
+    "type": "relatedTo"
+  },
+  {
+    "source": "ps_deliberate_practice",
+    "target": "ps_growth_mindset",
+    "type": "relatedTo"
+  },
+  {
+    "source": "ps_learned_helplessness",
+    "target": "branch_ps_cognitive",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_learned_helplessness",
+    "target": "ps_growth_mindset",
+    "type": "relatedTo"
+  },
+  {
+    "source": "ps_learned_helplessness",
+    "target": "ps_grit_theory",
+    "type": "relatedTo"
+  },
+  {
+    "source": "kd_grit_notes",
+    "target": "mat_grit",
+    "type": "inspiredBy"
+  },
+  {
+    "source": "kd_grit_notes",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_grit_notes",
+    "target": "domain_education",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "kd_grit_notes",
+    "target": "ps_grit_theory",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_grit_notes",
+    "target": "ps_growth_mindset",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_grit_notes",
+    "target": "ps_deliberate_practice",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_grit_notes",
+    "target": "ps_learned_helplessness",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_grit_notes",
+    "target": "branch_ps_developmental",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "kd_grit_notes",
+    "target": "branch_ps_individual",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_signal_catcher",
+    "target": "domain_cognitive_science",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_signal_catcher",
+    "target": "domain_ai_agent",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_signal_catcher",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_signal_catcher",
+    "target": "domain_systems_theory",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_signal_catcher",
+    "target": "branch_ai_product",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_signal_catcher",
+    "target": "branch_cs_foundations",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_signal_catcher",
+    "target": "branch_ps_cognitive",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_signal_catcher",
+    "target": "branch_st_thinking",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_signal_catcher",
+    "target": "td_practice_theory_integration",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "cs_abstraction_ladder",
+    "target": "branch_cs_foundations",
+    "type": "belongsTo"
+  },
+  {
+    "source": "cs_abstraction_ladder",
+    "target": "branch_cs_language",
+    "type": "relatedTo"
+  },
+  {
+    "source": "mat_excursions_modern_math",
+    "target": "branch_math_discrete",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_excursions_modern_math",
+    "target": "branch_math_analysis",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_excursions_modern_math",
+    "target": "branch_math_probability",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_excursions_modern_math",
+    "target": "domain_mathematics",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_guns_germs_steel",
+    "target": "branch_hist_macro",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_guns_germs_steel",
+    "target": "domain_history",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_third_chimpanzee",
+    "target": "branch_hist_anthropology",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_third_chimpanzee",
+    "target": "domain_history",
+    "type": "belongsTo"
+  },
+  {
+    "source": "mat_collapse",
+    "target": "branch_hist_macro",
+    "type": "coversTopics"
+  },
+  {
+    "source": "mat_collapse",
+    "target": "domain_history",
+    "type": "belongsTo"
+  },
+  {
+    "source": "branch_math_discrete",
+    "target": "domain_mathematics",
+    "type": "belongsTo"
+  },
+  {
+    "source": "branch_math_analysis",
+    "target": "domain_mathematics",
+    "type": "belongsTo"
+  },
+  {
+    "source": "branch_math_algebra",
+    "target": "domain_mathematics",
+    "type": "belongsTo"
+  },
+  {
+    "source": "branch_math_probability",
+    "target": "domain_mathematics",
+    "type": "belongsTo"
+  },
+  {
+    "source": "branch_hist_macro",
+    "target": "domain_history",
+    "type": "belongsTo"
+  },
+  {
+    "source": "branch_hist_modern",
+    "target": "domain_history",
+    "type": "belongsTo"
+  },
+  {
+    "source": "branch_hist_anthropology",
+    "target": "domain_history",
+    "type": "belongsTo"
+  },
+  {
+    "source": "branch_pg_life_design",
+    "target": "domain_personal_growth",
+    "type": "belongsTo"
+  },
+  {
+    "source": "branch_pg_wealth_philosophy",
+    "target": "domain_personal_growth",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_compound_emotion_framework",
+    "target": "td_demon_slayer_emotion",
+    "type": "relatedDeposits"
+  },
+  {
+    "source": "ps_compound_emotion_framework",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_trauma_weaponization",
+    "target": "td_demon_slayer_emotion",
+    "type": "relatedDeposits"
+  },
+  {
+    "source": "ps_trauma_weaponization",
+    "target": "domain_psychology",
+    "type": "belongsTo"
+  },
+  {
+    "source": "ps_trauma_weaponization",
+    "target": "ps_compound_emotion_framework",
+    "type": "relatedTo"
+  },
+  {
+    "source": "link_music_emotion_narrative",
+    "target": "domain_music_production",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "link_music_emotion_narrative",
+    "target": "domain_psychology",
+    "type": "crossDomainLink"
+  },
+  {
+    "source": "td_demon_slayer_emotion",
+    "target": "domain_psychology",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_demon_slayer_emotion",
+    "target": "domain_music_production",
+    "type": "aboutDomains"
+  },
+  {
+    "source": "td_demon_slayer_emotion",
+    "target": "ps_compound_emotion_framework",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_demon_slayer_emotion",
+    "target": "ps_trauma_weaponization",
+    "type": "aboutNodes"
+  },
+  {
+    "source": "td_demon_slayer_emotion",
+    "target": "link_music_emotion_narrative",
+    "type": "aboutNodes"
+  }
+];
+
+
+// ============================================================
+// COLOR MAPS
+// ============================================================
+const priorityColors = { primary: "#3b82f6", foundation: "#22c55e", supplementary: "#64748b" };
+const depthColors = { "浅读": "#fde68a", "理解": "#fbbf24", "有独立见解": "#f59e0b", "可教授他人": "#d97706" };
+const typeConfig = {
+  DomainRoot:          { radius: 20, color: null, stroke: "none", strokeWidth: 0 },
+  Branch:              { radius: 10, color: null, stroke: "none", strokeWidth: 0 },
+  BranchScaffold:      { radius: 10, color: null, stroke: "none", strokeWidth: 0 },
+  KnowledgeNode:       { radius: 12, color: null, stroke: "#fff", strokeWidth: 1.5 },
+  Material:            { radius: 8,  color: "#60a5fa", stroke: "none", strokeWidth: 0 },
+  KnowledgeDeposit:    { radius: 10, color: "#34d399", stroke: "#fff", strokeWidth: 1 },
+  ThinkingDeposit:     { radius: 10, color: "#fbbf24", stroke: "#fff", strokeWidth: 1 },
+  CrossDomainLink:     { radius: 8,  color: "#a855f7", stroke: "#c084fc", strokeWidth: 1.5 },
+  MisconceptionPattern:{ radius: 6,  color: "#ef4444", stroke: "none", strokeWidth: 0 },
+  ThinkingScript:      { radius: 10, color: "#f472b6", stroke: "#fff", strokeWidth: 1 },
+};
+
+const linkStyles = {
+  subBranch:       { stroke: "#4b5563", dasharray: null, opacity: 0.6, width: 1 },
+  parentBranch:    { stroke: "#4b5563", dasharray: null, opacity: 0.6, width: 1 },
+  belongsTo:       { stroke: "#6b7280", dasharray: null, opacity: 0.4, width: 0.8 },
+  isA:             { stroke: "#6b7280", dasharray: null, opacity: 0.4, width: 0.8 },
+  relatedTo:       { stroke: "#9ca3af", dasharray: "4,3", opacity: 0.3, width: 0.8 },
+  prerequisite:    { stroke: "#9ca3af", dasharray: "4,3", opacity: 0.3, width: 0.8 },
+  refersTo:        { stroke: "#f59e0b", dasharray: "6,3", opacity: 0.5, width: 1 },
+  derivedFrom:     { stroke: "#eab308", dasharray: "4,4", opacity: 0.4, width: 1 },
+  inspiredBy:      { stroke: "#eab308", dasharray: "4,4", opacity: 0.4, width: 1 },
+  crossDomainLink: { stroke: "#a855f7", dasharray: "6,3", opacity: 0.6, width: 1.5 },
+  hasResource:     { stroke: "#60a5fa", dasharray: "4,3", opacity: 0.4, width: 0.8 },
+  coversTopics:    { stroke: "#60a5fa", dasharray: "4,3", opacity: 0.4, width: 0.8 },
+  aboutNodes:      { stroke: "#34d399", dasharray: "4,3", opacity: 0.4, width: 0.8 },
+  aboutDomains:    { stroke: "#34d399", dasharray: "4,3", opacity: 0.4, width: 0.8 },
+  hasMisconception:{ stroke: "#ef4444", dasharray: "3,3", opacity: 0.3, width: 0.8 },
+  confusedWith:    { stroke: "#ef4444", dasharray: "3,3", opacity: 0.3, width: 0.8 },
+};
+
+// ============================================================
+// BUILD GRAPH from graphNodes / graphLinks (injected by script)
+// ============================================================
+const nodeMap = {};
+const nodes = [];
+const links = [];
+
+// Find domain colors map
+const domainColorMap = {};
+graphNodes.filter(n => n.type === "DomainRoot").forEach(n => {
+  domainColorMap[n.id] = priorityColors[n.priority] || "#64748b";
+});
+
+// Process nodes
+graphNodes.forEach(n => {
+  const cfg = typeConfig[n.type] || typeConfig.KnowledgeNode;
+  const node = {
+    id: n.id, name: n.name, description: n.description,
+    type: n.type, domain: n.domain || null,
+    depth: n.depth, nodeRole: n.nodeRole, userInsight: n.userInsight,
+    outputStatus: n.outputStatus, outputPotential: n.outputPotential,
+    readingStatus: n.readingStatus, progress: n.progress,
+    priority: n.priority,
+    radius: cfg.radius,
+    strokeColor: cfg.stroke,
+    strokeWidth: cfg.strokeWidth,
+  };
+
+  // Determine color
+  if (n.type === "DomainRoot") {
+    node.color = priorityColors[n.priority] || "#64748b";
+  } else if (n.type === "Branch" || n.type === "BranchScaffold") {
+    const parentColor = domainColorMap[n.domain] || "#64748b";
+    node.color = d3.color(parentColor).brighter(0.8).toString();
+  } else if (n.type === "KnowledgeNode") {
+    node.color = depthColors[n.depth] || "#f59e0b";
+  } else {
+    node.color = cfg.color;
+  }
+
+  nodeMap[n.id] = node;
+  nodes.push(node);
+});
+
+// Process links
+graphLinks.forEach(l => {
+  if (nodeMap[l.source] && nodeMap[l.target]) {
+    links.push({ source: l.source, target: l.target, type: l.type });
+  }
+});
+
+// Update stats
+const domainCount = graphNodes.filter(n => n.type === "DomainRoot").length;
+const knowledgeCount = graphNodes.filter(n => n.type === "KnowledgeNode").length;
+const depositCount = graphNodes.filter(n => n.type === "KnowledgeDeposit" || n.type === "ThinkingDeposit").length;
+const crossLinkCount = graphNodes.filter(n => n.type === "CrossDomainLink").length;
+let statsText = `${domainCount} 个领域`;
+if (knowledgeCount) statsText += ` · ${knowledgeCount} 个知识节点`;
+if (depositCount) statsText += ` · ${depositCount} 个沉淀产出`;
+if (crossLinkCount) statsText += ` · ${crossLinkCount} 个跨域连接`;
+document.getElementById("stats").textContent = statsText;
+
+// ============================================================
+// FILTER STATE
+// ============================================================
+const filterState = { types: new Set(), domains: new Set() };
+let selectedNode = null;
+
+// Gather unique types present in data
+const typeFilterDefs = [
+  { key: "DomainRoot", label: "领域根节点", color: "#3b82f6" },
+  { key: "Branch,BranchScaffold", label: "领域分支", color: "#94a3b8" },
+  { key: "KnowledgeNode", label: "知识节点", color: "#f59e0b" },
+  { key: "Material", label: "学习材料", color: "#60a5fa" },
+  { key: "KnowledgeDeposit", label: "知识沉淀", color: "#34d399" },
+  { key: "ThinkingDeposit", label: "思考沉淀", color: "#fbbf24" },
+  { key: "CrossDomainLink", label: "跨域连接", color: "#a855f7" },
+  { key: "ThinkingScript", label: "思维脚本", color: "#f472b6" },
+  { key: "MisconceptionPattern", label: "歧义模式", color: "#ef4444" },
+];
+
+// Init type filters - all enabled
+typeFilterDefs.forEach(t => t.key.split(",").forEach(k => filterState.types.add(k)));
+
+// Build type filter checkboxes
+const typeContainer = document.getElementById("type-filters");
+typeFilterDefs.forEach(t => {
+  // Only show if at least one node of this type exists
+  const keys = t.key.split(",");
+  if (!nodes.some(n => keys.includes(n.type))) return;
+
+  const label = document.createElement("label");
+  label.className = "filter-item";
+  label.innerHTML = `<input type="checkbox" checked data-filter-type="${t.key}"><span class="check-box"></span><span class="dot" style="background:${t.color}"></span><span>${t.label}</span>`;
+  label.querySelector("input").addEventListener("change", function() {
+    const keys = this.dataset.filterType.split(",");
+    keys.forEach(k => this.checked ? filterState.types.add(k) : filterState.types.delete(k));
+    applyVisualState();
+  });
+  typeContainer.appendChild(label);
+});
+
+// All domains always visible (no domain filter UI)
+graphNodes.filter(n => n.type === "DomainRoot").forEach(n => filterState.domains.add(n.id));
+
+// ============================================================
+// VISIBILITY LOGIC
+// ============================================================
+function isNodeVisible(n) {
+  // Check type filter
+  if (!filterState.types.has(n.type)) return false;
+  // Check domain filter - DomainRoot checks itself, others check their domain
+  if (n.type === "DomainRoot") {
+    if (!filterState.domains.has(n.id)) return false;
+  } else if (n.domain) {
+    if (!filterState.domains.has(n.domain)) return false;
+  }
+  // CrossDomainLink: visible if at least one linked domain is visible (always show if no domain set)
+  return true;
+}
+
+function getConnectedSet(nodeId) {
+  const connected = new Set();
+  connected.add(nodeId);
+  links.forEach(l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    if (sid === nodeId) connected.add(tid);
+    if (tid === nodeId) connected.add(sid);
+  });
+  return connected;
+}
+
+function applyVisualState() {
+  const connected = selectedNode ? getConnectedSet(selectedNode.id) : null;
+
+  node.select("circle:last-of-type").attr("opacity", n => {
+    if (!isNodeVisible(n)) return 0.03;
+    if (connected && !connected.has(n.id)) return 0.12;
+    return 0.9;
+  });
+  node.select("text").attr("opacity", n => {
+    if (!isNodeVisible(n)) return 0.03;
+    if (connected && !connected.has(n.id)) return 0.08;
+    return 1;
+  });
+  // Glow circles for domain roots
+  node.select("circle:first-of-type").filter(function(d) {
+    return d.type === "DomainRoot" && this !== node.filter(dd => dd.id === d.id).select("circle:last-of-type").node();
+  }).attr("opacity", n => {
+    if (!isNodeVisible(n)) return 0;
+    if (connected && !connected.has(n.id)) return 0.03;
+    return 0.15;
+  });
+  // Selection ring
+  node.select(".select-ring").attr("opacity", n => (selectedNode && n.id === selectedNode.id) ? 1 : 0);
+
+  link.attr("stroke-opacity", l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    const sNode = nodeMap[sid], tNode = nodeMap[tid];
+    if (!isNodeVisible(sNode) || !isNodeVisible(tNode)) return 0.02;
+    if (connected) {
+      return (sid === selectedNode.id || tid === selectedNode.id) ? 0.9 : 0.03;
+    }
+    return (linkStyles[l.type] || linkStyles.relatedTo).opacity;
+  });
+}
+
+// ============================================================
+// D3 FORCE SIMULATION
+// ============================================================
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+const svg = d3.select("body").append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+const defs = svg.append("defs");
+// Arrow markers
+Object.entries(linkStyles).forEach(([type, style]) => {
+  defs.append("marker")
+    .attr("id", `arrow-${type}`)
+    .attr("viewBox", "0 -4 8 8")
+    .attr("refX", 12).attr("refY", 0)
+    .attr("markerWidth", 6).attr("markerHeight", 6)
+    .attr("orient", "auto")
+    .append("path")
+    .attr("d", "M0,-4L8,0L0,4")
+    .attr("fill", style.stroke);
+});
+
+const g = svg.append("g");
+
+// Zoom
+const zoom = d3.zoom()
+  .scaleExtent([0.2, 5])
+  .on("zoom", e => g.attr("transform", e.transform));
+svg.call(zoom);
+
+// Click on empty canvas to deselect
+svg.on("click", (e) => {
+  if (e.target.tagName === "svg" || e.target === svg.node()) {
+    selectedNode = null;
+    applyVisualState();
+  }
+});
+
+// Compute domain centers for clustering
+const domainRoots = nodes.filter(n => n.type === "DomainRoot");
+const angleStep = (2 * Math.PI) / Math.max(domainRoots.length, 1);
+const clusterRadius = Math.min(width, height) * 0.32;
+const domainCenters = {};
+domainRoots.forEach((d, i) => {
+  const angle = angleStep * i - Math.PI / 2;
+  domainCenters[d.id] = { x: width / 2 + clusterRadius * Math.cos(angle), y: height / 2 + clusterRadius * Math.sin(angle) };
+});
+
+const simulation = d3.forceSimulation(nodes)
+  .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
+    if (d.type === "subBranch" || d.type === "parentBranch") return 60;
+    if (d.type === "crossDomainLink") return 200;
+    return 100;
+  }).strength(d => {
+    if (d.type === "subBranch" || d.type === "parentBranch") return 0.8;
+    if (d.type === "crossDomainLink") return 0.1;
+    return 0.3;
+  }))
+  .force("charge", d3.forceManyBody().strength(d => d.type === "DomainRoot" ? -400 : -120))
+  .force("center", d3.forceCenter(width / 2, height / 2).strength(0.05))
+  .force("collision", d3.forceCollide().radius(d => d.radius + 4))
+  .force("cluster", alpha => {
+    nodes.forEach(n => {
+      const center = domainCenters[n.domain];
+      if (center) {
+        const k = alpha * 0.3;
+        n.vx += (center.x - n.x) * k;
+        n.vy += (center.y - n.y) * k;
+      }
+    });
+  });
+
+// Draw links
+const link = g.append("g")
+  .selectAll("line")
+  .data(links)
+  .join("line")
+  .attr("stroke", d => (linkStyles[d.type] || linkStyles.relatedTo).stroke)
+  .attr("stroke-width", d => (linkStyles[d.type] || linkStyles.relatedTo).width)
+  .attr("stroke-dasharray", d => (linkStyles[d.type] || linkStyles.relatedTo).dasharray)
+  .attr("stroke-opacity", d => (linkStyles[d.type] || linkStyles.relatedTo).opacity)
+  .attr("marker-end", d => (d.type !== "subBranch" && d.type !== "parentBranch") ? `url(#arrow-${d.type})` : null);
+
+// Draw nodes
+const node = g.append("g")
+  .selectAll("g")
+  .data(nodes)
+  .join("g")
+  .call(d3.drag()
+    .on("start", (e, d) => { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+    .on("drag", (e, d) => { d.fx = e.x; d.fy = e.y; })
+    .on("end", (e, d) => { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
+  );
+
+// Glow for domain roots
+node.filter(d => d.type === "DomainRoot").append("circle")
+  .attr("r", d => d.radius + 6)
+  .attr("fill", d => d.color)
+  .attr("opacity", 0.15);
+
+// Selection ring (hidden by default)
+node.append("circle")
+  .attr("class", "select-ring")
+  .attr("r", d => d.radius + 4)
+  .attr("fill", "none")
+  .attr("stroke", "#fff")
+  .attr("stroke-width", 2)
+  .attr("opacity", 0);
+
+node.append("circle")
+  .attr("r", d => d.radius)
+  .attr("fill", d => d.color)
+  .attr("stroke", d => d.strokeColor)
+  .attr("stroke-width", d => d.strokeWidth)
+  .attr("opacity", 0.9);
+
+// Labels
+node.append("text")
+  .text(d => d.name)
+  .attr("dy", d => d.radius + 14)
+  .attr("text-anchor", "middle")
+  .attr("fill", d => d.type === "DomainRoot" ? "#e8ecf4" : "#94a3b8")
+  .attr("font-size", d => d.type === "DomainRoot" ? 13 : 10)
+  .attr("font-weight", d => d.type === "DomainRoot" ? 600 : 400)
+  .attr("paint-order", "stroke")
+  .attr("stroke", "#0a0e17")
+  .attr("stroke-width", 3);
+
+// Tooltip & interaction
+const tooltip = d3.select("#tooltip");
+const typeLabels = {
+  DomainRoot: "领域根节点", Branch: "领域分支", BranchScaffold: "领域分支（骨架）",
+  KnowledgeNode: "知识节点", Material: "学习材料",
+  KnowledgeDeposit: "知识沉淀", ThinkingDeposit: "思考沉淀",
+  CrossDomainLink: "跨域连接", ThinkingScript: "思维脚本", MisconceptionPattern: "歧义模式"
+};
+const roleLabels = { knowledge: "知识", mental_model: "心智模型", methodology: "方法论", skill: "技能" };
+const statusLabels = { deposited: "已沉淀", published: "已发布" };
+
+// Hover: tooltip only (no opacity change when a node is selected)
+node.on("mouseenter", (e, d) => {
+  let html = `<div class="tt-name">${d.name}</div>`;
+  html += `<div class="tt-type">${typeLabels[d.type] || d.type}</div>`;
+  if (d.description) html += `<div class="tt-desc">${d.description}</div>`;
+  if (d.depth) html += `<div class="tt-depth">深度：${d.depth}</div>`;
+  if (d.nodeRole) html += `<div class="tt-role">角色：${roleLabels[d.nodeRole] || d.nodeRole}</div>`;
+  if (d.userInsight) html += `<div class="tt-insight">${d.userInsight}</div>`;
+  if (d.outputStatus) html += `<div class="tt-status">状态：${statusLabels[d.outputStatus] || d.outputStatus}</div>`;
+  if (d.outputPotential) html += `<div class="tt-role">输出潜力：${d.outputPotential}</div>`;
+  const readingLabels = { in_progress: "在读", completed: "已读完", paused: "暂停", abandoned: "已放弃" };
+  if (d.readingStatus) html += `<div class="tt-status">阅读状态：${readingLabels[d.readingStatus] || d.readingStatus}</div>`;
+  if (d.progress) html += `<div class="tt-role">进度：${d.progress}</div>`;
+  if (d.scenarioTags && d.scenarioTags.length) html += `<div class="tt-role">适用场景：${d.scenarioTags.join("、")}</div>`;
+  tooltip.html(html).style("opacity", 1);
+
+  // If no node is selected, do hover-highlight
+  if (!selectedNode) {
+    const connected = getConnectedSet(d.id);
+    node.select("circle:last-of-type").attr("opacity", n => {
+      if (!isNodeVisible(n)) return 0.03;
+      return connected.has(n.id) ? 1 : 0.15;
+    });
+    node.select("text").attr("opacity", n => {
+      if (!isNodeVisible(n)) return 0.03;
+      return connected.has(n.id) ? 1 : 0.15;
+    });
+    link.attr("stroke-opacity", l => {
+      const sid = typeof l.source === "object" ? l.source.id : l.source;
+      const tid = typeof l.target === "object" ? l.target.id : l.target;
+      if (!isNodeVisible(nodeMap[sid]) || !isNodeVisible(nodeMap[tid])) return 0.02;
+      return (sid === d.id || tid === d.id) ? 0.9 : 0.05;
+    });
+  }
+})
+.on("mousemove", e => {
+  tooltip.style("left", (e.pageX + 16) + "px").style("top", (e.pageY - 10) + "px");
+})
+.on("mouseleave", () => {
+  tooltip.style("opacity", 0);
+  // If no node is selected, restore normal state
+  if (!selectedNode) {
+    applyVisualState();
+  }
+});
+
+// Click: toggle selection
+node.on("click", (e, d) => {
+  e.stopPropagation();
+  if (selectedNode && selectedNode.id === d.id) {
+    selectedNode = null;
+  } else {
+    selectedNode = d;
+  }
+  applyVisualState();
+});
+
+// Tick
+simulation.on("tick", () => {
+  link
+    .attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+    .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+  node.attr("transform", d => `translate(${d.x},${d.y})`);
+});
+
+// Initial zoom to fit
+setTimeout(() => {
+  const bounds = g.node().getBBox();
+  const fullWidth = bounds.width, fullHeight = bounds.height;
+  if (fullWidth === 0 || fullHeight === 0) return;
+  const midX = bounds.x + fullWidth / 2, midY = bounds.y + fullHeight / 2;
+  const scale = 0.85 / Math.max(fullWidth / width, fullHeight / height);
+  const transform = d3.zoomIdentity
+    .translate(width / 2 - midX * scale, height / 2 - midY * scale)
+    .scale(scale);
+  svg.transition().duration(800).call(zoom.transform, transform);
+}, 2000);
+</script>
+</body>
+</html>

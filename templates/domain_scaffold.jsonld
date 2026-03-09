@@ -1,0 +1,36 @@
+{
+  "_comment_usage": "此模板仅作 schema 参考。新建领域时，将 DomainRoot 和 BranchScaffold 节点追加到统一图谱 ontology/ontology.jsonld 的 @graph 中，不再创建独立文件。",
+
+  "_comment_entity_types": [
+    "DomainRoot       — 领域根节点，每个领域唯一",
+    "Branch           — 已展开的学科分支",
+    "BranchScaffold   — 待扩展的骨架分支（冷启动时创建）",
+    "KnowledgeNode    — 具体知识节点（概念、理论、方法、现象等），基于权威学术定义",
+    "MisconceptionPattern — 常见歧义/易混淆模式",
+    "Material         — 学习材料实体（书籍、论文、视频课程、文章、播客等）",
+    "CrossDomainLink  — 跨域连接实体，记录不同领域节点间的底层暗合"
+  ],
+
+  "_comment_personal_metadata": "以下个人认知字段可标注在任意知识节点上：depth, nodeRole, userInsight, firstContact, lastContact, contactCount, misconceptions, outputPotential, outputStatus(deposited/published), relatedDeposits",
+
+  "_comment_deposit_types": "KnowledgeDeposit（知识沉淀：用户将学到的知识结构化整理）| ThinkingDeposit（思考沉淀：用户的原创思考/模型/框架）。内容文件存于 output/deposits/，图谱实体通过 contentPath 指向文件。同主题内容反复出现时合并到已有实体",
+
+  "_comment_new_domain_template": "新领域节点格式如下（追加到 ontology/ontology.jsonld 的 @graph）",
+  "@graph": [
+    {
+      "@type": "DomainRoot",
+      "@id": "domain_{domain_id}",
+      "name": "",
+      "description": "",
+      "priority": "primary|foundation|supplementary",
+      "subBranch": ["branch_{prefix}_xxx", "branch_{prefix}_yyy"]
+    },
+    {
+      "@type": "BranchScaffold",
+      "@id": "branch_{prefix}_xxx",
+      "name": "",
+      "description": "",
+      "parentBranch": "domain_{domain_id}"
+    }
+  ]
+}

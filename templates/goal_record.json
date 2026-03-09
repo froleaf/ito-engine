@@ -1,0 +1,15 @@
+{
+  "ts": "",
+  "goals": [
+    {
+      "goal_id": "goal_001",
+      "title": "主线标题（一句话）",
+      "description": "这条主线的具体描述：想达成什么、为什么重要",
+      "domains_involved": ["domain_id_1", "domain_id_2"],
+      "status": "active",
+      "milestones": [
+        "阶段性目标描述"
+      ]
+    }
+  ]
+}

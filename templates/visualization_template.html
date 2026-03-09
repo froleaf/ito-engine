@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITO 知识图谱可视化</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0e17; overflow: hidden; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  svg { display: block; }
+  .tooltip {
+    position: absolute; pointer-events: none; opacity: 0;
+    background: rgba(15, 20, 35, 0.95); border: 1px solid rgba(120, 140, 200, 0.3);
+    border-radius: 8px; padding: 12px 16px; max-width: 360px;
+    color: #c8d0e0; font-size: 13px; line-height: 1.6;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+    transition: opacity 0.15s;
+  }
+  .tooltip .tt-name { font-size: 15px; font-weight: 600; color: #e8ecf4; margin-bottom: 6px; }
+  .tooltip .tt-type { font-size: 11px; color: #8090b0; margin-bottom: 4px; }
+  .tooltip .tt-desc { margin-bottom: 4px; }
+  .tooltip .tt-depth { color: #f0a860; }
+  .tooltip .tt-role { color: #80b0d0; }
+  .tooltip .tt-insight { color: #a0d0a0; font-style: italic; margin-top: 4px; }
+  .tooltip .tt-status { color: #34d399; margin-top: 2px; }
+  .sidebar {
+    position: absolute; top: 20px; left: 20px; bottom: 20px;
+    width: 220px; overflow-y: auto; overflow-x: hidden;
+    display: flex; flex-direction: column; gap: 12px;
+    scrollbar-width: thin; scrollbar-color: rgba(120,140,200,0.3) transparent;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(120,140,200,0.3); border-radius: 2px; }
+  .panel {
+    background: rgba(15, 20, 35, 0.9); border: 1px solid rgba(120, 140, 200, 0.2);
+    border-radius: 10px; padding: 16px 18px; color: #c8d0e0; font-size: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4); flex-shrink: 0;
+  }
+  .panel h3 { font-size: 14px; margin-bottom: 12px; color: #e8ecf4; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; }
+  .panel h3 .toggle { font-size: 10px; color: #8090b0; transition: transform 0.2s; }
+  .panel h3 .toggle.collapsed { transform: rotate(-90deg); }
+  .panel-body { overflow: hidden; transition: max-height 0.3s ease; }
+  .panel-body.collapsed { max-height: 0 !important; }
+  .section { margin-bottom: 12px; }
+  .section h4 { font-size: 11px; color: #8090b0; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .legend-item { display: flex; align-items: center; margin-bottom: 6px; line-height: 1; }
+  .legend-circle { width: 12px; height: 12px; min-width: 12px; min-height: 12px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; flex-grow: 0; }
+  .legend-line { width: 24px; height: 2px; margin-right: 8px; flex-shrink: 0; }
+  .legend-line.dashed { background: repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 8px); height: 2px; }
+  .filter-item { display: flex; align-items: center; margin-bottom: 7px; cursor: pointer; user-select: none; line-height: 1; }
+  .filter-item input[type="checkbox"] { display: none; }
+  .filter-item .check-box {
+    width: 14px; height: 14px; min-width: 14px; min-height: 14px; border-radius: 3px; margin-right: 8px; flex-shrink: 0; flex-grow: 0;
+    border: 1.5px solid rgba(120,140,200,0.4); display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .filter-item input:checked + .check-box { border-color: rgba(120,140,200,0.8); }
+  .filter-item input:checked + .check-box::after { content: "✓"; font-size: 10px; color: #e8ecf4; }
+  .filter-item input:not(:checked) + .check-box { opacity: 0.4; }
+  .filter-item .dot { width: 8px; height: 8px; min-width: 8px; min-height: 8px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; flex-grow: 0; }
+  .filter-item span { flex: 1; }
+  .title {
+    position: absolute; top: 20px; right: 20px;
+    color: #e8ecf4; font-size: 20px; font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+  .title span { font-size: 12px; color: #8090b0; display: block; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="tooltip" id="tooltip"></div>
+
+<div class="sidebar">
+  <!-- Legend panel -->
+  <div class="panel">
+    <h3 onclick="togglePanel(this)">图例 <span class="toggle">▼</span></h3>
+    <div class="panel-body" style="max-height:400px">
+      <div class="section">
+        <h4>节点类型</h4>
+        <div class="legend-item"><div class="legend-circle" style="background:#3b82f6"></div>领域根节点（核心）</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#22c55e"></div>领域根节点（基础）</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#64748b"></div>领域根节点（补充）</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#94a3b8; width:10px; height:10px"></div>领域分支</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#f59e0b; width:10px; height:10px"></div>知识节点</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#60a5fa; width:8px; height:8px"></div>学习材料</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#34d399; width:8px; height:8px"></div>知识沉淀</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#fbbf24; width:8px; height:8px"></div>思考沉淀</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#a855f7; width:8px; height:8px"></div>跨域连接</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#f472b6; width:8px; height:8px"></div>思维脚本</div>
+        <div class="legend-item"><div class="legend-circle" style="background:#ef4444; width:6px; height:6px"></div>歧义模式</div>
+      </div>
+      <div class="section">
+        <h4>连线类型</h4>
+        <div class="legend-item"><div class="legend-line" style="background:#4b5563"></div>领域→分支</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#f59e0b"></div>归属/引用</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#a855f7"></div>跨域连接</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#60a5fa"></div>材料关联</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#34d399"></div>产出关联</div>
+        <div class="legend-item"><div class="legend-line dashed" style="color:#eab308"></div>派生/启发</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter panel: types -->
+  <div class="panel">
+    <h3 onclick="togglePanel(this)">节点筛选 <span class="toggle">▼</span></h3>
+    <div class="panel-body" style="max-height:400px">
+      <div class="section">
+        <h4>节点类型</h4>
+        <div id="type-filters"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="title" id="title">ITO 知识图谱<span id="stats"></span></div>
+
+<script>
+// Panel toggle
+function togglePanel(h3) {
+  const body = h3.nextElementSibling;
+  const arrow = h3.querySelector('.toggle');
+  body.classList.toggle('collapsed');
+  arrow.classList.toggle('collapsed');
+}
+
+// ============================================================
+// DATA — auto-generated by scripts/build_visualization.py
+// ============================================================
+/* __GRAPH_DATA__ */
+
+// ============================================================
+// COLOR MAPS
+// ============================================================
+const priorityColors = { primary: "#3b82f6", foundation: "#22c55e", supplementary: "#64748b" };
+const depthColors = { "浅读": "#fde68a", "理解": "#fbbf24", "有独立见解": "#f59e0b", "可教授他人": "#d97706" };
+const typeConfig = {
+  DomainRoot:          { radius: 20, color: null, stroke: "none", strokeWidth: 0 },
+  Branch:              { radius: 10, color: null, stroke: "none", strokeWidth: 0 },
+  BranchScaffold:      { radius: 10, color: null, stroke: "none", strokeWidth: 0 },
+  KnowledgeNode:       { radius: 12, color: null, stroke: "#fff", strokeWidth: 1.5 },
+  Material:            { radius: 8,  color: "#60a5fa", stroke: "none", strokeWidth: 0 },
+  KnowledgeDeposit:    { radius: 10, color: "#34d399", stroke: "#fff", strokeWidth: 1 },
+  ThinkingDeposit:     { radius: 10, color: "#fbbf24", stroke: "#fff", strokeWidth: 1 },
+  CrossDomainLink:     { radius: 8,  color: "#a855f7", stroke: "#c084fc", strokeWidth: 1.5 },
+  MisconceptionPattern:{ radius: 6,  color: "#ef4444", stroke: "none", strokeWidth: 0 },
+  ThinkingScript:      { radius: 10, color: "#f472b6", stroke: "#fff", strokeWidth: 1 },
+};
+
+const linkStyles = {
+  subBranch:       { stroke: "#4b5563", dasharray: null, opacity: 0.6, width: 1 },
+  parentBranch:    { stroke: "#4b5563", dasharray: null, opacity: 0.6, width: 1 },
+  belongsTo:       { stroke: "#6b7280", dasharray: null, opacity: 0.4, width: 0.8 },
+  isA:             { stroke: "#6b7280", dasharray: null, opacity: 0.4, width: 0.8 },
+  relatedTo:       { stroke: "#9ca3af", dasharray: "4,3", opacity: 0.3, width: 0.8 },
+  prerequisite:    { stroke: "#9ca3af", dasharray: "4,3", opacity: 0.3, width: 0.8 },
+  refersTo:        { stroke: "#f59e0b", dasharray: "6,3", opacity: 0.5, width: 1 },
+  derivedFrom:     { stroke: "#eab308", dasharray: "4,4", opacity: 0.4, width: 1 },
+  inspiredBy:      { stroke: "#eab308", dasharray: "4,4", opacity: 0.4, width: 1 },
+  crossDomainLink: { stroke: "#a855f7", dasharray: "6,3", opacity: 0.6, width: 1.5 },
+  hasResource:     { stroke: "#60a5fa", dasharray: "4,3", opacity: 0.4, width: 0.8 },
+  coversTopics:    { stroke: "#60a5fa", dasharray: "4,3", opacity: 0.4, width: 0.8 },
+  aboutNodes:      { stroke: "#34d399", dasharray: "4,3", opacity: 0.4, width: 0.8 },
+  aboutDomains:    { stroke: "#34d399", dasharray: "4,3", opacity: 0.4, width: 0.8 },
+  hasMisconception:{ stroke: "#ef4444", dasharray: "3,3", opacity: 0.3, width: 0.8 },
+  confusedWith:    { stroke: "#ef4444", dasharray: "3,3", opacity: 0.3, width: 0.8 },
+};
+
+// ============================================================
+// BUILD GRAPH from graphNodes / graphLinks (injected by script)
+// ============================================================
+const nodeMap = {};
+const nodes = [];
+const links = [];
+
+// Find domain colors map
+const domainColorMap = {};
+graphNodes.filter(n => n.type === "DomainRoot").forEach(n => {
+  domainColorMap[n.id] = priorityColors[n.priority] || "#64748b";
+});
+
+// Process nodes
+graphNodes.forEach(n => {
+  const cfg = typeConfig[n.type] || typeConfig.KnowledgeNode;
+  const node = {
+    id: n.id, name: n.name, description: n.description,
+    type: n.type, domain: n.domain || null,
+    depth: n.depth, nodeRole: n.nodeRole, userInsight: n.userInsight,
+    outputStatus: n.outputStatus, outputPotential: n.outputPotential,
+    readingStatus: n.readingStatus, progress: n.progress,
+    priority: n.priority,
+    radius: cfg.radius,
+    strokeColor: cfg.stroke,
+    strokeWidth: cfg.strokeWidth,
+  };
+
+  // Determine color
+  if (n.type === "DomainRoot") {
+    node.color = priorityColors[n.priority] || "#64748b";
+  } else if (n.type === "Branch" || n.type === "BranchScaffold") {
+    const parentColor = domainColorMap[n.domain] || "#64748b";
+    node.color = d3.color(parentColor).brighter(0.8).toString();
+  } else if (n.type === "KnowledgeNode") {
+    node.color = depthColors[n.depth] || "#f59e0b";
+  } else {
+    node.color = cfg.color;
+  }
+
+  nodeMap[n.id] = node;
+  nodes.push(node);
+});
+
+// Process links
+graphLinks.forEach(l => {
+  if (nodeMap[l.source] && nodeMap[l.target]) {
+    links.push({ source: l.source, target: l.target, type: l.type });
+  }
+});
+
+// Update stats
+const domainCount = graphNodes.filter(n => n.type === "DomainRoot").length;
+const knowledgeCount = graphNodes.filter(n => n.type === "KnowledgeNode").length;
+const depositCount = graphNodes.filter(n => n.type === "KnowledgeDeposit" || n.type === "ThinkingDeposit").length;
+const crossLinkCount = graphNodes.filter(n => n.type === "CrossDomainLink").length;
+let statsText = `${domainCount} 个领域`;
+if (knowledgeCount) statsText += ` · ${knowledgeCount} 个知识节点`;
+if (depositCount) statsText += ` · ${depositCount} 个沉淀产出`;
+if (crossLinkCount) statsText += ` · ${crossLinkCount} 个跨域连接`;
+document.getElementById("stats").textContent = statsText;
+
+// ============================================================
+// FILTER STATE
+// ============================================================
+const filterState = { types: new Set(), domains: new Set() };
+let selectedNode = null;
+
+// Gather unique types present in data
+const typeFilterDefs = [
+  { key: "DomainRoot", label: "领域根节点", color: "#3b82f6" },
+  { key: "Branch,BranchScaffold", label: "领域分支", color: "#94a3b8" },
+  { key: "KnowledgeNode", label: "知识节点", color: "#f59e0b" },
+  { key: "Material", label: "学习材料", color: "#60a5fa" },
+  { key: "KnowledgeDeposit", label: "知识沉淀", color: "#34d399" },
+  { key: "ThinkingDeposit", label: "思考沉淀", color: "#fbbf24" },
+  { key: "CrossDomainLink", label: "跨域连接", color: "#a855f7" },
+  { key: "ThinkingScript", label: "思维脚本", color: "#f472b6" },
+  { key: "MisconceptionPattern", label: "歧义模式", color: "#ef4444" },
+];
+
+// Init type filters - all enabled
+typeFilterDefs.forEach(t => t.key.split(",").forEach(k => filterState.types.add(k)));
+
+// Build type filter checkboxes
+const typeContainer = document.getElementById("type-filters");
+typeFilterDefs.forEach(t => {
+  // Only show if at least one node of this type exists
+  const keys = t.key.split(",");
+  if (!nodes.some(n => keys.includes(n.type))) return;
+
+  const label = document.createElement("label");
+  label.className = "filter-item";
+  label.innerHTML = `<input type="checkbox" checked data-filter-type="${t.key}"><span class="check-box"></span><span class="dot" style="background:${t.color}"></span><span>${t.label}</span>`;
+  label.querySelector("input").addEventListener("change", function() {
+    const keys = this.dataset.filterType.split(",");
+    keys.forEach(k => this.checked ? filterState.types.add(k) : filterState.types.delete(k));
+    applyVisualState();
+  });
+  typeContainer.appendChild(label);
+});
+
+// All domains always visible (no domain filter UI)
+graphNodes.filter(n => n.type === "DomainRoot").forEach(n => filterState.domains.add(n.id));
+
+// ============================================================
+// VISIBILITY LOGIC
+// ============================================================
+function isNodeVisible(n) {
+  // Check type filter
+  if (!filterState.types.has(n.type)) return false;
+  // Check domain filter - DomainRoot checks itself, others check their domain
+  if (n.type === "DomainRoot") {
+    if (!filterState.domains.has(n.id)) return false;
+  } else if (n.domain) {
+    if (!filterState.domains.has(n.domain)) return false;
+  }
+  // CrossDomainLink: visible if at least one linked domain is visible (always show if no domain set)
+  return true;
+}
+
+function getConnectedSet(nodeId) {
+  const connected = new Set();
+  connected.add(nodeId);
+  links.forEach(l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    if (sid === nodeId) connected.add(tid);
+    if (tid === nodeId) connected.add(sid);
+  });
+  return connected;
+}
+
+function applyVisualState() {
+  const connected = selectedNode ? getConnectedSet(selectedNode.id) : null;
+
+  node.select("circle:last-of-type").attr("opacity", n => {
+    if (!isNodeVisible(n)) return 0.03;
+    if (connected && !connected.has(n.id)) return 0.12;
+    return 0.9;
+  });
+  node.select("text").attr("opacity", n => {
+    if (!isNodeVisible(n)) return 0.03;
+    if (connected && !connected.has(n.id)) return 0.08;
+    return 1;
+  });
+  // Glow circles for domain roots
+  node.select("circle:first-of-type").filter(function(d) {
+    return d.type === "DomainRoot" && this !== node.filter(dd => dd.id === d.id).select("circle:last-of-type").node();
+  }).attr("opacity", n => {
+    if (!isNodeVisible(n)) return 0;
+    if (connected && !connected.has(n.id)) return 0.03;
+    return 0.15;
+  });
+  // Selection ring
+  node.select(".select-ring").attr("opacity", n => (selectedNode && n.id === selectedNode.id) ? 1 : 0);
+
+  link.attr("stroke-opacity", l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    const sNode = nodeMap[sid], tNode = nodeMap[tid];
+    if (!isNodeVisible(sNode) || !isNodeVisible(tNode)) return 0.02;
+    if (connected) {
+      return (sid === selectedNode.id || tid === selectedNode.id) ? 0.9 : 0.03;
+    }
+    return (linkStyles[l.type] || linkStyles.relatedTo).opacity;
+  });
+}
+
+// ============================================================
+// D3 FORCE SIMULATION
+// ============================================================
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+const svg = d3.select("body").append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+const defs = svg.append("defs");
+// Arrow markers
+Object.entries(linkStyles).forEach(([type, style]) => {
+  defs.append("marker")
+    .attr("id", `arrow-${type}`)
+    .attr("viewBox", "0 -4 8 8")
+    .attr("refX", 12).attr("refY", 0)
+    .attr("markerWidth", 6).attr("markerHeight", 6)
+    .attr("orient", "auto")
+    .append("path")
+    .attr("d", "M0,-4L8,0L0,4")
+    .attr("fill", style.stroke);
+});
+
+const g = svg.append("g");
+
+// Zoom
+const zoom = d3.zoom()
+  .scaleExtent([0.2, 5])
+  .on("zoom", e => g.attr("transform", e.transform));
+svg.call(zoom);
+
+// Click on empty canvas to deselect
+svg.on("click", (e) => {
+  if (e.target.tagName === "svg" || e.target === svg.node()) {
+    selectedNode = null;
+    applyVisualState();
+  }
+});
+
+// Compute domain centers for clustering
+const domainRoots = nodes.filter(n => n.type === "DomainRoot");
+const angleStep = (2 * Math.PI) / Math.max(domainRoots.length, 1);
+const clusterRadius = Math.min(width, height) * 0.32;
+const domainCenters = {};
+domainRoots.forEach((d, i) => {
+  const angle = angleStep * i - Math.PI / 2;
+  domainCenters[d.id] = { x: width / 2 + clusterRadius * Math.cos(angle), y: height / 2 + clusterRadius * Math.sin(angle) };
+});
+
+const simulation = d3.forceSimulation(nodes)
+  .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
+    if (d.type === "subBranch" || d.type === "parentBranch") return 60;
+    if (d.type === "crossDomainLink") return 200;
+    return 100;
+  }).strength(d => {
+    if (d.type === "subBranch" || d.type === "parentBranch") return 0.8;
+    if (d.type === "crossDomainLink") return 0.1;
+    return 0.3;
+  }))
+  .force("charge", d3.forceManyBody().strength(d => d.type === "DomainRoot" ? -400 : -120))
+  .force("center", d3.forceCenter(width / 2, height / 2).strength(0.05))
+  .force("collision", d3.forceCollide().radius(d => d.radius + 4))
+  .force("cluster", alpha => {
+    nodes.forEach(n => {
+      const center = domainCenters[n.domain];
+      if (center) {
+        const k = alpha * 0.3;
+        n.vx += (center.x - n.x) * k;
+        n.vy += (center.y - n.y) * k;
+      }
+    });
+  });
+
+// Draw links
+const link = g.append("g")
+  .selectAll("line")
+  .data(links)
+  .join("line")
+  .attr("stroke", d => (linkStyles[d.type] || linkStyles.relatedTo).stroke)
+  .attr("stroke-width", d => (linkStyles[d.type] || linkStyles.relatedTo).width)
+  .attr("stroke-dasharray", d => (linkStyles[d.type] || linkStyles.relatedTo).dasharray)
+  .attr("stroke-opacity", d => (linkStyles[d.type] || linkStyles.relatedTo).opacity)
+  .attr("marker-end", d => (d.type !== "subBranch" && d.type !== "parentBranch") ? `url(#arrow-${d.type})` : null);
+
+// Draw nodes
+const node = g.append("g")
+  .selectAll("g")
+  .data(nodes)
+  .join("g")
+  .call(d3.drag()
+    .on("start", (e, d) => { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+    .on("drag", (e, d) => { d.fx = e.x; d.fy = e.y; })
+    .on("end", (e, d) => { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
+  );
+
+// Glow for domain roots
+node.filter(d => d.type === "DomainRoot").append("circle")
+  .attr("r", d => d.radius + 6)
+  .attr("fill", d => d.color)
+  .attr("opacity", 0.15);
+
+// Selection ring (hidden by default)
+node.append("circle")
+  .attr("class", "select-ring")
+  .attr("r", d => d.radius + 4)
+  .attr("fill", "none")
+  .attr("stroke", "#fff")
+  .attr("stroke-width", 2)
+  .attr("opacity", 0);
+
+node.append("circle")
+  .attr("r", d => d.radius)
+  .attr("fill", d => d.color)
+  .attr("stroke", d => d.strokeColor)
+  .attr("stroke-width", d => d.strokeWidth)
+  .attr("opacity", 0.9);
+
+// Labels
+node.append("text")
+  .text(d => d.name)
+  .attr("dy", d => d.radius + 14)
+  .attr("text-anchor", "middle")
+  .attr("fill", d => d.type === "DomainRoot" ? "#e8ecf4" : "#94a3b8")
+  .attr("font-size", d => d.type === "DomainRoot" ? 13 : 10)
+  .attr("font-weight", d => d.type === "DomainRoot" ? 600 : 400)
+  .attr("paint-order", "stroke")
+  .attr("stroke", "#0a0e17")
+  .attr("stroke-width", 3);
+
+// Tooltip & interaction
+const tooltip = d3.select("#tooltip");
+const typeLabels = {
+  DomainRoot: "领域根节点", Branch: "领域分支", BranchScaffold: "领域分支（骨架）",
+  KnowledgeNode: "知识节点", Material: "学习材料",
+  KnowledgeDeposit: "知识沉淀", ThinkingDeposit: "思考沉淀",
+  CrossDomainLink: "跨域连接", ThinkingScript: "思维脚本", MisconceptionPattern: "歧义模式"
+};
+const roleLabels = { knowledge: "知识", mental_model: "心智模型", methodology: "方法论", skill: "技能" };
+const statusLabels = { deposited: "已沉淀", published: "已发布" };
+
+// Hover: tooltip only (no opacity change when a node is selected)
+node.on("mouseenter", (e, d) => {
+  let html = `<div class="tt-name">${d.name}</div>`;
+  html += `<div class="tt-type">${typeLabels[d.type] || d.type}</div>`;
+  if (d.description) html += `<div class="tt-desc">${d.description}</div>`;
+  if (d.depth) html += `<div class="tt-depth">深度：${d.depth}</div>`;
+  if (d.nodeRole) html += `<div class="tt-role">角色：${roleLabels[d.nodeRole] || d.nodeRole}</div>`;
+  if (d.userInsight) html += `<div class="tt-insight">${d.userInsight}</div>`;
+  if (d.outputStatus) html += `<div class="tt-status">状态：${statusLabels[d.outputStatus] || d.outputStatus}</div>`;
+  if (d.outputPotential) html += `<div class="tt-role">输出潜力：${d.outputPotential}</div>`;
+  const readingLabels = { in_progress: "在读", completed: "已读完", paused: "暂停", abandoned: "已放弃" };
+  if (d.readingStatus) html += `<div class="tt-status">阅读状态：${readingLabels[d.readingStatus] || d.readingStatus}</div>`;
+  if (d.progress) html += `<div class="tt-role">进度：${d.progress}</div>`;
+  if (d.scenarioTags && d.scenarioTags.length) html += `<div class="tt-role">适用场景：${d.scenarioTags.join("、")}</div>`;
+  tooltip.html(html).style("opacity", 1);
+
+  // If no node is selected, do hover-highlight
+  if (!selectedNode) {
+    const connected = getConnectedSet(d.id);
+    node.select("circle:last-of-type").attr("opacity", n => {
+      if (!isNodeVisible(n)) return 0.03;
+      return connected.has(n.id) ? 1 : 0.15;
+    });
+    node.select("text").attr("opacity", n => {
+      if (!isNodeVisible(n)) return 0.03;
+      return connected.has(n.id) ? 1 : 0.15;
+    });
+    link.attr("stroke-opacity", l => {
+      const sid = typeof l.source === "object" ? l.source.id : l.source;
+      const tid = typeof l.target === "object" ? l.target.id : l.target;
+      if (!isNodeVisible(nodeMap[sid]) || !isNodeVisible(nodeMap[tid])) return 0.02;
+      return (sid === d.id || tid === d.id) ? 0.9 : 0.05;
+    });
+  }
+})
+.on("mousemove", e => {
+  tooltip.style("left", (e.pageX + 16) + "px").style("top", (e.pageY - 10) + "px");
+})
+.on("mouseleave", () => {
+  tooltip.style("opacity", 0);
+  // If no node is selected, restore normal state
+  if (!selectedNode) {
+    applyVisualState();
+  }
+});
+
+// Click: toggle selection
+node.on("click", (e, d) => {
+  e.stopPropagation();
+  if (selectedNode && selectedNode.id === d.id) {
+    selectedNode = null;
+  } else {
+    selectedNode = d;
+  }
+  applyVisualState();
+});
+
+// Tick
+simulation.on("tick", () => {
+  link
+    .attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+    .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+  node.attr("transform", d => `translate(${d.x},${d.y})`);
+});
+
+// Initial zoom to fit
+setTimeout(() => {
+  const bounds = g.node().getBBox();
+  const fullWidth = bounds.width, fullHeight = bounds.height;
+  if (fullWidth === 0 || fullHeight === 0) return;
+  const midX = bounds.x + fullWidth / 2, midY = bounds.y + fullHeight / 2;
+  const scale = 0.85 / Math.max(fullWidth / width, fullHeight / height);
+  const transform = d3.zoomIdentity
+    .translate(width / 2 - midX * scale, height / 2 - midY * scale)
+    .scale(scale);
+  svg.transition().duration(800).call(zoom.transform, transform);
+}, 2000);
+</script>
+</body>
+</html>
