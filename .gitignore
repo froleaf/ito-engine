@@ -1,12 +1,12 @@
-# === 隐私/数据目录 ===
-memory/
-inbox/
-ontology/
-output/
-scripts/
+# === 隐私/数据目录（仅根目录，不影响 _init/ 模板）===
+/memory/
+/inbox/
+/ontology/
+/output/
+/scripts/
 
 # === 个人可视化文件（模板在 _init/ 中）===
-visualization.html
+/visualization.html
 
 # === 缓存 ===
 .cache/

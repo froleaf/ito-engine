@@ -1,0 +1,263 @@
+{
+  "@context": {
+    "@base": "https://ito-engine.local/ontology/",
+    "@vocab": "https://ito-engine.local/ontology/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "_comment_entity_types": "DomainRoot（领域根·导航层）| Branch（已展开分支·导航层）| BranchScaffold（骨架分支·导航层）| KnowledgeNode（知识节点·知识层）| MisconceptionPattern（歧义模式）| Material（学习材料）| CrossDomainLink（跨域连接·图结构边）| KnowledgeDeposit（知识沉淀产出）| ThinkingDeposit（思考沉淀产出）| ThinkingScript（思维脚本·编译产物）",
+    "_comment_node_properties": "── 节点基本属性 ──",
+    "createdAt": {
+      "@type": "xsd:dateTime",
+      "_comment": "节点在图谱中被创建的时间（所有节点都应标注）"
+    },
+    "name": {
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@type": "xsd:string"
+    },
+    "priority": {
+      "@type": "xsd:string",
+      "_comment": "领域优先级: primary/foundation/supplementary"
+    },
+    "academicTerm": {
+      "@type": "xsd:string",
+      "_comment": "标准学术术语"
+    },
+    "aliases": {
+      "_comment": "别名/俗称列表，用于用户口语映射"
+    },
+    "cognitiveLevel": {
+      "@type": "xsd:string",
+      "_comment": "布鲁姆层级: remember/understand/apply/analyze/evaluate/create"
+    },
+    "importance": {
+      "@type": "xsd:string",
+      "_comment": "重要程度: foundational/core/advanced/peripheral"
+    },
+    "_comment_personal_metadata": "── 个人认知元数据（可标注在任意知识节点上）──",
+    "depth": {
+      "@type": "xsd:string",
+      "_comment": "浅读/理解/有独立见解/可教授他人"
+    },
+    "nodeRole": {
+      "@type": "xsd:string",
+      "_comment": "knowledge/mental_model/methodology/skill"
+    },
+    "userInsight": {
+      "@type": "xsd:string",
+      "_comment": "用户的独特见解或理解"
+    },
+    "firstContact": {
+      "@type": "xsd:dateTime",
+      "_comment": "首次接触时间"
+    },
+    "lastContact": {
+      "@type": "xsd:dateTime",
+      "_comment": "最近接触时间"
+    },
+    "contactCount": {
+      "@type": "xsd:integer",
+      "_comment": "接触次数"
+    },
+    "misconceptions": {
+      "_comment": "认知歧义数组"
+    },
+    "outputPotential": {
+      "@type": "xsd:string",
+      "_comment": "low/potential/high"
+    },
+    "relatedDeposits": {
+      "@type": "@id",
+      "_comment": "关联的沉淀产出 Deposit @id"
+    },
+    "appliedIn": {
+      "_comment": "思维工具调用日志数组（仅 mental_model/methodology 节点）：[{ts, context, decision, confirmedBy}]"
+    },
+    "_comment_hierarchy_edges": "── 层级结构边 ──",
+    "belongsTo": {
+      "@type": "@id",
+      "_comment": "子节点 → 父节点"
+    },
+    "subBranch": {
+      "@type": "@id",
+      "_comment": "父节点 → 子节点列表"
+    },
+    "parentBranch": {
+      "@type": "@id",
+      "_comment": "子分支 → 父领域"
+    },
+    "isA": {
+      "@type": "@id",
+      "_comment": "窄概念 → 宽概念"
+    },
+    "_comment_dependency_edges": "── 依赖与关联边 ──",
+    "prerequisite": {
+      "@type": "@id",
+      "_comment": "学B前要先理解A"
+    },
+    "relatedTo": {
+      "@type": "@id",
+      "_comment": "同领域内横向关联"
+    },
+    "contradicts": {
+      "@type": "@id",
+      "_comment": "理论间对立关系"
+    },
+    "appliesTo": {
+      "@type": "@id",
+      "_comment": "理论/方法 → 实践领域"
+    },
+    "exemplifiedBy": {
+      "@type": "@id",
+      "_comment": "抽象概念 → 具体实例"
+    },
+    "_comment_misconception_edges": "── 歧义边 ──",
+    "hasMisconception": {
+      "@type": "@id",
+      "_comment": "知识节点 → 易混淆模式"
+    },
+    "confusedWith": {
+      "@type": "@id",
+      "_comment": "容易混淆的另一概念"
+    },
+    "_comment_material_edges": "── 材料边 ──",
+    "hasResource": {
+      "@type": "@id",
+      "_comment": "知识节点 → 材料"
+    },
+    "coversTopics": {
+      "@type": "@id",
+      "_comment": "材料 → 知识节点列表"
+    },
+    "_comment_material_properties": "── 材料属性 ──",
+    "author": {
+      "_comment": "作者列表（数组），书籍需查证完整作者列表，如 [\"Douglas Hofstadter\"]"
+    },
+    "translator": {
+      "_comment": "译者列表（数组，如有翻译版本）"
+    },
+    "publicationYear": {
+      "@type": "xsd:integer"
+    },
+    "isbn": {
+      "@type": "xsd:string",
+      "_comment": "ISBN（书籍，如可查到）"
+    },
+    "publisher": {
+      "@type": "xsd:string",
+      "_comment": "出版社（书籍）"
+    },
+    "materialType": {
+      "@type": "xsd:string",
+      "_comment": "book/paper/video_course/article/podcast/online_course/lecture_notes"
+    },
+    "url": {
+      "@type": "xsd:string",
+      "_comment": "公开资源链接（在线课程/文章/视频等，尽可能提供）"
+    },
+    "platform": {
+      "@type": "xsd:string",
+      "_comment": "平台（如 Coursera/YouTube/Bilibili/微信公众号 等）"
+    },
+    "language": {
+      "@type": "xsd:string"
+    },
+    "_comment_material_reading_status": "── 材料阅读状态（个人元数据）──",
+    "readingStatus": {
+      "@type": "xsd:string",
+      "_comment": "in_progress/completed/paused/abandoned"
+    },
+    "progress": {
+      "@type": "xsd:string",
+      "_comment": "自由文本进度描述，如「读到第3章」「看了4/12集」"
+    },
+    "startedAt": {
+      "@type": "xsd:dateTime",
+      "_comment": "开始阅读/学习时间"
+    },
+    "lastProgressUpdate": {
+      "@type": "xsd:dateTime",
+      "_comment": "最近一次进度更新时间"
+    },
+    "_comment_derivation_edges": "── 来源边（用于 ThinkingDeposit、CrossDomainLink 等）──",
+    "derivedFrom": {
+      "@type": "@id",
+      "_comment": "诞生于：多个知识节点的交叉"
+    },
+    "inspiredBy": {
+      "@type": "@id",
+      "_comment": "启发自：某个已有概念"
+    },
+    "_comment_cross_domain_edges": "── 跨域连接边 ──",
+    "crossDomainLink": {
+      "@type": "@id",
+      "_comment": "跨域关联：指向多个领域节点"
+    },
+    "link_type": {
+      "@type": "xsd:string",
+      "_comment": "analogy/structural_isomorphism/causal/complementary/application"
+    },
+    "confidence": {
+      "@type": "xsd:string",
+      "_comment": "certain/likely/uncertain"
+    },
+    "_comment_deposit_properties": "── 沉淀产出属性（KnowledgeDeposit / ThinkingDeposit）──",
+    "depositType": {
+      "@type": "xsd:string",
+      "_comment": "knowledge（知识整理）/ thinking（原创思考）"
+    },
+    "outputStatus": {
+      "@type": "xsd:string",
+      "_comment": "deposited（仅沉淀）/ published（已对外输出）"
+    },
+    "contentPath": {
+      "@type": "xsd:string",
+      "_comment": "内容文件路径，如 output/deposits/td_001.md"
+    },
+    "outputTitle": {
+      "@type": "xsd:string",
+      "_comment": "产出标题"
+    },
+    "outputDate": {
+      "@type": "xsd:string",
+      "_comment": "发布日期（如可知）"
+    },
+    "publishedTo": {
+      "@type": "xsd:string",
+      "_comment": "发布渠道（如 微信公众号/GitHub 等）"
+    },
+    "publishedUrl": {
+      "@type": "xsd:string",
+      "_comment": "外部发布链接（如有）"
+    },
+    "updatedAt": {
+      "@type": "xsd:dateTime",
+      "_comment": "最近更新时间（合并时更新）"
+    },
+    "mergeHistory": {
+      "_comment": "合并历史数组：[{ts, summary}]"
+    },
+    "_comment_deposit_edges": "── 沉淀产出边 ──",
+    "aboutNodes": {
+      "@type": "@id",
+      "_comment": "产出涉及的知识节点列表"
+    },
+    "aboutDomains": {
+      "@type": "@id",
+      "_comment": "产出涉及的领域列表"
+    },
+    "_comment_thinking_script": "── 思维脚本属性（ThinkingScript）──",
+    "scenarioTags": {
+      "_comment": "适用场景关键词数组，用于路由匹配"
+    },
+    "compiledAt": {
+      "@type": "xsd:dateTime",
+      "_comment": "编译/最近更新时间"
+    },
+    "appliedInCount": {
+      "@type": "xsd:integer",
+      "_comment": "来源 mental_model 的 appliedIn 总条数"
+    }
+  },
+  "@graph": []
+}
