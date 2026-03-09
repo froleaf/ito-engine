@@ -57,6 +57,7 @@ mv inbox/processed/* inbox/notes/ 2>/dev/null
 # 2. 重置 memory
 rm -rf memory/*
 cp _init/memory/*.jsonl memory/
+cp _init/memory/todo.json memory/todo.json
 mkdir -p memory/session_memory
 
 # 3. 重置 ontology
@@ -81,7 +82,7 @@ cp _init/ontology/_meta/thinking_scenarios.md ontology/_meta/thinking_scenarios.
 # 1. 清空 inbox 所有内容
 rm -f inbox/notes/* inbox/processed/* inbox/conversations/*
 
-# 2-4. 同选项 A
+# 2-6. 同选项 A
 ```
 
 ### 第四步：验证与后续引导
