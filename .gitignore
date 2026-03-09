@@ -5,6 +5,9 @@
 /output/
 /scripts/
 
+# === 文档（本地开发文档）===
+/docs/
+
 # === 个人可视化文件（模板在 _init/ 中）===
 /visualization.html
 
