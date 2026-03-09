@@ -5,6 +5,9 @@ ontology/
 output/
 scripts/
 
+# === 个人可视化文件（模板在 _init/ 中）===
+visualization.html
+
 # === 缓存 ===
 .cache/
 
