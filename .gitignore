@@ -5,13 +5,6 @@ ontology/
 output/
 scripts/
 
-# === 初始化模板中的对应目录 ===
-_init/inbox/
-_init/memory/
-_init/ontology/
-_init/output/
-_init/scripts/
-
 # === 缓存 ===
 .cache/
 
