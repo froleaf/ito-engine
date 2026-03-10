@@ -60,7 +60,7 @@ description: 进入聊天模式——ITO 作为苏格拉底式对话伙伴，帮
 1. 简要总结对话要点（2-3 句话）
 2. 执行 `/knowledge-extract` 的逻辑提取结构化知识
 3. 执行 `/knowledge-process` 的逻辑完成图谱更新和反馈
-4. 将完整对话存档为 Markdown 文件，存入 `inbox/conversations/`
+4. 将完整对话存档为 Markdown 文件，存入 `inbox/conversations/` 。注意，是“完整对话导出”。
 5. **Todo 捕捉**：扫描整段对话，捕捉以下类型的待办并写入 `memory/todo.json`（按 `templates/todo_record.json` 格式，关联相关图谱节点）：
    - 值得下次继续聊的话题或追问方向 → `topic_to_explore`
    - 用户表达的**输出意向**（"我想写…"、"打算分享…"）→ **先在图谱中创建 `planned` 状态的 Deposit 实体**（不创建内容文件），再创建 `action_item` todo，`relatedNodes` 指向该 Deposit。后续对话/笔记中产生的相关内容会合并进这个 Deposit
@@ -74,3 +74,4 @@ description: 进入聊天模式——ITO 作为苏格拉底式对话伙伴，帮
 - 避免连续问多个问题，一次一个
 - 如果用户只是想随便聊聊，不要过度结构化
 - 真诚参与对话，不要机械执行"追问清单"
+- `inbox/conversations/`中的对话留档要保证完整
