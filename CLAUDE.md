@@ -51,6 +51,7 @@ Call chains:
 /weekly-review → /plan + dormant-check
 /review → READ-ONLY (no graph/memory writes, optional save to output/reviews/)
 /compile-thinking → READ-ONLY (analyzes mental_model appliedIn logs, CrossDomainLink patterns, ThinkingDeposits → generates thinking scripts in output/thinking_scripts/)
+/brain → READ-ONLY (cognitive proxy mode, no graph/memory writes, output to docs/brain/)
 ```
 
 The `/ito` skill is the main entry point (auto-activated). It routes to sub-skills based on user intent. **Standby mode** (default) handles tool requests without session recording; **session mode** (triggered by "聊天"/"传笔记"/"写笔记") records to session_memory.
