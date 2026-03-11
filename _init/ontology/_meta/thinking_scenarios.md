@@ -1,6 +1,6 @@
 # 思维脚本场景索引
 
-由 `/compile-thinking` 自动维护。`/review` 和 `/chat` 通过 grep 此文件匹配适用的思维脚本。
+由 `/compile-thinking` 自动维护。`/content-review` 和 `/chat` 通过 grep 此文件匹配适用的思维脚本。
 
 | 场景关键词 | 脚本 @id | 脚本名称 |
 |-----------|----------|----------|

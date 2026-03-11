@@ -49,7 +49,7 @@ Call chains:
 /chat | /pass-note | /write-note → knowledge-extract → knowledge-process → Deposit creation
 /bootstrap → knowledge-extract → knowledge-process → Deposit creation (NO session_memory, NO plan trigger)
 /weekly-review → /plan + dormant-check
-/review → READ-ONLY (no graph/memory writes, optional save to output/reviews/)
+/content-review → READ-ONLY (no graph/memory writes, optional save to output/content-reviews/)
 /compile-thinking → READ-ONLY (analyzes mental_model appliedIn logs, CrossDomainLink patterns, ThinkingDeposits → generates thinking scripts in output/thinking_scripts/)
 /brain → READ-ONLY (cognitive proxy mode, no graph/memory writes, output to docs/brain/)
 ```

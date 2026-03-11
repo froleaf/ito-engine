@@ -66,7 +66,7 @@ echo "# 领域索引" > ontology/_meta/domains.md
 
 # 4. 重置 output
 rm -rf output/*
-mkdir -p output/deposits output/drafts output/reviews output/thinking_scripts
+mkdir -p output/deposits output/drafts output/content-reviews output/thinking_scripts
 
 # 5. 重置可视化
 cp _init/visualization.html visualization.html

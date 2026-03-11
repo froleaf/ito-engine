@@ -150,7 +150,7 @@ Agent 默认处于**待命模式**，以下操作不产生 session 记录：
 - **查看待办** — 查看所有待聊话题、未完成阅读、待深化思考
 - **查看沉淀产出** — 浏览你的 Deposit 和输出候选
 - **`/brain`** — 大脑模式，用你的认知替你对外输出（安全只读）
-- **`/review`** — 评价内容（不影响知识系统）
+- **`/content-review`** — 评价内容（不影响知识系统）
 - **`/compile-thinking`** — 编译个人思维脚本
 - **`/bootstrap`** — 灌入历史内容
 - **`/weekly-review`** — 发起周度复盘
@@ -186,7 +186,7 @@ Agent 默认处于**待命模式**，以下操作不产生 session 记录：
 /brain ──→ 认知代理模式（用你的知识和视角对外输出）
        ╳   不写图谱、不写记忆，输出存 docs/brain/
 
-/review ──→ 只读评价（事实核查 + 逻辑核查 + 内容质量 + 个人相关性）
+/content-review ──→ 只读评价（事实核查 + 逻辑核查 + 内容质量 + 个人相关性）
         ╳   不写图谱、不写记忆
 
 /compile-thinking ──→ 扫描 mental_model + CrossDomainLink + ThinkingDeposit

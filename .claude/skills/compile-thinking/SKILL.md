@@ -1,6 +1,6 @@
 ---
 name: compile-thinking
-description: 从知识图谱中编译用户的个人思维方式——分析 mental_model 调用模式、跨域连接习惯和原创框架，生成 ThinkingScript 实体和思维脚本文件，维护场景索引供 /review 和 /chat 路由调用。
+description: 从知识图谱中编译用户的个人思维方式——分析 mental_model 调用模式、跨域连接习惯和原创框架，生成 ThinkingScript 实体和思维脚本文件，维护场景索引供 /content-review 和 /chat 路由调用。
 ---
 
 ## 角色
@@ -15,7 +15,7 @@ description: 从知识图谱中编译用户的个人思维方式——分析 men
 |----|------|------|
 | **图谱实体** | `ontology/ontology.jsonld` 中的 `ThinkingScript` 节点 | 存元数据、场景标签、来源边，供 grep 查询 |
 | **内容文件** | `scripts/thinking/{ts_id}.md` | 存实际的思维步骤，供 Agent 读取并执行 |
-| **场景索引** | `ontology/_meta/thinking_scenarios.md` | 轻量路由表，`/review` 和 `/chat` 通过 grep 匹配场景 |
+| **场景索引** | `ontology/_meta/thinking_scenarios.md` | 轻量路由表，`/content-review` 和 `/chat` 通过 grep 匹配场景 |
 
 ## 数据来源
 
