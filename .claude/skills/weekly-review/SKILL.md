@@ -67,7 +67,11 @@ disable-model-invocation: true
 
 ### 第四步半：Todo 盘点
 
-1. 读取 `memory/todo.json`，按类型分组展示所有 `open` 和 `in_progress` 的 todo
+1. 用脚本预过滤活跃条目（减少 token 消耗）：
+   ```bash
+   python3 -c "import json; data=json.load(open('memory/todo.json')); [print(json.dumps(t,ensure_ascii=False)) for t in data if t.get('status') in ('open','in_progress')]"
+   ```
+   按类型分组展示
 2. 向用户逐一确认每条 todo 的状态：
    - 继续保留 → 不变
    - 已完成 → `status: "completed"`，填写 `completedAt`

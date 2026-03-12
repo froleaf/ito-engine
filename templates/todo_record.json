@@ -1,9 +1,11 @@
 {
   "id": "",
   "type": "",
+  "type_enum": ["topic_to_explore", "reading", "deep_thinking", "action_item"],
   "title": "",
   "description": "",
   "status": "open",
+  "status_enum": ["open", "in_progress", "completed", "dropped"],
   "relatedNodes": [],
   "relatedDomains": [],
   "source": "",
