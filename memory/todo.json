@@ -1,0 +1,490 @@
+[
+  {
+    "id": "todo_001",
+    "type": "action_item",
+    "title": "导入小红书历史内容",
+    "description": "用户名「柚子kira」的小红书短篇思考分享。已全部完成导入：反PUA辩证思维、爱自己vs爱他人、线粒体与脂肪代谢、辍学作为信号、重构家庭圣母心、嫉妒心与零和正和、压力与身体、良质即涌现、人活着就是意义、主体性实操指南、优绩主义三层、拖延动力学（已有→published）、三层决策（已有→published）、不想上班（已有）。共15篇。",
+    "status": "completed",
+    "relatedNodes": [],
+    "relatedDomains": [],
+    "source": "chat_2026-03-08",
+    "createdAt": "2026-03-08",
+    "updatedAt": "2026-03-11",
+    "completedAt": "2026-03-11"
+  },
+  {
+    "id": "todo_002",
+    "type": "topic_to_explore",
+    "title": "\"为生存而创作\"的压力是否能催生伟大艺术",
+    "description": "AI净化了创作者动机纯度，但有些伟大艺术恰恰来自「为了生存不得不创作」的压力。动机纯度更高是否一定更好？这个张力值得展开。",
+    "status": "open",
+    "relatedNodes": [
+      "td_ai_as_forced_opensourcing",
+      "td_compound_feedback_education"
+    ],
+    "relatedDomains": [
+      "domain_education",
+      "domain_ai_agent"
+    ],
+    "source": "chat_2026-03-08",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_003",
+    "type": "reading",
+    "title": "继续阅读《大脑全书》",
+    "description": "已读完。",
+    "status": "completed",
+    "relatedNodes": [
+      "mat_whole_brain_book"
+    ],
+    "relatedDomains": [
+      "domain_cognitive_science"
+    ],
+    "source": "graph_sync",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": "2026-03-09"
+  },
+  {
+    "id": "todo_004",
+    "type": "reading",
+    "title": "继续阅读《数学之美》",
+    "description": "吴军著。已读完。",
+    "status": "completed",
+    "relatedNodes": [
+      "mat_beauty_of_math"
+    ],
+    "relatedDomains": [
+      "domain_data_analysis"
+    ],
+    "source": "graph_sync",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": "2026-03-09"
+  },
+  {
+    "id": "todo_005",
+    "type": "reading",
+    "title": "继续学习钢琴课（车尔尼599）",
+    "description": "暂时中断。",
+    "status": "open",
+    "relatedNodes": [
+      "mat_piano_czerny599"
+    ],
+    "relatedDomains": [
+      "domain_music_production"
+    ],
+    "source": "graph_sync",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_006",
+    "type": "reading",
+    "title": "继续学习声乐课",
+    "description": "暂时中断。",
+    "status": "open",
+    "relatedNodes": [
+      "mat_voice_lessons"
+    ],
+    "relatedDomains": [
+      "domain_music_production"
+    ],
+    "source": "graph_sync",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_007",
+    "type": "reading",
+    "title": "继续阅读《禅与摩托车维修艺术》",
+    "description": "在读中。",
+    "status": "open",
+    "relatedNodes": [
+      "mat_zen_motorcycle"
+    ],
+    "relatedDomains": [
+      "domain_western_philosophy"
+    ],
+    "source": "graph_sync",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_008",
+    "type": "reading",
+    "title": "继续阅读《品格之路》",
+    "description": "The Road to Character。已读完。",
+    "status": "completed",
+    "relatedNodes": [
+      "mat_character_road"
+    ],
+    "relatedDomains": [
+      "domain_psychology"
+    ],
+    "source": "graph_sync",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": "2026-03-09"
+  },
+  {
+    "id": "todo_009",
+    "type": "topic_to_explore",
+    "title": "深聊信号捕手项目——听听ITO的想法",
+    "description": "信号捕手是一个正在试图做成的AI产品项目，核心是认知×内容交互模型。已完成框架扩展（预期构建→离心分层→按状态呈现，见td_content_ai_design），下一步：技术实现方案、与ITO的协同、产品路线图。",
+    "status": "in_progress",
+    "relatedNodes": [
+      "td_signal_catcher",
+      "td_content_ai_design",
+      "branch_ai_product",
+      "cs_abstraction_ladder",
+      "cs_predictive_coding"
+    ],
+    "relatedDomains": [
+      "domain_ai_agent",
+      "domain_cognitive_science"
+    ],
+    "source": "standby_2026-03-09",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-12",
+    "completedAt": null
+  },
+  {
+    "id": "todo_010",
+    "type": "reading",
+    "title": "阅读《现代数学之旅》",
+    "description": "Peter Tannenbaum 著，刚开始看上册。",
+    "status": "open",
+    "relatedNodes": [
+      "mat_excursions_modern_math"
+    ],
+    "relatedDomains": [],
+    "source": "standby_2026-03-09",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_011",
+    "type": "reading",
+    "title": "阅读《枪炮、病菌与钢铁》",
+    "description": "Jared Diamond 著。书单待读。",
+    "status": "open",
+    "relatedNodes": [
+      "mat_guns_germs_steel"
+    ],
+    "relatedDomains": [],
+    "source": "standby_2026-03-09",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_012",
+    "type": "reading",
+    "title": "阅读《第三类黑猩猩》",
+    "description": "Jared Diamond 著。书单待读。",
+    "status": "open",
+    "relatedNodes": [
+      "mat_third_chimpanzee"
+    ],
+    "relatedDomains": [],
+    "source": "standby_2026-03-09",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_013",
+    "type": "reading",
+    "title": "阅读《崩溃》",
+    "description": "Jared Diamond 著。书单待读。",
+    "status": "open",
+    "relatedNodes": [
+      "mat_collapse"
+    ],
+    "relatedDomains": [],
+    "source": "standby_2026-03-09",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_014",
+    "type": "action_item",
+    "title": "导入 Gemini 历史聊天记录",
+    "description": "将与 Gemini 的历史对话内容搬移到 ITO 系统，作为 bootstrap 历史输入。Gemini share link 无法直接抓取，需手动复制粘贴到 inbox/bootstrap/ 后用 /bootstrap 处理。",
+    "status": "open",
+    "relatedNodes": [],
+    "relatedDomains": [],
+    "source": "standby_2026-03-09",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_015",
+    "type": "deep_thinking",
+    "title": "深化「认知科学研究vs应用」的输出方向",
+    "description": "从学习认知科学转向应用认知科学——'研究解决科学问题，应用解决人的问题'。这个转折点有高输出潜力，可以展开为一篇关于认知科学如何从书架走进日常的文章。",
+    "status": "open",
+    "relatedNodes": [
+      "cs_research_vs_application"
+    ],
+    "relatedDomains": [
+      "domain_cognitive_science"
+    ],
+    "source": "graph_sync_outputPotential",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_016",
+    "type": "deep_thinking",
+    "title": "深化「赚钱与理想的时间博弈」的输出方向",
+    "description": "赚钱是价值交换（用当下时间购买未来自由），理想是体验当下，两者抢夺时间资源。结合纳瓦尔的杠杆思想和《被讨厌的勇气》中'货币是被铸造的自由'。高输出潜力。",
+    "status": "open",
+    "relatedNodes": [
+      "ec_money_vs_ideals"
+    ],
+    "relatedDomains": [
+      "domain_economics",
+      "domain_personal_growth"
+    ],
+    "source": "graph_sync_outputPotential",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_017",
+    "type": "deep_thinking",
+    "title": "深化「语言即压缩——与AI交流的底层逻辑」的输出方向",
+    "description": "关键词唤醒而非信息输入、赋予视角防止AI在无限知识网络中迷失。已达到可教授他人的深度，适合输出为一篇系统性文章或分享。",
+    "status": "open",
+    "relatedNodes": [
+      "aa_language_as_compression"
+    ],
+    "relatedDomains": [
+      "domain_ai_agent"
+    ],
+    "source": "graph_sync_outputPotential",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_019",
+    "type": "topic_to_explore",
+    "title": "AI协作产出的归属与认知价值",
+    "description": "当用户提供方向/种子、AI展开主体内容时，产出归属权和认知价值怎么算？与「AI作为强制开源」思考线的延伸——AI协作不只影响外部知识壁垒，也影响个人认知深度的标定方式。coCreatedWith字段是技术解决方案，但背后的哲学问题值得展开。",
+    "status": "open",
+    "relatedNodes": [
+      "td_ai_as_forced_opensourcing",
+      "td_demon_slayer_emotion"
+    ],
+    "relatedDomains": [
+      "domain_ai_agent",
+      "domain_cognitive_science"
+    ],
+    "source": "standby_2026-03-09",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_018",
+    "type": "action_item",
+    "title": "写鬼灭之刃情绪复杂性感悟文",
+    "description": "基于鬼灭之刃的观看体验，写一篇关于情绪复杂性的感悟分享文。内容已沉淀为 Deposit（六维复合情绪框架 + 角色心理学分析），待整理为可发布的文章。",
+    "status": "in_progress",
+    "relatedNodes": [
+      "td_demon_slayer_emotion"
+    ],
+    "relatedDomains": [
+      "domain_psychology"
+    ],
+    "source": "cold_start_2026-03-04",
+    "createdAt": "2026-03-09",
+    "updatedAt": "2026-03-09",
+    "completedAt": null
+  },
+  {
+    "id": "todo_020",
+    "type": "action_item",
+    "title": "导入 flomo 历史内容",
+    "description": "flomo 中的历史思考碎片已全部导入。涵盖 2021-04 至 2025-04，共四批处理：碎片笔记2021-2022（认知负荷理论/职业哲学/proto-ITO思考/学习动机缺口）、碎片笔记2022-2024（怪诞行为学/记忆系统/概念扩展链/系统是事后抽象/结果知识vs过程知识）、五大思考法202402（本质/迁移/升维/逆向/溯因）、长衫与否定之否定2024-2025（+鲍曼《新穷人》）。",
+    "status": "completed",
+    "relatedNodes": [],
+    "relatedDomains": [],
+    "source": "standby_2026-03-10",
+    "createdAt": "2026-03-10",
+    "updatedAt": "2026-03-11",
+    "completedAt": "2026-03-11"
+  },
+  {
+    "id": "todo_021",
+    "type": "action_item",
+    "title": "导入「无限状态」飞书历史内容",
+    "description": "飞书历史内容已全部导入。包括：睡眠监测技术+四维框架（kd_sleep_monitoring_framework）、睡眠科学与需求分析（kd_sleep_science_needs_analysis）、运动健康方案（kd_exercise_health_framework）、Agent知识库架构推演（td_agent_knowledge_architecture）、滑雪AI Coach系统（td_ski_coach_system）。",
+    "status": "completed",
+    "relatedNodes": [
+      "kd_sleep_monitoring_framework",
+      "kd_sleep_science_needs_analysis",
+      "kd_exercise_health_framework",
+      "td_agent_knowledge_architecture",
+      "td_ski_coach_system"
+    ],
+    "relatedDomains": [
+      "domain_health_wellness",
+      "domain_ai_agent"
+    ],
+    "source": "standby_2026-03-10",
+    "createdAt": "2026-03-10",
+    "updatedAt": "2026-03-11",
+    "completedAt": "2026-03-11"
+  },
+  {
+    "id": "todo_022",
+    "type": "deep_thinking",
+    "title": "深化「智能多维面与双向建构回路」",
+    "description": "压缩×注意力×贝叶斯×类比构成智能的不同面，注意力与压缩形成双向建构回路。'从系统内运行到看见系统本身'是贯穿多个框架的元模式。目前仍停留在直觉层面，需要更严谨地厘清各维度间的关系结构。",
+    "status": "open",
+    "relatedNodes": [
+      "td_intelligence_multidimensional",
+      "link_compression_attention_loop"
+    ],
+    "relatedDomains": [
+      "domain_cognitive_science",
+      "domain_psychology"
+    ],
+    "source": "chat_2026-03-10",
+    "createdAt": "2026-03-10",
+    "updatedAt": "2026-03-10",
+    "completedAt": null
+  },
+  {
+    "id": "todo_023",
+    "type": "action_item",
+    "title": "制作和弦色彩分析视频",
+    "description": "用流行作品做和弦色彩导览视频（含弹奏演示+剪辑）：小调卡农系列（周杰伦夜曲、flower dance）vs 256悲壮系列（炎柱、eutopia）。帮助听众直觉理解和弦色彩设计。",
+    "status": "open",
+    "relatedNodes": [
+      "td_chord_color_guide",
+      "mu_chord_functional_groups",
+      "mu_voicing_and_color"
+    ],
+    "relatedDomains": [
+      "domain_music_production"
+    ],
+    "source": "chat_2026-03-10",
+    "createdAt": "2026-03-10",
+    "updatedAt": "2026-03-10",
+    "completedAt": null
+  },
+  {
+    "id": "todo_024",
+    "type": "topic_to_explore",
+    "title": "AI时代重新审视劳动异化",
+    "description": "马克思的劳动异化理论在AI时代是否需要重新解读？AI有可能逆转异化（让人回到'劳动即目的'）还是会产生新的异化形式？主体性话题与劳动关系变革的交叉。用户表示目前说不清楚，留作种子，未来有想法时继续聊。",
+    "status": "open",
+    "relatedNodes": [
+      "ph_labor_alienation",
+      "td_ai_as_forced_opensourcing",
+      "ec_money_vs_ideals"
+    ],
+    "relatedDomains": [
+      "domain_western_philosophy",
+      "domain_ai_agent",
+      "domain_economics"
+    ],
+    "source": "write-note_2026-03-10",
+    "createdAt": "2026-03-10",
+    "updatedAt": "2026-03-10",
+    "completedAt": null
+  },
+  {
+    "id": "todo_025",
+    "type": "reading",
+    "title": "继续阅读《I Don't Want to Talk About It》",
+    "description": "Terrence Real 著。关于男性抑郁症（covert depression）、性别社会化的'减半自我'、代际创伤传递。",
+    "status": "dropped",
+    "relatedNodes": [
+      "mat_i_dont_want_to_talk",
+      "ps_attachment_trauma_tree"
+    ],
+    "relatedDomains": [
+      "domain_psychology"
+    ],
+    "source": "write-note_2026-03-10",
+    "createdAt": "2026-03-10",
+    "updatedAt": "2026-03-10",
+    "completedAt": null
+  },
+  {
+    "id": "todo_026",
+    "type": "action_item",
+    "title": "优化 /brain 场景化人格与语气设定",
+    "description": "为 brain 模式增加场景化的人格/语气切换能力：工作场景更专业严谨，朋友场景更随意口语化，社交媒体场景更有传播力等。第一版先跑通核心功能，后续再迭代。",
+    "status": "open",
+    "relatedNodes": [
+      "td_ito_engine"
+    ],
+    "relatedDomains": [
+      "domain_ai_agent"
+    ],
+    "source": "standby_2026-03-11",
+    "createdAt": "2026-03-11",
+    "updatedAt": "2026-03-11",
+    "completedAt": null
+  },
+  {
+    "id": "todo_027",
+    "type": "reading",
+    "title": "阅读 The Tacit Dimension (Michael Polanyi)",
+    "description": "隐性知识理论——\"我们知道的比我们能说出来的多\"。与「热爱的系统一」（亲手做才能获得的判断力）和「老手艺人」高度相关。也与冰山模型（术源于道）、压缩进步理论有潜在关联。",
+    "status": "open",
+    "relatedNodes": [
+      "mat_tacit_dimension",
+      "td_ito_product_philosophy",
+      "td_iceberg_model_learning"
+    ],
+    "relatedDomains": [
+      "domain_cognitive_science"
+    ],
+    "source": "2026-03-12 standby",
+    "createdAt": "2026-03-12T02:30:00+08:00",
+    "updatedAt": "2026-03-12T02:30:00+08:00",
+    "completedAt": null
+  },
+  {
+    "id": "todo_028",
+    "type": "action_item",
+    "title": "撰写 ITO 架构哲学推广文：图范式复兴论",
+    "description": "基于 td_graph_paradigm_renaissance 撰写对外推广内容，回答三个核心问题：为什么用图？为什么不用真正的图数据库？为什么现在是时候？\n\n知识回路连接：\n- td_graph_paradigm_renaissance：核心论点（对象+边范式、JSON-LD优于图数据库、AI世界知识+术语标准化解决构建瓶颈）\n- td_ito_product_philosophy：产品价值观（替代功利系统一、激发系统二、三重触手、成长可视化）——图范式是这套价值观的技术底座\n- mat_koylan_filesystem_os：ITO灵感来源，可作为对比叙事（同构架构、不同方向）\n- branch_st_architecture：ITO诞生链条（Koylan→PDCA→滑雪+图→思考记录激活）——'从结构出发等真实需求激活'的创造模式\n- branch_ai_memory_systems：图数据库哲学完整论述（边是一等公民、供给侧三瓶颈、JSON-LD务实妥协）\n- td_content_ai_design：信号捕手作为图范式的第二个潜在落地场景\n- 四场景验证表（教育/信号捕手/笔记/项目管理）：证明范式的普适性\n\n推广角度建议：不写成技术文档，写成叙事——从'我为什么执着于图'到'AI改变了什么'到'ITO是第一个证明'。用brain模式以第一人称输出。",
+    "status": "open",
+    "relatedNodes": [
+      "td_graph_paradigm_renaissance",
+      "td_ito_product_philosophy",
+      "mat_koylan_filesystem_os",
+      "branch_ai_memory_systems",
+      "branch_st_architecture",
+      "td_content_ai_design"
+    ],
+    "relatedDomains": [
+      "domain_ai_agent",
+      "domain_systems_theory"
+    ],
+    "source": "review_2026-03-12",
+    "createdAt": "2026-03-12T04:00:00+08:00",
+    "updatedAt": "2026-03-12T04:00:00+08:00",
+    "completedAt": null
+  }
+]

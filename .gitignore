@@ -1,15 +1,6 @@
-# === 隐私/数据目录（仅根目录，不影响 _init/ 模板）===
-/memory/
-/inbox/
-/ontology/
-/output/
-/scripts/
-
-# === 文档（本地开发文档）===
-/docs/
-
-# === 个人可视化文件（模板在 _init/ 中）===
-/visualization.html
+# === 隐私/数据目录 ===
+# full 分支跟踪所有个人数据（私有备份）
+# main 分支通过 worktree 管理，保留原始 .gitignore 排除这些目录
 
 # === 缓存 ===
 .cache/
