@@ -3368,10 +3368,12 @@
       "publishedPlatform": "小红书",
       "sourceRef": "inbox/processed/人活着就是意义-小红书-202603.md",
       "contentPath": "output/deposits/td_human_as_data_source.md",
-      "aboutNodes": ["td_ai_as_forced_opensourcing", "branch_ai_product", "td_quality_as_emergence"],
-      "aboutDomains": ["domain_ai_agent", "domain_economics"],
-      "description": "AI最缺的是领域数据——真实世界的稀有场景数据极其稀缺。由此推导出乐观可能性：人类可以通过体验世界、产生数据来换取价值。越是稀有的场景越宝贵。AI越渴求罕见数据，人类就越被鼓励去活得多姿多彩。人活着本身就能成为意义。",
+      "aboutNodes": ["td_ai_as_forced_opensourcing", "branch_ai_product", "td_quality_as_emergence", "branch_ps_individual", "td_ito_product_philosophy", "mat_tacit_dimension"],
+      "aboutDomains": ["domain_ai_agent", "domain_economics", "domain_psychology"],
+      "description": "AI最缺的是领域数据——真实世界的稀有场景数据极其稀缺。由此推导出乐观可能性：人类可以通过体验世界、产生数据来换取价值。2026-03深化：不是即时可兑现的数据变现模式，而是方向性判断——AI把标准化劳动价值压到接近零时，人的差异化价值（独特经验、罕见判断力、不可复制的审美）变得更稀缺。好好生活是积累AI替代不了的东西。同时提出'AI削弱all-in结构性优势'——替代功利系统一后，不牺牲也能有足够执行力。进一步闭环：三环链条——好好生活（积累差异化经验）→结构化表达（隐性→显性，Polanyi隐性知识理论）→被看见和连接（转化为机会）。连接机制两个方向：①结构化表达本身降低'被看见'门槛；②AI重塑去中心化匹配——个人认知图谱作为公开能力画像，不依赖平台中间人。'快就是慢，慢就是快'：假设力（而非验证速度）是AI时代穿越不确定性的限速环节。",
+      "mergeHistory": ["2026-03-12: 与阿德勒×创投讨论交叉，深化'好好生活就是生产力'从数据变现到差异化价值积累", "2026-03-12: 闭合三环链条——结构化表达+连接机制+快就是慢，Polanyi隐性知识理论接入"],
       "depth": "可教授他人",
+      "updatedAt": "2026-03-12T00:00:00+08:00",
       "createdAt": "2026-03-01T00:00:00+08:00"
     },
 
@@ -3701,9 +3703,10 @@
       "depositType": "thinking",
       "outputStatus": "deposited",
       "outputPotential": "high",
+      "userInsight": "AI替代功利系统一的延伸推论：决策负荷分两种——信息不足导致的焦虑（AI可压缩）vs本质上的不确定性（AI接管不了）。AI虽替代不了决策本身，但降低了做出好决策所需的消耗。一个好好生活、保持清醒的人做判断不比996到神志不清的人差——因为没有沉没成本的包袱。",
       "sourceRef": "inbox/conversations/2026-03-12_chat_ito_system12_philosophy.md",
       "contentPath": "output/deposits/td_ito_product_philosophy.md",
-      "aboutNodes": ["branch_ai_product", "branch_ai_cognitive", "td_ai_as_forced_opensourcing", "td_human_as_data_source", "td_perspective_subjectivity_growth", "td_compound_feedback_education"],
+      "aboutNodes": ["branch_ai_product", "branch_ai_cognitive", "td_ai_as_forced_opensourcing", "td_human_as_data_source", "td_perspective_subjectivity_growth", "td_compound_feedback_education", "mat_tacit_dimension"],
       "aboutDomains": ["domain_ai_agent", "domain_cognitive_science", "domain_psychology", "domain_education"],
       "derivedFrom": ["td_ai_as_forced_opensourcing", "td_perspective_subjectivity_growth"],
       "description": "以Kahneman的System 1/2框架重新定义ITO的产品价值观。区分'功利的系统一'（为外人负责的事务型劳动）和'热爱的系统一'（与世界连接的触手——手指触琴键、亲手做数据分析）。AI应替代前者、保护后者。大部分人用AI的方式是老板-员工关系（帮我写/帮我实现），把人变成老板与AI之间的传话筒，压缩了系统二和休息时间。ITO的方式是协作者-启发者关系：苏格拉底式对话激发系统二，AI作为世界知识的触手+记忆的触手，大脑可视化对抗被替代焦虑。四层价值：①替代功利系统一 ②激发系统二（对话+协作+知识触手+记忆触手）③可视化成长（对抗焦虑）④保护热爱系统一。与成长空间模型完全对齐：视角（输入/触手）、主体性×认知复杂性（系统二）、身体（休息/恢复）。",
@@ -3814,6 +3817,22 @@
       "depth": "有独立见解",
       "updatedAt": "2026-03-12T00:00:00+08:00",
       "createdAt": "2026-03-12T00:00:00+08:00"
+    },
+
+    {"_comment": "═══════ 2026-03-12 Material: Effectuation Theory ═══════"},
+    {
+      "@type": "Material",
+      "@id": "mat_effectuation",
+      "name": "Effectuation: Elements of Entrepreneurial Expertise",
+      "author": ["Saras D. Sarasvathy"],
+      "materialType": "book",
+      "language": "en",
+      "publicationYear": 2008,
+      "publisher": "Edward Elgar Publishing",
+      "readingStatus": "wishlist",
+      "coversTopics": ["branch_ec_behavioral", "td_human_as_data_source"],
+      "belongsTo": "domain_economics_game_theory",
+      "createdAt": "2026-03-12T23:30:00+08:00"
     }
   ]
 }

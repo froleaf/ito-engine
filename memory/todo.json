@@ -522,5 +522,24 @@
     "createdAt": "2026-03-12T23:00:00+08:00",
     "updatedAt": "2026-03-12T23:00:00+08:00",
     "completedAt": null
+  },
+  {
+    "id": "todo_031",
+    "type": "reading",
+    "title": "阅读 Effectuation: Elements of Entrepreneurial Expertise (Sarasvathy)",
+    "description": "Sarasvathy 的 Effectuation Theory——专家创业者不是先预测再行动，而是用手头资源行动并从结果中发现机会。与「假设力优先」互补：最好的假设往往从上一次行动的副产品中长出来。review 中推荐。",
+    "status": "open",
+    "relatedNodes": [
+      "mat_effectuation",
+      "td_human_as_data_source",
+      "branch_ec_behavioral"
+    ],
+    "relatedDomains": [
+      "domain_economics"
+    ],
+    "source": "brain_review_2026-03-12",
+    "createdAt": "2026-03-12T23:30:00+08:00",
+    "updatedAt": "2026-03-12T23:30:00+08:00",
+    "completedAt": null
   }
 ]
