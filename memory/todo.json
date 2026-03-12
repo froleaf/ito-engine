@@ -468,7 +468,7 @@
     "id": "todo_028",
     "type": "action_item",
     "title": "撰写 ITO 架构哲学推广文：图范式复兴论",
-    "description": "基于 td_graph_paradigm_renaissance 撰写对外推广内容，回答三个核心问题：为什么用图？为什么不用真正的图数据库？为什么现在是时候？\n\n知识回路连接：\n- td_graph_paradigm_renaissance：核心论点（对象+边范式、JSON-LD优于图数据库、AI世界知识+术语标准化解决构建瓶颈）\n- td_ito_product_philosophy：产品价值观（替代功利系统一、激发系统二、三重触手、成长可视化）——图范式是这套价值观的技术底座\n- mat_koylan_filesystem_os：ITO灵感来源，可作为对比叙事（同构架构、不同方向）\n- branch_st_architecture：ITO诞生链条（Koylan→PDCA→滑雪+图→思考记录激活）——'从结构出发等真实需求激活'的创造模式\n- branch_ai_memory_systems：图数据库哲学完整论述（边是一等公民、供给侧三瓶颈、JSON-LD务实妥协）\n- td_content_ai_design：信号捕手作为图范式的第二个潜在落地场景\n- 四场景验证表（教育/信号捕手/笔记/项目管理）：证明范式的普适性\n\n推广角度建议：不写成技术文档，写成叙事——从'我为什么执着于图'到'AI改变了什么'到'ITO是第一个证明'。用brain模式以第一人称输出。",
+    "description": "基于 td_graph_paradigm_renaissance 撰写对外推广内容，回答三个核心问题：为什么用图？为什么不用真正的图数据库？为什么现在是时候？\n\n知识回路连接：\n- td_graph_paradigm_renaissance：核心论点（对象+边范式、JSON-LD优于图数据库、AI世界知识+术语标准化解决构建瓶颈）\n- td_ito_product_philosophy：产品价值观（压缩系统一、激发系统二、三重触手、成长可视化）——图范式是这套价值观的技术底座\n- mat_koylan_filesystem_os：ITO灵感来源，可作为对比叙事（同构架构、不同方向）\n- branch_st_architecture：ITO诞生链条（Koylan→PDCA→滑雪+图→思考记录激活）——'从结构出发等真实需求激活'的创造模式\n- branch_ai_memory_systems：图数据库哲学完整论述（边是一等公民、供给侧三瓶颈、JSON-LD务实妥协）\n- td_content_ai_design：信号捕手作为图范式的第二个潜在落地场景\n- 四场景验证表（教育/信号捕手/笔记/项目管理）：证明范式的普适性\n\n推广角度建议：不写成技术文档，写成叙事——从'我为什么执着于图'到'AI改变了什么'到'ITO是第一个证明'。用brain模式以第一人称输出。",
     "status": "open",
     "relatedNodes": [
       "td_graph_paradigm_renaissance",

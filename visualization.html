@@ -132,586 +132,586 @@ const graphNodes = [
   {
     "id": "domain_music_production",
     "type": "DomainRoot",
-    "priority": "primary",
-    "description": "音乐创作与制作——从基础理论到编曲实践，目标是创作能感动他人的作品",
     "depth": "理解",
     "name": "音乐编曲",
+    "priority": "primary",
+    "description": "音乐创作与制作——从基础理论到编曲实践，目标是创作能感动他人的作品",
     "domain": "domain_music_production"
   },
   {
     "id": "branch_mu_theory",
     "type": "BranchScaffold",
-    "description": "乐理、和声学、调式、节奏理论、音乐史与起源",
     "depth": "理解",
     "name": "音乐基础理论",
+    "description": "乐理、和声学、调式、节奏理论、音乐史与起源",
     "domain": "domain_music_production"
   },
   {
     "id": "branch_mu_production",
     "type": "BranchScaffold",
-    "description": "DAW工作流(Logic Pro)、音频工程、频谱分析、EQ均衡、混音母带",
     "depth": "浅读",
     "name": "音乐制作技术",
+    "description": "DAW工作流(Logic Pro)、音频工程、频谱分析、EQ均衡、混音母带",
     "domain": "domain_music_production"
   },
   {
     "id": "branch_mu_sound_design",
     "type": "BranchScaffold",
-    "description": "音色合成、采样、音色选择与资源库、声音处理效果",
     "depth": "浅读",
     "name": "声音设计",
+    "description": "音色合成、采样、音色选择与资源库、声音处理效果",
     "domain": "domain_music_production"
   },
   {
     "id": "branch_mu_composition",
     "type": "BranchScaffold",
-    "description": "编曲技法、配器法、曲式结构、风格化写作",
     "name": "编曲与作曲",
+    "description": "编曲技法、配器法、曲式结构、风格化写作",
     "domain": "domain_music_production"
   },
   {
     "id": "branch_mu_healing",
     "type": "BranchScaffold",
-    "description": "音乐治疗理论、音乐与情绪的神经科学基础、疗愈实践方法",
     "name": "音乐疗愈",
+    "description": "音乐治疗理论、音乐与情绪的神经科学基础、疗愈实践方法",
     "domain": "domain_music_production"
   },
   {
     "id": "mu_circle_of_fifths_generation",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "钢琴键盘排布（2212221）是选择'稳定性'而非'纯粹性'的历史产物——最纯的五度生成排布应该是2221221（Lydian）。Dorian（re-re）才是五度链的数学中心，教会音乐最早用它作基准不是巧合。",
-    "description": "大调=向上纯五度堆叠（变亮），小调=向下纯五度堆叠（变暗）。前7个向上五度音排列得到Lydian（最亮极端），前7个向下五度音得到Locrian（最暗极端）。传统Ionian/Aeolian是亮度轴的中间平衡点。调式亮度排序：Lydian > Ionian > Mixolydian > Dorian > Aeolian > Phrygian > Locrian。源自George Russell《利底亚色彩概念》，Jacob Collier为当代代表。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "五度圈生成逻辑与亮度轴",
+    "description": "大调=向上纯五度堆叠（变亮），小调=向下纯五度堆叠（变暗）。前7个向上五度音排列得到Lydian（最亮极端），前7个向下五度音得到Locrian（最暗极端）。传统Ionian/Aeolian是亮度轴的中间平衡点。调式亮度排序：Lydian > Ionian > Mixolydian > Dorian > Aeolian > Phrygian > Locrian。源自George Russell《利底亚色彩概念》，Jacob Collier为当代代表。",
     "domain": "domain_music_production"
   },
   {
     "id": "mu_negative_harmony",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "小调分解和弦如果追求镜像感，应该从5音向下弹（5-b3-1）而不是照搬大调的向上弹法（1-b3-5）。",
-    "description": "任何向上的和声进行都有一个完全对称的向下'负向'进行。大三和弦从根音向上构建（根音+上纯五+上大三），其镜像从五音向下构建（五音+下纯五+下大三）得到小三和弦。因此小三和弦的'虚拟根音'是五音而非传统根音。小三和弦是'混血儿'——G抓着大调稳定性，Eb往黑暗深渊拽，这就是小调内耗/忧郁张力的来源。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "负和谐理论 (Negative Harmony)",
+    "description": "任何向上的和声进行都有一个完全对称的向下'负向'进行。大三和弦从根音向上构建（根音+上纯五+上大三），其镜像从五音向下构建（五音+下纯五+下大三）得到小三和弦。因此小三和弦的'虚拟根音'是五音而非传统根音。小三和弦是'混血儿'——G抓着大调稳定性，Eb往黑暗深渊拽，这就是小调内耗/忧郁张力的来源。",
     "domain": "domain_music_production"
   },
   {
     "id": "mu_stability_vs_purity",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
-    "description": "传统和声论（功能派）选Ionian/Aeolian作为大小调基准，因为它们在亮度轴的中间，情感稳定、有'家'的感觉。五度生成论（物理派）认为Lydian/Locrian才是纯粹的大小调极端。两者是同一现象的不同地图：三度关系是近景照片（当下情绪），五度链是航拍全景（亮度坐标）。Lydian'光芒万丈但脚下没根'（增四度不稳定），Ionian'明亮且脚踏实地'（F提供地基）。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "功能稳定性 vs 物理色彩纯粹性",
+    "description": "传统和声论（功能派）选Ionian/Aeolian作为大小调基准，因为它们在亮度轴的中间，情感稳定、有'家'的感觉。五度生成论（物理派）认为Lydian/Locrian才是纯粹的大小调极端。两者是同一现象的不同地图：三度关系是近景照片（当下情绪），五度链是航拍全景（亮度坐标）。Lydian'光芒万丈但脚下没根'（增四度不稳定），Ionian'明亮且脚踏实地'（F提供地基）。",
     "domain": "domain_music_production"
   },
   {
     "id": "domain_cognitive_science",
     "type": "DomainRoot",
-    "priority": "primary",
-    "description": "研究心智与认知过程的跨学科领域——用户思维模式的底层学科",
     "depth": "有独立见解",
     "name": "认知科学",
+    "priority": "primary",
+    "description": "研究心智与认知过程的跨学科领域——用户思维模式的底层学科",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "branch_cs_foundations",
     "type": "BranchScaffold",
-    "description": "认知科学的核心问题、研究范式、多学科交叉框架",
     "depth": "有独立见解",
     "name": "认知科学基础",
+    "description": "认知科学的核心问题、研究范式、多学科交叉框架",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "branch_cs_consciousness",
     "type": "BranchScaffold",
-    "description": "意识的本质、自指与怪圈、心身问题、主观体验",
     "depth": "理解",
     "name": "意识与自我指涉",
+    "description": "意识的本质、自指与怪圈、心身问题、主观体验",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "branch_cs_learning",
     "type": "BranchScaffold",
-    "description": "学习机制、记忆系统、知识表征与迁移、元认知",
     "name": "学习与记忆",
+    "description": "学习机制、记忆系统、知识表征与迁移、元认知",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "branch_cs_embodied",
     "type": "BranchScaffold",
-    "description": "认知的身体基础、情境嵌入、感知-行动耦合",
     "name": "具身认知",
+    "description": "认知的身体基础、情境嵌入、感知-行动耦合",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "branch_cs_language",
     "type": "BranchScaffold",
-    "description": "语言认知、概念隐喻、类比与范畴化",
     "name": "语言与思维",
+    "description": "语言认知、概念隐喻、类比与范畴化",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "branch_cs_computation",
     "type": "BranchScaffold",
-    "description": "计算理论of mind、人工智能与认知建模、符号与连接主义",
     "name": "计算与认知",
+    "description": "计算理论of mind、人工智能与认知建模、符号与连接主义",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "domain_ai_agent",
     "type": "DomainRoot",
-    "priority": "primary",
-    "description": "AI智能体的设计、架构与产品化——新技术与认知科学/系统论的融合探索",
     "depth": "有独立见解",
     "name": "AI Agent",
+    "priority": "primary",
+    "description": "AI智能体的设计、架构与产品化——新技术与认知科学/系统论的融合探索",
     "domain": "domain_ai_agent"
   },
   {
     "id": "branch_ai_frameworks",
     "type": "Branch",
-    "description": "Agent设计模式、工具调用、多Agent协作、编排框架",
     "depth": "有独立见解",
     "name": "Agent框架与架构",
+    "description": "Agent设计模式、工具调用、多Agent协作、编排框架",
     "domain": "domain_ai_agent"
   },
   {
     "id": "branch_ai_ml_foundations",
     "type": "BranchScaffold",
-    "description": "监督/无监督学习、神经网络、深度学习基础(CNN/RNN/Transformer)",
     "depth": "理解",
     "name": "机器学习基础",
+    "description": "监督/无监督学习、神经网络、深度学习基础(CNN/RNN/Transformer)",
     "domain": "domain_ai_agent"
   },
   {
     "id": "branch_ai_llm",
     "type": "BranchScaffold",
-    "description": "LLM原理、Prompt工程、微调、RLHF、上下文学习",
     "name": "大语言模型",
+    "description": "LLM原理、Prompt工程、微调、RLHF、上下文学习",
     "domain": "domain_ai_agent"
   },
   {
     "id": "branch_ai_memory_systems",
     "type": "BranchScaffold",
     "userInsight": "2026.03 架构推演：B端知识库=中心化→去中心化Mesh（多节点高频网络）；C端知识库=Local-first本地本体+云端无状态推理（单节点状态机）。ITO Engine正是C端架构的实践——'专属文件夹'就是不断生长的个人Ontology。2022.03的proto-ITO思考（'顺应线性思维的三维记录方式'）在四年后落地为JSON-LD图谱+CLI+Skill系统。图数据库哲学：①边是一等公民——连接本身和对象一样重要，边可以有属性、类型、权重（CrossDomainLink自己带bridgeConcept/insight/strength）②信息复杂性超越二维——关系型数据库的JOIN是固定深度的，图的遍历是动态深度的。图数据库'销声匿迹'的供给侧分析：构建成本（只有专家能做）+维护成本（工作量大）+呈现成本（三维在二维屏幕上像半成品），三个瓶颈全指向人力不够，AI解决了前两个。JSON-LD+grep是务实妥协——边放在对象实体里提高存储查询效率，但'边是一等公民'的理念仍塑造了schema设计。",
-    "description": "知识图谱、向量数据库、RAG、Agent记忆架构设计",
     "depth": "有独立见解",
     "name": "知识与记忆系统",
+    "description": "知识图谱、向量数据库、RAG、Agent记忆架构设计",
     "domain": "domain_ai_agent"
   },
   {
     "id": "branch_ai_product",
     "type": "BranchScaffold",
     "userInsight": "AI时代的软件应该去工程化：自然语言做宏观架构，代码只做微观IO。工程复杂性的根源不是技术需求而是商业控制欲——开源分发零复杂性，skill私有化需要服务器，数据中心化引发工程爆炸。前端也是一种中心化设计，它在降低门槛的同时框住了用户能做的事。",
-    "description": "AI产品方法论、用户体验、商业化、产品经理视角",
     "depth": "有独立见解",
     "name": "AI产品设计",
+    "description": "AI产品方法论、用户体验、商业化、产品经理视角",
     "domain": "domain_ai_agent"
   },
   {
     "id": "branch_ai_cognitive",
     "type": "BranchScaffold",
-    "description": "认知科学启发的AI设计、类脑计算、人机协作模型",
     "name": "认知架构与AI",
+    "description": "认知科学启发的AI设计、类脑计算、人机协作模型",
     "domain": "domain_ai_agent"
   },
   {
     "id": "domain_systems_theory",
     "type": "DomainRoot",
-    "priority": "foundation",
-    "description": "系统思维与系统科学——用户思维模式底层之一",
     "depth": "有独立见解",
     "name": "系统论",
+    "priority": "foundation",
+    "description": "系统思维与系统科学——用户思维模式底层之一",
     "domain": "domain_systems_theory"
   },
   {
     "id": "branch_st_thinking",
     "type": "BranchScaffold",
     "userInsight": "2023.09 核心觉察：过去觉得系统在前、事情在后；如今觉得事物在前、系统只是事后的高度抽象。正如音乐理论（好听在先理论在后）、生物分类（观察在先分类在后）、学习过程（零散知识在先框架在后）。自我警示：系统规则不是既存的，而是【人】【基于自己的视角】对已有事物的【事后】【高度抽象】。对任何运作着的系统，没有人能百分之百确定什么对它是正确的。先不要去评判，学会观察。",
-    "description": "整体论、系统边界、反直觉行为、心智模型",
     "depth": "有独立见解",
     "name": "系统思维",
+    "description": "整体论、系统边界、反直觉行为、心智模型",
     "domain": "domain_systems_theory"
   },
   {
     "id": "branch_st_architecture",
     "type": "BranchScaffold",
     "userInsight": "2022.03 proto-ITO 思考：文字是线性的，思维导图是二维的（有起点终点或中心），知识图谱是三维的。知识图谱及其本体构建像一个'能够通过线性思维构建和阅读的三维记叙体'。问题：目前大部分人无法轻易构建起来，是否能出现顺应线性思维的三维记录方式？——这就是 ITO Engine 的原型设想。ITO的诞生链条：Koylan的'File System Is the New Database'文章→想到PDCA教练回路的工程实现→滑雪场景需求激发图数据库结合→架构雏形完成但无应用场景→'思考和记录'这个真实需求把它激活了。模式：不是从需求出发找方案，而是从结构出发等真实需求来激活。",
-    "description": "系统分解与集成、架构决策、涌现属性、形式与功能映射",
     "depth": "理解",
     "name": "系统架构",
+    "description": "系统分解与集成、架构决策、涌现属性、形式与功能映射",
     "domain": "domain_systems_theory"
   },
   {
     "id": "branch_st_dynamics",
     "type": "BranchScaffold",
     "userInsight": "2024.02 系统化整理：增强回路（偶数个O→自我强化/指数增长或加速崩溃）vs 调节回路（奇数个O→自动复位）。S为正向因果、O为反向因果。所有闭合回路非增强即调节。系统反应存在时滞（延迟），这是很多反直觉行为的根源。",
-    "description": "反馈回路、存量流量、延迟、非线性行为、杠杆点",
     "depth": "理解",
     "name": "系统动力学",
+    "description": "反馈回路、存量流量、延迟、非线性行为、杠杆点",
     "domain": "domain_systems_theory"
   },
   {
     "id": "branch_st_complexity",
     "type": "BranchScaffold",
-    "description": "涌现、自组织、适应性系统、混沌与分形",
     "name": "复杂性科学",
+    "description": "涌现、自组织、适应性系统、混沌与分形",
     "domain": "domain_systems_theory"
   },
   {
     "id": "branch_st_cybernetics",
     "type": "BranchScaffold",
-    "description": "反馈控制、信息论基础、通信与控制",
     "name": "控制论",
+    "description": "反馈控制、信息论基础、通信与控制",
     "domain": "domain_systems_theory"
   },
   {
     "id": "domain_data_analysis",
     "type": "DomainRoot",
-    "priority": "foundation",
     "userInsight": "中山大学地球物理学硕士（4年科研数据经验）+ 5年数据工作经验（风变科技团队负责人→迷你玩数据负责人→BUD→乐播→富途）。非CS科班出身，数据能力从科研和实战中生长。几乎每份工作都从0到1搭建数据体系——这是指标体系方法论的实战来源。跨教育/游戏/工具/金融四个行业，核心方法论不变。",
-    "description": "数据驱动的决策方法——已内化为用户的核心思维工具",
     "depth": "可教授他人",
     "name": "数据分析",
+    "priority": "foundation",
+    "description": "数据驱动的决策方法——已内化为用户的核心思维工具",
     "domain": "domain_data_analysis"
   },
   {
     "id": "branch_da_methodology",
     "type": "Branch",
     "userInsight": "在风变科技、迷你玩、富途等多家公司反复实践从0到1搭建指标体系。已沉淀为C2B数据指标体系框架（投资层/决策层/执行层三层数据消费者模型）和北极星指标拆解四步法。",
-    "description": "分析框架设计、指标体系、数据结构与数字化建模",
     "depth": "可教授他人",
     "name": "分析方法论",
+    "description": "分析框架设计、指标体系、数据结构与数字化建模",
     "domain": "domain_data_analysis"
   },
   {
     "id": "branch_da_sql",
     "type": "BranchScaffold",
     "userInsight": "查询与统计母语级，工程调优方面待加强",
-    "description": "SQL查询与统计、数据管道、数据库设计、工程调优",
     "depth": "可教授他人",
     "name": "SQL与数据工程",
+    "description": "SQL查询与统计、数据管道、数据库设计、工程调优",
     "domain": "domain_data_analysis"
   },
   {
     "id": "branch_da_product",
     "type": "BranchScaffold",
     "userInsight": "在BUD（海外UGC游戏平台）主导留存分析使新用户次留提升3pp，推动业务从'仅关注次留'转向'长期留存'。在迷你编程主导AB测试接入和用户分层模型搭建。在富途完成AUM指标体系设计和客户生命周期分析。",
-    "description": "产品分析、增长分析、A/B测试、用户行为分析",
     "depth": "可教授他人",
     "name": "产品与增长分析",
+    "description": "产品分析、增长分析、A/B测试、用户行为分析",
     "domain": "domain_data_analysis"
   },
   {
     "id": "branch_da_visualization",
     "type": "BranchScaffold",
-    "description": "可视化设计原则、可视化套件、信息图表",
     "name": "数据可视化",
+    "description": "可视化设计原则、可视化套件、信息图表",
     "domain": "domain_data_analysis"
   },
   {
     "id": "branch_da_statistics",
     "type": "BranchScaffold",
-    "description": "描述统计、推断统计、概率论、假设检验",
     "name": "统计学基础",
+    "description": "描述统计、推断统计、概率论、假设检验",
     "domain": "domain_data_analysis"
   },
   {
     "id": "domain_psychology",
     "type": "DomainRoot",
-    "priority": "foundation",
-    "description": "以应用为主的心理学关注——聚焦主体性培养与情绪健康",
     "depth": "理解",
     "name": "心理学",
+    "priority": "foundation",
+    "description": "以应用为主的心理学关注——聚焦主体性培养与情绪健康",
     "domain": "domain_psychology"
   },
   {
     "id": "branch_ps_cognitive",
     "type": "BranchScaffold",
-    "description": "注意、知觉、记忆、思维、决策等认知过程研究",
     "depth": "浅读",
     "name": "认知心理学",
+    "description": "注意、知觉、记忆、思维、决策等认知过程研究",
     "domain": "domain_psychology"
   },
   {
     "id": "branch_ps_social",
     "type": "BranchScaffold",
-    "description": "社会认知、群体行为、态度与说服、人际关系",
     "depth": "浅读",
     "name": "社会心理学",
+    "description": "社会认知、群体行为、态度与说服、人际关系",
     "domain": "domain_psychology"
   },
   {
     "id": "branch_ps_clinical",
     "type": "BranchScaffold",
-    "description": "精神病理学、心理治疗流派(精神分析/CBT/人本)、心理健康",
     "name": "临床与变态心理学",
+    "description": "精神病理学、心理治疗流派(精神分析/CBT/人本)、心理健康",
     "domain": "domain_psychology"
   },
   {
     "id": "branch_ps_developmental",
     "type": "BranchScaffold",
-    "description": "个体发展、青少年心理、主体性发展、自我同一性",
     "name": "发展心理学",
+    "description": "个体发展、青少年心理、主体性发展、自我同一性",
     "domain": "domain_psychology"
   },
   {
     "id": "branch_ps_individual",
     "type": "BranchScaffold",
-    "description": "阿德勒个体心理学、目的论、社会兴趣、自卑与超越",
     "depth": "理解",
     "name": "个体心理学",
+    "description": "阿德勒个体心理学、目的论、社会兴趣、自卑与超越",
     "domain": "domain_psychology"
   },
   {
     "id": "domain_education",
     "type": "DomainRoot",
-    "priority": "foundation",
     "userInsight": "在风变科技（在线教育公司，核心产品'风变编程'Python小课）工作两年，从数据视角深度参与教育产品。教育领域兴趣不是纯理论——有实际的教育行业经验支撑。",
-    "description": "知识与信息基于时间维度的传播——关注元层面教育加速方法与主体性培养",
     "depth": "有独立见解",
     "name": "教育",
+    "priority": "foundation",
+    "description": "知识与信息基于时间维度的传播——关注元层面教育加速方法与主体性培养",
     "domain": "domain_education"
   },
   {
     "id": "branch_ed_theory",
     "type": "BranchScaffold",
-    "description": "教育哲学、学习理论、建构主义、教学设计",
     "name": "教育学基础理论",
+    "description": "教育哲学、学习理论、建构主义、教学设计",
     "domain": "domain_education"
   },
   {
     "id": "branch_ed_metacognition",
     "type": "BranchScaffold",
-    "description": "元认知策略、自我调节学习、学习迁移、认知负荷理论",
     "name": "元认知与学习科学",
+    "description": "元认知策略、自我调节学习、学习迁移、认知负荷理论",
     "domain": "domain_education"
   },
   {
     "id": "branch_ed_game_based",
     "type": "BranchScaffold",
-    "description": "游戏化学习设计、严肃游戏、教育游戏机制",
     "name": "游戏化教育",
+    "description": "游戏化学习设计、严肃游戏、教育游戏机制",
     "domain": "domain_education"
   },
   {
     "id": "branch_ed_subjectivity",
     "type": "BranchScaffold",
-    "description": "学生主体性培养、批判性思维教育、自主学习能力发展",
     "depth": "有独立见解",
     "name": "主体性教育",
+    "description": "学生主体性培养、批判性思维教育、自主学习能力发展",
     "domain": "domain_education"
   },
   {
     "id": "branch_ed_curriculum",
     "type": "BranchScaffold",
-    "description": "课程设计、知识体系化、跨学科整合",
     "name": "课程与知识组织",
+    "description": "课程设计、知识体系化、跨学科整合",
     "domain": "domain_education"
   },
   {
     "id": "domain_economics",
     "type": "DomainRoot",
-    "priority": "supplementary",
-    "description": "作为系统论的延伸视角——理解社会系统运行的经济学框架",
     "depth": "理解",
     "name": "经济学与博弈论",
+    "priority": "supplementary",
+    "description": "作为系统论的延伸视角——理解社会系统运行的经济学框架",
     "domain": "domain_economics"
   },
   {
     "id": "branch_ec_micro",
     "type": "BranchScaffold",
-    "description": "供需理论、市场结构、消费者与厂商行为、福利经济学",
     "depth": "理解",
     "name": "微观经济学",
+    "description": "供需理论、市场结构、消费者与厂商行为、福利经济学",
     "domain": "domain_economics"
   },
   {
     "id": "branch_ec_macro",
     "type": "BranchScaffold",
-    "description": "GDP与国民收入、货币与财政政策、经济增长、国际贸易",
     "depth": "理解",
     "name": "宏观经济学",
+    "description": "GDP与国民收入、货币与财政政策、经济增长、国际贸易",
     "domain": "domain_economics"
   },
   {
     "id": "branch_ec_game_theory",
     "type": "BranchScaffold",
-    "description": "策略互动、纳什均衡、合作与非合作博弈、机制设计",
     "name": "博弈论",
+    "description": "策略互动、纳什均衡、合作与非合作博弈、机制设计",
     "domain": "domain_economics"
   },
   {
     "id": "branch_ec_behavioral",
     "type": "BranchScaffold",
-    "description": "有限理性、前景理论、助推、认知偏差与经济决策",
     "name": "行为经济学",
+    "description": "有限理性、前景理论、助推、认知偏差与经济决策",
     "domain": "domain_economics"
   },
   {
     "id": "branch_ec_institutional",
     "type": "BranchScaffold",
-    "description": "制度与经济表现、交易成本、产权理论",
     "name": "制度经济学",
+    "description": "制度与经济表现、交易成本、产权理论",
     "domain": "domain_economics"
   },
   {
     "id": "domain_western_philosophy",
     "type": "DomainRoot",
-    "priority": "supplementary",
-    "description": "理解道德观、宗教与西方科学思想根源的哲学框架",
     "depth": "理解",
     "name": "西方哲学",
+    "priority": "supplementary",
+    "description": "理解道德观、宗教与西方科学思想根源的哲学框架",
     "domain": "domain_western_philosophy"
   },
   {
     "id": "branch_ph_ancient",
     "type": "BranchScaffold",
-    "description": "古希腊哲学、苏格拉底柏拉图亚里士多德、斯多葛学派",
     "name": "古代哲学",
+    "description": "古希腊哲学、苏格拉底柏拉图亚里士多德、斯多葛学派",
     "domain": "domain_western_philosophy"
   },
   {
     "id": "branch_ph_modern",
     "type": "BranchScaffold",
-    "description": "理性主义与经验主义、康德、现象学、存在主义、分析哲学",
     "name": "近现代哲学",
+    "description": "理性主义与经验主义、康德、现象学、存在主义、分析哲学",
     "domain": "domain_western_philosophy"
   },
   {
     "id": "branch_ph_ethics",
     "type": "BranchScaffold",
-    "description": "道德哲学、义务论、功利主义、美德伦理",
     "name": "伦理学",
+    "description": "道德哲学、义务论、功利主义、美德伦理",
     "domain": "domain_western_philosophy"
   },
   {
     "id": "branch_ph_epistemology",
     "type": "BranchScaffold",
-    "description": "知识的本质与边界、怀疑论、证成理论",
     "name": "认识论",
+    "description": "知识的本质与边界、怀疑论、证成理论",
     "domain": "domain_western_philosophy"
   },
   {
     "id": "branch_ph_philosophy_of_science",
     "type": "BranchScaffold",
-    "description": "科学方法论、证伪主义、范式转换、科学实在论",
     "name": "科学哲学",
+    "description": "科学方法论、证伪主义、范式转换、科学实在论",
     "domain": "domain_western_philosophy"
   },
   {
     "id": "domain_game_design",
     "type": "DomainRoot",
-    "priority": "supplementary",
     "userInsight": "在迷你玩（迷你世界/迷你编程，沙盒游戏+编程创作社区）和BUD（3D元宇宙UGC平台）有实际工作经验。游戏领域深度偏数据和用户行为侧，游戏设计理论本身尚在积累中。",
-    "description": "游戏设计的理论与实践——用户视游戏为未来教育方式的核心载体",
     "depth": "浅读",
     "name": "游戏创作理论",
+    "priority": "supplementary",
+    "description": "游戏设计的理论与实践——用户视游戏为未来教育方式的核心载体",
     "domain": "domain_game_design"
   },
   {
     "id": "branch_gd_mechanics",
     "type": "BranchScaffold",
-    "description": "核心机制、规则系统、资源管理、决策空间",
     "depth": "浅读",
     "name": "游戏机制设计",
+    "description": "核心机制、规则系统、资源管理、决策空间",
     "domain": "domain_game_design"
   },
   {
     "id": "branch_gd_narrative",
     "type": "BranchScaffold",
-    "description": "互动叙事、分支剧情、世界观构建、环境叙事",
     "name": "游戏叙事",
+    "description": "互动叙事、分支剧情、世界观构建、环境叙事",
     "domain": "domain_game_design"
   },
   {
     "id": "branch_gd_board_games",
     "type": "BranchScaffold",
-    "description": "桌游机制分类、策略与运气平衡、玩家互动模式",
     "name": "桌游设计",
+    "description": "桌游机制分类、策略与运气平衡、玩家互动模式",
     "domain": "domain_game_design"
   },
   {
     "id": "branch_gd_digital",
     "type": "BranchScaffold",
-    "description": "电子游戏设计原则、关卡设计、平台特性",
     "name": "数字游戏设计",
+    "description": "电子游戏设计原则、关卡设计、平台特性",
     "domain": "domain_game_design"
   },
   {
     "id": "branch_gd_player_experience",
     "type": "BranchScaffold",
-    "description": "心流理论、玩家动机、游戏心理学、用户测试",
     "name": "玩家体验",
+    "description": "心流理论、玩家动机、游戏心理学、用户测试",
     "domain": "domain_game_design"
   },
   {
     "id": "domain_health_wellness",
     "type": "DomainRoot",
-    "priority": "supplementary",
-    "description": "健康长寿与情绪健康——结合数据分析和音乐探索疗愈方向",
     "depth": "浅读",
     "name": "健康与情绪健康",
+    "priority": "supplementary",
+    "description": "健康长寿与情绪健康——结合数据分析和音乐探索疗愈方向",
     "domain": "domain_health_wellness"
   },
   {
     "id": "branch_hw_longevity",
     "type": "BranchScaffold",
-    "description": "寿命与健康寿命、衰老机制、预防医学、长寿策略",
     "name": "健康长寿",
+    "description": "寿命与健康寿命、衰老机制、预防医学、长寿策略",
     "domain": "domain_health_wellness"
   },
   {
     "id": "branch_hw_emotional",
     "type": "BranchScaffold",
-    "description": "情绪调节、压力管理、心理韧性、正念",
     "name": "情绪健康",
+    "description": "情绪调节、压力管理、心理韧性、正念",
     "domain": "domain_health_wellness"
   },
   {
     "id": "branch_hw_sleep",
     "type": "BranchScaffold",
-    "nodeRole": "professionally_critical",
     "userInsight": "工作领域核心。从 PSG 金标准到消费级 PPG 手环算法，再到四维睡眠健康评估框架（入睡健康度/时长/质量/规律性），形成了完整的'监测技术→数据指标→健康诊断→干预建议'闭环。",
-    "description": "睡眠生理学、睡眠质量评估、睡眠障碍、数据化追踪",
     "depth": "有独立见解",
+    "nodeRole": "professionally_critical",
     "name": "睡眠科学",
+    "description": "睡眠生理学、睡眠质量评估、睡眠障碍、数据化追踪",
     "domain": "domain_health_wellness"
   },
   {
     "id": "branch_hw_nutrition",
     "type": "BranchScaffold",
-    "description": "营养素、饮食模式、代谢健康",
     "name": "营养学",
+    "description": "营养素、饮食模式、代谢健康",
     "domain": "domain_health_wellness"
   },
   {
     "id": "branch_hw_exercise",
     "type": "BranchScaffold",
-    "nodeRole": "professionally_critical",
     "userInsight": "工作领域核心。运动健康三维框架（健康=通用价值/损伤=风险底线/成长=激励曲线）+ HRV深度监测体系 + TSS/ACWR训练负荷管理 → AI Coach PDCA闭环。与睡眠四维框架共享'数据→诊断→干预'设计逻辑，但数据复杂度远高于睡眠。",
-    "description": "运动生理学、训练原则、体适能评估",
     "depth": "有独立见解",
+    "nodeRole": "professionally_critical",
     "name": "运动科学",
+    "description": "运动生理学、训练原则、体适能评估",
     "domain": "domain_health_wellness"
   },
   {
     "id": "hw_mitochondrial_flexibility",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "从小运动的人可能把线粒体功能养得特别好——自己从小参加长跑和爬山，虽然后来10年几乎没运动，但每次想运动减脂都很快见效。发育期的线粒体健康是长期资产。恢复运动早期消耗葡萄糖而非脂肪，并不意味着没用——是在修复线粒体。",
-    "description": "线粒体是细胞内将脂肪和葡萄糖转化为能量的细胞器。代谢灵活性指身体在脂肪氧化和葡萄糖氧化之间灵活切换的能力。职业运动员在高强度运动时仍能主要燃烧脂肪（代谢灵活），代谢综合征患者从第一步起就几乎完全依赖葡萄糖（代谢不灵活）。长期不运动导致线粒体功能退化，恢复运动早期先修复线粒体功能（数月），之后有氧运动才能高效燃脂。",
     "depth": "有独立见解",
+    "nodeRole": "knowledge",
     "name": "线粒体代谢灵活性 (Metabolic Flexibility)",
+    "description": "线粒体是细胞内将脂肪和葡萄糖转化为能量的细胞器。代谢灵活性指身体在脂肪氧化和葡萄糖氧化之间灵活切换的能力。职业运动员在高强度运动时仍能主要燃烧脂肪（代谢灵活），代谢综合征患者从第一步起就几乎完全依赖葡萄糖（代谢不灵活）。长期不运动导致线粒体功能退化，恢复运动早期先修复线粒体功能（数月），之后有氧运动才能高效燃脂。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "mat_geb",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Douglas Hofstadter"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "哥德尔、艾舍尔、巴赫：集异璧之大成",
     "domain": "domain_cognitive_science"
@@ -719,11 +719,11 @@ const graphNodes = [
   {
     "id": "mat_surfaces_and_essences",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Douglas Hofstadter",
       "Emmanuel Sander"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "表象与本质",
     "domain": "domain_cognitive_science"
@@ -731,12 +731,12 @@ const graphNodes = [
   {
     "id": "mat_system_architecture",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Edward Crawley",
       "Bruce Cameron",
       "Daniel Selva"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "系统架构",
     "domain": "domain_systems_theory"
@@ -744,10 +744,10 @@ const graphNodes = [
   {
     "id": "mat_thinking_in_systems",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Donella Meadows"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "系统之美",
     "domain": "domain_systems_theory"
@@ -755,10 +755,10 @@ const graphNodes = [
   {
     "id": "mat_intro_general_systems",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Gerald Weinberg"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "系统化思维导论",
     "domain": "domain_systems_theory"
@@ -774,10 +774,10 @@ const graphNodes = [
   {
     "id": "mat_mankiw_micro",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "N. Gregory Mankiw"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "经济学原理：微观经济学分册",
     "domain": "domain_economics"
@@ -785,10 +785,10 @@ const graphNodes = [
   {
     "id": "mat_mankiw_macro",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "N. Gregory Mankiw"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "经济学原理：宏观经济学分册",
     "domain": "domain_economics"
@@ -804,11 +804,11 @@ const graphNodes = [
   {
     "id": "mat_courage_to_be_disliked",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "岸见一郎",
       "古贺史健"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "被讨厌的勇气",
     "domain": "domain_psychology"
@@ -816,11 +816,11 @@ const graphNodes = [
   {
     "id": "mat_courage_to_be_happy",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "岸见一郎",
       "古贺史健"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "幸福的勇气",
     "domain": "domain_psychology"
@@ -828,11 +828,11 @@ const graphNodes = [
   {
     "id": "mat_outlive",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Peter Attia",
       "Bill Gifford"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "超越百岁",
     "domain": "domain_health_wellness"
@@ -840,11 +840,11 @@ const graphNodes = [
   {
     "id": "mat_stumpf_western_philosophy",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Samuel Enoch Stumpf",
       "James Fieser"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "西方哲学史",
     "domain": "domain_western_philosophy"
@@ -868,10 +868,10 @@ const graphNodes = [
   {
     "id": "mat_short_history_of_world",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Geoffrey Blainey"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "世界简史",
     "domain": "domain_history"
@@ -879,10 +879,10 @@ const graphNodes = [
   {
     "id": "mat_short_history_20th_century",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Geoffrey Blainey"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "二十世纪简史",
     "domain": "domain_history"
@@ -890,10 +890,10 @@ const graphNodes = [
   {
     "id": "mat_antifragile",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Nassim Nicholas Taleb"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "反脆弱",
     "domain": "domain_systems_theory"
@@ -909,10 +909,10 @@ const graphNodes = [
   {
     "id": "mat_story_of_your_life",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Ted Chiang"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "你一生的故事",
     "domain": "domain_cognitive_science"
@@ -921,84 +921,84 @@ const graphNodes = [
     "id": "mat_whole_brain_book",
     "type": "Material",
     "materialType": "book",
-    "progress": "已读完",
     "readingStatus": "completed",
     "name": "大脑全书",
+    "progress": "已读完",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "link_music_emotion_healing",
     "type": "CrossDomainLink",
-    "description": "将音乐创作能力与情绪健康理解结合，探索音乐疗愈方向",
     "name": "音乐×情绪健康 → 音乐疗愈",
+    "description": "将音乐创作能力与情绪健康理解结合，探索音乐疗愈方向",
     "domain": null
   },
   {
     "id": "link_cogsci_ai_agent",
     "type": "CrossDomainLink",
-    "description": "将认知科学对人类大脑的理解融入AI Agent架构设计，ITO引擎为核心实践",
     "name": "认知科学×AI Agent → 认知架构设计",
+    "description": "将认知科学对人类大脑的理解融入AI Agent架构设计，ITO引擎为核心实践",
     "domain": null
   },
   {
     "id": "link_game_education",
     "type": "CrossDomainLink",
-    "description": "游戏作为未来教育方式的核心载体——用户的信仰级关注",
     "name": "游戏×教育 → 游戏化教育",
+    "description": "游戏作为未来教育方式的核心载体——用户的信仰级关注",
     "domain": null
   },
   {
     "id": "link_data_health",
     "type": "CrossDomainLink",
-    "description": "数据分析技能应用于睡眠数据app设计等健康数据化场景",
     "name": "数据分析×健康 → 数据化健康管理",
+    "description": "数据分析技能应用于睡眠数据app设计等健康数据化场景",
     "domain": null
   },
   {
     "id": "link_systems_economics",
     "type": "CrossDomainLink",
-    "description": "基于系统论认为经济学与博弈论是理解社会系统必须充实的互补视角",
     "name": "系统论×经济学 → 社会系统视角",
+    "description": "基于系统论认为经济学与博弈论是理解社会系统必须充实的互补视角",
     "domain": null
   },
   {
     "id": "td_education_as_temporal_transfer",
     "type": "ThinkingDeposit",
     "userInsight": "信息与知识基于空间的传播称为传播学，基于时间的传播称为教育。ITO的认知分身形态是这个理论的实践延伸——烨烨灌入产品思考后，ITO变成了能替她教学的产品经理老师。",
-    "outputStatus": "deposited",
-    "description": "将知识/信息基于空间的传播定义为传播学，基于时间的传播定义为教育。一个原创的概念框架，重新定义了教育的本质。进一步延伸：ITO作为认知分身，将传播载体从文章/课堂升级为被个人认知训练过的Agent——不仅传递知识内容，更传递思维方式本身。",
     "name": "教育即知识的时间传播",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "将知识/信息基于空间的传播定义为传播学，基于时间的传播定义为教育。一个原创的概念框架，重新定义了教育的本质。进一步延伸：ITO作为认知分身，将传播载体从文章/课堂升级为被个人认知训练过的Agent——不仅传递知识内容，更传递思维方式本身。",
     "domain": null
   },
   {
     "id": "td_breaking_mind_and_status_quo",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "2022.12 提出的个人使命框架——思维（人类大脑决定的思维方式）是根本，现状（语言/文字/学习方式）是土壤也是局限。认清后去打破它，帮助渴求改变的人。将脑科学/心理学（理解思维）、艺术/音乐（感官共鸣）、教育（跨时空交流打破限制）、效率工具（产品承载价值观）四条线统一在这个使命下。2023.04演化：明确'研究解决科学问题，应用解决人的问题'——不是要搞清注意力/意识/记忆的全部，而是用对认知能力的了解切实帮助人。目标群体聚焦18-25岁（离开父母庇护、身体与大脑巅峰的转型期），核心隐喻'后悔药/时空穿梭'——让人在鼎盛时期就明白重要道理。",
     "name": "打破思维与现状的限制",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2022.12 提出的个人使命框架——思维（人类大脑决定的思维方式）是根本，现状（语言/文字/学习方式）是土壤也是局限。认清后去打破它，帮助渴求改变的人。将脑科学/心理学（理解思维）、艺术/音乐（感官共鸣）、教育（跨时空交流打破限制）、效率工具（产品承载价值观）四条线统一在这个使命下。2023.04演化：明确'研究解决科学问题，应用解决人的问题'——不是要搞清注意力/意识/记忆的全部，而是用对认知能力的了解切实帮助人。目标群体聚焦18-25岁（离开父母庇护、身体与大脑巅峰的转型期），核心隐喻'后悔药/时空穿梭'——让人在鼎盛时期就明白重要道理。",
     "domain": null
   },
   {
     "id": "mat_beauty_of_math",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "吴军"
     ],
-    "progress": "已读完",
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "数学之美",
+    "progress": "已读完",
     "domain": "domain_data_analysis"
   },
   {
     "id": "mat_piano_czerny599",
     "type": "Material",
     "materialType": "online_course",
-    "progress": "暂时中断",
     "readingStatus": "paused",
     "name": "钢琴课（车尔尼599）",
+    "progress": "暂时中断",
     "domain": "domain_music_production"
   },
   {
@@ -1012,36 +1012,36 @@ const graphNodes = [
   {
     "id": "td_iceberg_model_learning",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "2023.01.19 重新发现麦克利兰冰山模型（Events→Patterns→Structures→Mental Models），用它解释自己坚持读源头教科书的学习偏好：速成版材料只覆盖最浅的两层（事件→反应、模式→预测），而从结构和系统层入手才能获得设计能力，从心理模式层才能获得真正改变的能力。'术源于道，且枝叶繁茂永远也学不尽；道才是根，是一切事物融会贯通的根本。'",
     "name": "冰山模型与学习方法论——术源于道",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.01.19 重新发现麦克利兰冰山模型（Events→Patterns→Structures→Mental Models），用它解释自己坚持读源头教科书的学习偏好：速成版材料只覆盖最浅的两层（事件→反应、模式→预测），而从结构和系统层入手才能获得设计能力，从心理模式层才能获得真正改变的能力。'术源于道，且枝叶繁茂永远也学不尽；道才是根，是一切事物融会贯通的根本。'",
     "domain": null
   },
   {
     "id": "td_information_intake_dimensions",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "2023.02.05 提出的原创框架。分析不同信息媒介的摄入效率：文字阅读是一维线性的，但眼睛接收二维信息，注意力机制让大脑能在二维视野中优化一维信息摄入效率，且可通过练习提升阅读速度；音频也是一维但难以优化；图像是二维的，注意力机制提效空间小。同时区分静态信息（文字/图像，与时间无关）和动态信息（视频/音频，与时间相关）。",
     "name": "信息摄入维度论",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.02.05 提出的原创框架。分析不同信息媒介的摄入效率：文字阅读是一维线性的，但眼睛接收二维信息，注意力机制让大脑能在二维视野中优化一维信息摄入效率，且可通过练习提升阅读速度；音频也是一维但难以优化；图像是二维的，注意力机制提效空间小。同时区分静态信息（文字/图像，与时间无关）和动态信息（视频/音频，与时间相关）。",
     "domain": null
   },
   {
     "id": "link_cogsci_ai_natural_language",
     "type": "CrossDomainLink",
-    "description": "2023.02.12洞察：ChatGPT本质是人机沟通方式的变革（编程语言→自然语言），但完全自然语言有全知全能错觉风险，应牺牲部分自然性换取准确性，如图灵离散状态机用信息密度换可靠性",
     "name": "认知科学×AI → 自然语言交互的准确性悖论",
+    "description": "2023.02.12洞察：ChatGPT本质是人机沟通方式的变革（编程语言→自然语言），但完全自然语言有全知全能错觉风险，应牺牲部分自然性换取准确性，如图灵离散状态机用信息密度换可靠性",
     "domain": null
   },
   {
     "id": "mat_why_buddhism_is_true",
     "type": "Material",
     "userInsight": "谭总推荐。引发关于'虚幻的美好vs痛苦的现实'的思考——用户最终的答案是：人来世界一趟是为了体验真实的自己，不是只有美好才值得拥抱，一切都值得。",
-    "materialType": "book",
     "author": [
       "Robert Wright"
     ],
+    "materialType": "book",
     "readingStatus": "paused",
     "name": "Why Buddhism is True",
     "domain": "domain_western_philosophy"
@@ -1049,33 +1049,33 @@ const graphNodes = [
   {
     "id": "cs_research_vs_application",
     "type": "KnowledgeNode",
-    "outputPotential": "high",
-    "nodeRole": "personally_critical",
     "userInsight": "2023.04.10：'同样是解决问题，研究解决的是科学问题，而应用解决的才是人的问题。'这标志着用户从学习认知科学转向思考如何应用认知科学。",
-    "description": "研究解决科学问题，应用解决人的问题。用户在读完认知科学教科书后的核心转向——不追求搞清所有概念，而是用认知能力的了解切实帮助人。",
     "depth": "有独立见解",
+    "nodeRole": "personally_critical",
     "name": "认知科学：研究vs应用",
+    "outputPotential": "high",
+    "description": "研究解决科学问题，应用解决人的问题。用户在读完认知科学教科书后的核心转向——不追求搞清所有概念，而是用认知能力的了解切实帮助人。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "ps_perfectionism_output_barrier",
     "type": "KnowledgeNode",
-    "nodeRole": "personal_growth",
     "userInsight": "2023.04.17首篇公众号发布后的自我觉察。与'直觉型vs深究型'的认知风格自我认知相关（04.07与徐羊的讨论）。",
-    "description": "用户识别出的个人认知模式：但凡分享有对错之分的内容就背上巨大压力，害怕'做错'导致畏首畏尾。学语言、工作、剪辑视频、知识分享都受此影响。",
     "depth": "有独立见解",
+    "nodeRole": "personal_growth",
     "name": "完美主义与输出障碍",
+    "description": "用户识别出的个人认知模式：但凡分享有对错之分的内容就背上巨大压力，害怕'做错'导致畏首畏尾。学语言、工作、剪辑视频、知识分享都受此影响。",
     "domain": "domain_psychology"
   },
   {
     "id": "mat_courage_to_be_disliked",
     "type": "Material",
     "userInsight": "多处引用：'货币是被铸造的自由'、'self interest→social interest'、'课题分离→共同体'。启发用户反思理解范围vs包容程度——自己做得好的只是前者（见多识广所以接受范围大），但对不理解的范围缺乏包容/信任。",
-    "materialType": "book",
     "author": [
       "岸见一郎",
       "古贺史健"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "被讨厌的勇气",
     "domain": "domain_psychology"
@@ -1083,67 +1083,67 @@ const graphNodes = [
   {
     "id": "td_motivation_five_sources",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "2023.05 构建的个人动机分析框架：内在需求、个人优势、社会认可、有用、价值观五个维度。核心结论是需求+有用+价值观为最重要的三个动机源，可暂时抛开社会认可和个人优势。同时提出技术浪潮三种人（创造者/冲浪者/投机者）——有效追逐浪潮基于对应用需求的深刻感知。",
     "name": "动机来源五维框架",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.05 构建的个人动机分析框架：内在需求、个人优势、社会认可、有用、价值观五个维度。核心结论是需求+有用+价值观为最重要的三个动机源，可暂时抛开社会认可和个人优势。同时提出技术浪潮三种人（创造者/冲浪者/投机者）——有效追逐浪潮基于对应用需求的深刻感知。",
     "domain": null
   },
   {
     "id": "td_cognitive_four_components",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "2023.05 构建的认知信息处理框架：感应器（感知/情绪）、处理器（模型/认知）、存储器（记忆/硬件）、效应器（行动/改变世界），映射为 input→encode→manipulate→decode→output 流程。核心洞察：不是只有处理器重要，四器缺一不可。感应器包含共情和艺术，效应器才是真正改变世界的部分。",
     "name": "信息处理四器模型",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.05 构建的认知信息处理框架：感应器（感知/情绪）、处理器（模型/认知）、存储器（记忆/硬件）、效应器（行动/改变世界），映射为 input→encode→manipulate→decode→output 流程。核心洞察：不是只有处理器重要，四器缺一不可。感应器包含共情和艺术，效应器才是真正改变世界的部分。",
     "domain": null
   },
   {
     "id": "td_model_taxonomy",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "2023.05 发现的模型分类体系：流程模型（同层流动/流程图，考验经验总结）、层级模型（向上抽象/模块化，考验范畴抽象）、维度模型（向下拆解/星型，考验维度拆解）。四象限图和表格法是维度模型的工具子类。用户习惯横向流程×纵向层级的二维框架，此处补全了第三维。",
     "name": "模型分类三维论",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.05 发现的模型分类体系：流程模型（同层流动/流程图，考验经验总结）、层级模型（向上抽象/模块化，考验范畴抽象）、维度模型（向下拆解/星型，考验维度拆解）。四象限图和表格法是维度模型的工具子类。用户习惯横向流程×纵向层级的二维框架，此处补全了第三维。",
     "domain": null
   },
   {
     "id": "ps_focus_and_execution_deficit",
     "type": "KnowledgeNode",
-    "nodeRole": "personal_growth",
     "userInsight": "2023.05.11：'找到自己的动力，然后找到聚焦的方向，还要找到聚焦方向的勇气，最后找到前进的路。'价值观缺失需要真正的经验来重建。",
-    "description": "用户自我诊断：不缺发散、思考、框架搭建、类比和逻辑能力，但缺乏聚焦和落地能力。根源是损失厌恶——害怕损失机会成本让什么都想抓，害怕损失沉没成本让不敢真正投入。",
     "depth": "有独立见解",
+    "nodeRole": "personal_growth",
     "name": "聚焦能力与落地能力缺失",
+    "description": "用户自我诊断：不缺发散、思考、框架搭建、类比和逻辑能力，但缺乏聚焦和落地能力。根源是损失厌恶——害怕损失机会成本让什么都想抓，害怕损失沉没成本让不敢真正投入。",
     "domain": "domain_psychology"
   },
   {
     "id": "ec_money_vs_ideals",
     "type": "KnowledgeNode",
-    "outputPotential": "high",
-    "nodeRole": "personally_critical",
     "userInsight": "2021.12：不想做互联网/金融这种投机行业——人可以在毫无准备时抓住机会，但不能习惯于只在毫无准备时抓住机会。两种成长方式：向外（科学/探索世界/追寻真理）vs 向内（艺术/挖掘人性/自我激发），人不能只做事而不知道为什么做。2023.05.19：'不要去相信那些毒鸡汤所谓的做好自己的事钱自然会来——来了也只是巧合。'结合《被讨厌的勇气》中'货币是被铸造的自由'。",
-    "description": "赚钱是价值交换（市场规则），理想只与自己的心有关（盲目坚持）。两者的决定性因素从根本上不同：赚钱用当下时间购买未来自由，理想是体验当下。两者在抢夺时间资源。",
     "depth": "有独立见解",
+    "nodeRole": "personally_critical",
     "name": "赚钱与理想的矛盾",
+    "outputPotential": "high",
+    "description": "赚钱是价值交换（市场规则），理想只与自己的心有关（盲目坚持）。两者的决定性因素从根本上不同：赚钱用当下时间购买未来自由，理想是体验当下。两者在抢夺时间资源。",
     "domain": null
   },
   {
     "id": "link_cogsci_systems_model_taxonomy",
     "type": "CrossDomainLink",
-    "description": "用户将认知科学中的信息处理流程（感应→处理→存储→效应）与系统论的建模方法论（流程/层级/维度三类模型）融合，形成了一套自底向上构建思维框架的方法——不信别人的框架，从认知原理出发自己推导。",
     "name": "认知科学×系统论 → 模型作为思维工具的分类学",
+    "description": "用户将认知科学中的信息处理流程（感应→处理→存储→效应）与系统论的建模方法论（流程/层级/维度三类模型）融合，形成了一套自底向上构建思维框架的方法——不信别人的框架，从认知原理出发自己推导。",
     "domain": null
   },
   {
     "id": "mat_happiness_courage",
     "type": "Material",
     "userInsight": "工作关系（我的幸福/安全需求）→交友关系（你的幸福/尊重归属）→爱的关系（我们的幸福/自我实现），与马斯洛需求层次对应。'人需要穷其一生去攀登，这是对幸福最基本的认知。'",
-    "materialType": "book",
     "author": [
       "岸见一郎",
       "古贺史健"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "幸福的勇气",
     "domain": "domain_psychology"
@@ -1152,10 +1152,10 @@ const graphNodes = [
     "id": "mat_naval_almanack",
     "type": "Material",
     "userInsight": "引用核心概念：责任与杠杆与财富收入的关系——躲在无责任领域就无法获得财富。",
-    "materialType": "book",
     "author": [
       "Eric Jorgenson"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "纳瓦尔宝典",
     "domain": "domain_personal_growth"
@@ -1163,20 +1163,20 @@ const graphNodes = [
   {
     "id": "td_trust_and_honor_past_self",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "2023.06 与阿润讨论反思过去时提出的双层框架：第一层'信任'——过去的决策在当时条件下是最优的，不需追悔；第二层'不负'——过去的经验优化了我们的决策模型，应该回看经历校正模型，在当下责无旁贷做正确的事。与阿德勒目标论一致，是一种向上的自由。同日诊断自己'用战术勤奋掩盖战略懒惰'。",
     "name": "信任与不负过去的自己",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "2023.06 与阿润讨论反思过去时提出的双层框架：第一层'信任'——过去的决策在当时条件下是最优的，不需追悔；第二层'不负'——过去的经验优化了我们的决策模型，应该回看经历校正模型，在当下责无旁贷做正确的事。与阿德勒目标论一致，是一种向上的自由。同日诊断自己'用战术勤奋掩盖战略懒惰'。",
     "domain": null
   },
   {
     "id": "mat_pyramid_principle",
     "type": "Material",
     "userInsight": "不仅学习了表达方法论，更重要的是梳理了演绎/归纳推理的完整逻辑体系，并收集了MECE、TOPS、FABE、SPIN、5W2H、麦肯锡七步法等实用框架。",
-    "materialType": "book",
     "author": [
       "芭芭拉·明托"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "金字塔原理",
     "domain": "domain_systems_theory"
@@ -1184,83 +1184,83 @@ const graphNodes = [
   {
     "id": "st_structured_expression",
     "type": "KnowledgeNode",
-    "nodeRole": "tool",
-    "description": "以金字塔原理为核心的结构化表达体系：结论先行、以上统下、归类分组、逻辑递进。纵向用疑问-回答推进，横向用演绎/归纳建立层次，序言用背景→矛盾→疑问吸引注意。",
     "depth": "可教授他人",
+    "nodeRole": "tool",
     "name": "结构化表达方法论",
+    "description": "以金字塔原理为核心的结构化表达体系：结论先行、以上统下、归类分组、逻辑递进。纵向用疑问-回答推进，横向用演绎/归纳建立层次，序言用背景→矛盾→疑问吸引注意。",
     "domain": "domain_systems_theory"
   },
   {
     "id": "st_logical_reasoning_taxonomy",
     "type": "KnowledgeNode",
-    "description": "演绎推理（三段论、假言推理、选言推理、关系推理）从一般到特殊，结论必然；归纳推理（比较、归类、分析与综合、抽象与概括）从特殊到一般，统计/概率意义上成立即有效。",
     "depth": "理解",
     "name": "逻辑推理分类体系",
+    "description": "演绎推理（三段论、假言推理、选言推理、关系推理）从一般到特殊，结论必然；归纳推理（比较、归类、分析与综合、抽象与概括）从特殊到一般，统计/概率意义上成立即有效。",
     "domain": "domain_systems_theory"
   },
   {
     "id": "st_mece_principle",
     "type": "KnowledgeNode",
-    "nodeRole": "tool",
-    "description": "各组之间相互独立不重叠，所有组完全穷尽不遗漏。四种常用方法：二分法、流程法、要素法、象限法。是结构化思维的基础工具。",
     "depth": "可教授他人",
+    "nodeRole": "tool",
     "name": "MECE原则",
+    "description": "各组之间相互独立不重叠，所有组完全穷尽不遗漏。四种常用方法：二分法、流程法、要素法、象限法。是结构化思维的基础工具。",
     "domain": "domain_systems_theory"
   },
   {
     "id": "kd_pyramid_principle_notes",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "对《金字塔原理》的系统化读书笔记，整合了逻辑学基础（演绎/归纳推理体系）、金字塔原理本体（四特点/四规则/纵横关系）、以及实用表达框架集合（MECE/TOPS/FABE/SPIN/5W2H/麦肯锡七步法）。",
     "name": "金字塔原理读书笔记",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "对《金字塔原理》的系统化读书笔记，整合了逻辑学基础（演绎/归纳推理体系）、金字塔原理本体（四特点/四规则/纵横关系）、以及实用表达框架集合（MECE/TOPS/FABE/SPIN/5W2H/麦肯锡七步法）。",
     "domain": null
   },
   {
     "id": "da_metrics_framework_toc",
     "type": "KnowledgeNode",
-    "nodeRole": "personally_critical",
     "userInsight": "这是用户基于多年toC数据分析实战经验自主提炼的系统化方法论，不是某本书的摘录。体现了从战略到落地的完整视角。",
-    "description": "用户构建的面向消费者业务的数据指标体系框架，覆盖三个场景：业务指标拆解（投资层/决策层/执行层三层数据消费者模型）、业务目标测算（北极星→可操作变量公式四步法）、业务数据基建（框架梳理+优先级，三个梳理角度）。",
     "depth": "可教授他人",
+    "nodeRole": "personally_critical",
     "name": "toC数据指标体系模型",
+    "description": "用户构建的面向消费者业务的数据指标体系框架，覆盖三个场景：业务指标拆解（投资层/决策层/执行层三层数据消费者模型）、业务目标测算（北极星→可操作变量公式四步法）、业务数据基建（框架梳理+优先级，三个梳理角度）。",
     "domain": "domain_data_analysis"
   },
   {
     "id": "da_data_consumer_layers",
     "type": "KnowledgeNode",
-    "nodeRole": "tool",
-    "description": "投资层（月聚合，关注盈利/规模/北极星，切片vs cohort）→ 决策层（关注用户分布/模块间协调，完整链路数据，风险监测）→ 执行层（模块内用户行为，漏斗，方案迭代反馈）。按'谁看数据→目标→看什么'三问展开。",
     "depth": "可教授他人",
+    "nodeRole": "tool",
     "name": "数据消费者三层模型",
+    "description": "投资层（月聚合，关注盈利/规模/北极星，切片vs cohort）→ 决策层（关注用户分布/模块间协调，完整链路数据，风险监测）→ 执行层（模块内用户行为，漏斗，方案迭代反馈）。按'谁看数据→目标→看什么'三问展开。",
     "domain": "domain_data_analysis"
   },
   {
     "id": "da_north_star_decomposition",
     "type": "KnowledgeNode",
-    "nodeRole": "tool",
-    "description": "第一步：拆解为可操作变量公式（保证业务可解释性，变量可感知，匹配组织边界，减少变量依赖）；第二步：识别变量间依赖关系与风险；第三步：基于变量状态测算目标（自上而下/自下而上）；第四步：按阶段追踪校正。区分可控变量与稳定常量。",
     "depth": "可教授他人",
+    "nodeRole": "tool",
     "name": "北极星指标拆解四步法",
+    "description": "第一步：拆解为可操作变量公式（保证业务可解释性，变量可感知，匹配组织边界，减少变量依赖）；第二步：识别变量间依赖关系与风险；第三步：基于变量状态测算目标（自上而下/自下而上）；第四步：按阶段追踪校正。区分可控变量与稳定常量。",
     "domain": "domain_data_analysis"
   },
   {
     "id": "kd_toc_metrics_framework",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "用户自主构建的toC业务数据指标体系完整框架，涵盖业务指标拆解（三层数据消费者）、业务目标测算（四步法）、业务数据基建（三角度框架梳理+优先级）。基于多年实战经验提炼，是数据分析领域'可教授他人'深度的代表性产出。",
     "name": "toC数据指标体系模型",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "用户自主构建的toC业务数据指标体系完整框架，涵盖业务指标拆解（三层数据消费者）、业务目标测算（四步法）、业务数据基建（三角度框架梳理+优先级）。基于多年实战经验提炼，是数据分析领域'可教授他人'深度的代表性产出。",
     "domain": null
   },
   {
     "id": "mat_cogsci_bermudez",
     "type": "Material",
     "userInsight": "公众号系列文章的主要参考来源。第四版相比第三版新增了情绪与情感章节。",
-    "materialType": "textbook",
     "author": [
       "José Luis Bermúdez"
     ],
+    "materialType": "textbook",
     "readingStatus": "completed",
     "name": "认知科学（Bermúdez 教材第三版）",
     "domain": "domain_cognitive_science"
@@ -1268,210 +1268,210 @@ const graphNodes = [
   {
     "id": "cs_marr_three_levels",
     "type": "KnowledgeNode",
-    "nodeRole": "tool",
-    "description": "计算层（识别问题与约束）、算法层（从初始到结果的操作）、执行层（物理/神经实现）。计算层靠近哲学/心理学，算法层靠近语言学/数学/计算机，执行层靠近解剖学/影像学。",
     "depth": "可教授他人",
+    "nodeRole": "tool",
     "name": "Marr 三层级框架",
+    "description": "计算层（识别问题与约束）、算法层（从初始到结果的操作）、执行层（物理/神经实现）。计算层靠近哲学/心理学，算法层靠近语言学/数学/计算机，执行层靠近解剖学/影像学。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_info_processing_four_models",
     "type": "KnowledgeNode",
-    "description": "物理符号系统（符号+规则，语言式逻辑推演）、神经网络（权重+阈值，亚符号分布式）、贝叶斯概率模型（先验→后验，期望效用决策）、动力学模型（无需中央大脑，组件交互构成系统）。四种模型各有擅长的问题域。",
     "depth": "可教授他人",
     "name": "信息处理四模型",
+    "description": "物理符号系统（符号+规则，语言式逻辑推演）、神经网络（权重+阈值，亚符号分布式）、贝叶斯概率模型（先验→后验，期望效用决策）、动力学模型（无需中央大脑，组件交互构成系统）。四种模型各有擅长的问题域。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_act_r_model",
     "type": "KnowledgeNode",
-    "nodeRole": "tool",
-    "description": "混合架构：感知-运动层 + 认知层（陈述性记忆/程序性记忆/目标系统），通过缓冲区交互。陈述性记忆以知识块存储（激活级别→神经网络模型），程序性记忆以生产规则存储（期望效用→贝叶斯模型），符号化存储层面→物理符号系统。",
     "depth": "可教授他人",
+    "nodeRole": "tool",
     "name": "ACT-R 认知架构",
+    "description": "混合架构：感知-运动层 + 认知层（陈述性记忆/程序性记忆/目标系统），通过缓冲区交互。陈述性记忆以知识块存储（激活级别→神经网络模型），程序性记忆以生产规则存储（期望效用→贝叶斯模型），符号化存储层面→物理符号系统。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_meta_representation",
     "type": "KnowledgeNode",
-    "description": "表征是对实体的抽象，元表征是'关于表征的表征'。TOMM三阶段：意向/情绪/眼方向检测（9月前）→共享注意力三元检测（9-14月）→扮演游戏与共情能力发展。自闭症儿童在第二阶段开始异常，缺乏元表征能力导致社交/语言损伤。",
     "depth": "可教授他人",
     "name": "元表征与心智理论",
+    "description": "表征是对实体的抽象，元表征是'关于表征的表征'。TOMM三阶段：意向/情绪/眼方向检测（9月前）→共享注意力三元检测（9-14月）→扮演游戏与共情能力发展。自闭症儿童在第二阶段开始异常，缺乏元表征能力导致社交/语言损伤。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_chinese_room",
     "type": "KnowledgeNode",
-    "description": "Searle的中文房间论证：仅通过规则操纵符号（语法）不等于理解语义，物理符号系统不能产生真正的智能。图灵测试：通过模仿游戏判断机器是否有思考能力。核心哲学争论：语法vs语义、系统回复vs Searle的内化反驳、机器人回复vs鸽子类比。",
     "depth": "可教授他人",
     "name": "中文房间与图灵测试",
+    "description": "Searle的中文房间论证：仅通过规则操纵符号（语法）不等于理解语义，物理符号系统不能产生真正的智能。图灵测试：通过模仿游戏判断机器是否有思考能力。核心哲学争论：语法vs语义、系统回复vs Searle的内化反驳、机器人回复vs鸽子类比。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_cheater_detection",
     "type": "KnowledgeNode",
-    "description": "达尔文模块假说：认知能力是进化产物，专业化模块解决特定问题。说谎检测模块使人在道义条件推理上远优于普通逻辑推理（Wason选择任务）。通过无限迭代囚徒困境证明：针锋相对策略需要说谎检测能力支撑，这是利他行为/合作行为诞生的基础。",
     "depth": "可教授他人",
     "name": "说谎检测模块与合作进化",
+    "description": "达尔文模块假说：认知能力是进化产物，专业化模块解决特定问题。说谎检测模块使人在道义条件推理上远优于普通逻辑推理（Wason选择任务）。通过无限迭代囚徒困境证明：针锋相对策略需要说谎检测能力支撑，这是利他行为/合作行为诞生的基础。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_chunking_miller",
     "type": "KnowledgeNode",
-    "nodeRole": "tool",
-    "description": "人类信息通道容量约7±2单位。分块与抽象是突破容量限制的高级能力：颜色→赤橙黄绿青蓝紫，音高→C-D-E-F-G-A-B/宫商角徵羽，数字→十进制。学习过程就是先抽象粗略的块，再逐层分层和概念扩充，连接成知识网络。下棋高手看到的是棋谱而非棋子。",
     "depth": "可教授他人",
+    "nodeRole": "tool",
     "name": "分块与抽象（Miller's 7±2）",
+    "description": "人类信息通道容量约7±2单位。分块与抽象是突破容量限制的高级能力：颜色→赤橙黄绿青蓝紫，音高→C-D-E-F-G-A-B/宫商角徵羽，数字→十进制。学习过程就是先抽象粗略的块，再逐层分层和概念扩充，连接成知识网络。下棋高手看到的是棋谱而非棋子。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_selective_attention",
     "type": "KnowledgeNode",
-    "description": "鸡尾酒会效应：在嘈杂环境中选择性聚焦特定声音。注意力在感知活动完成前就已介入（ERP实验证据：P1/N1波峰关注组显著强于无视组）。Broadbent过滤器模型：注意力为信息设置瓶颈，保护有限的信息处理通道。",
     "depth": "可教授他人",
     "name": "选择性注意力机制",
+    "description": "鸡尾酒会效应：在嘈杂环境中选择性聚焦特定声音。注意力在感知活动完成前就已介入（ERP实验证据：P1/N1波峰关注组显著强于无视组）。Broadbent过滤器模型：注意力为信息设置瓶颈，保护有限的信息处理通道。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_brain_anatomy_basics",
     "type": "KnowledgeNode",
-    "description": "脑损伤研究（Phineas Gage：前额叶→人格变化）→侵入性动物实验→非侵入性技术。高时间分辨率：EEG/MEG（脑电波五种：Delta深睡/Theta冥想/Alpha放松/Beta清醒/Gamma快速眼动梦境整理）。高空间分辨率：PET（放射性同位素追踪）/fMRI（血氧水平检测）。",
     "depth": "理解",
     "name": "脑解剖与活动测量技术",
+    "description": "脑损伤研究（Phineas Gage：前额叶→人格变化）→侵入性动物实验→非侵入性技术。高时间分辨率：EEG/MEG（脑电波五种：Delta深睡/Theta冥想/Alpha放松/Beta清醒/Gamma快速眼动梦境整理）。高空间分辨率：PET（放射性同位素追踪）/fMRI（血氧水平检测）。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_language_concept_extension",
     "type": "KnowledgeNode",
     "userInsight": "2023.07 深度思考链：从'计算机瘦身的终局是脑机接口'出发，推演出信息沟通的层级结构——文字→语言→抽象概念。GEB中语言学家认为底层抽象机制跨语言一致，侯世达的'枢纽机场'正是这种机制的完美案例。为概念赋予新属性=同时扩充概念的边界，为它可能的物理形态和商业形式都带来新的可能。如果信息沟通能在抽象概念层面实现，语言差异的鸿沟就只剩文化与习俗的差异。",
-    "description": "侯世达《表象与本质》：概念通过范畴扩大向外延伸，越到边缘越模棱两可。概念的内在结构极复杂但使用毫不费力——不需要掌握内部方方面面。'枢纽机场'案例：属性延伸赋予母概念新的可能性，是头脑风暴的有效方法。",
     "depth": "可教授他人",
     "name": "概念的内在结构与外延",
+    "description": "侯世达《表象与本质》：概念通过范畴扩大向外延伸，越到边缘越模棱两可。概念的内在结构极复杂但使用毫不费力——不需要掌握内部方方面面。'枢纽机场'案例：属性延伸赋予母概念新的可能性，是头脑风暴的有效方法。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "cs_machine_human_language_evolution",
     "type": "KnowledgeNode",
-    "description": "物理符号系统→哥德尔配数（符号规则转化为算数规则）→图灵机→机器语言→汇编语言→编译/解释型语言→NLP。人类语言具有意图/表达、创新性/歧义性/上下文依赖、文化演化性；物理符号系统则是确定/去歧义/上下文无关/恒定。两者鸿沟在于'意图'——NLP正在逼近这一关键差异。",
     "depth": "可教授他人",
     "name": "机器与人类语言的进化",
+    "description": "物理符号系统→哥德尔配数（符号规则转化为算数规则）→图灵机→机器语言→汇编语言→编译/解释型语言→NLP。人类语言具有意图/表达、创新性/歧义性/上下文依赖、文化演化性；物理符号系统则是确定/去歧义/上下文无关/恒定。两者鸿沟在于'意图'——NLP正在逼近这一关键差异。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "st_three_problem_domains",
     "type": "KnowledgeNode",
-    "nodeRole": "tool",
     "userInsight": "2023.10 国庆期间的关键领悟：'从来就不是优良的系统管理成就了系统，而是优良的系统成就了系统管理的理论。'系统理论是事后的高度抽象，不是凌驾于系统之上的真理。与音乐理论之于音乐创作的关系相同。",
-    "description": "有序的简单（方程解析，抓住主要矛盾）→无序的复杂（统计方法，大数定律）→有序的复杂（系统化思维）。方程解析受2^n方程数×计算平方律限制；统计方法受大数定律/样本量/随机性限制；现实中最常见的恰恰是第三类'有序的复杂'。",
     "depth": "可教授他人",
+    "nodeRole": "tool",
     "name": "问题的三个域（Weinberg）",
+    "description": "有序的简单（方程解析，抓住主要矛盾）→无序的复杂（统计方法，大数定律）→有序的复杂（系统化思维）。方程解析受2^n方程数×计算平方律限制；统计方法受大数定律/样本量/随机性限制；现实中最常见的恰恰是第三类'有序的复杂'。",
     "domain": "domain_systems_theory"
   },
   {
     "id": "ps_zero_sum_life",
     "type": "KnowledgeNode",
-    "nodeRole": "personally_critical",
-    "description": "将'先苦后甜vs先甜后苦'重构为现在的我与未来的我之间的零和博弈。突破路径：(1)单位时间产能非恒定——能力/学习效率/悟性三层加速度的复利；(2)面向未来的可能性而非稳定性——获得不可逆的能力增长优于积攒可消耗的存粮；(3)了解自我节律——节律里有成功也有懈怠，不是本质。",
     "depth": "有独立见解",
+    "nodeRole": "personally_critical",
     "name": "零和博弈人生与复利型成长",
+    "description": "将'先苦后甜vs先甜后苦'重构为现在的我与未来的我之间的零和博弈。突破路径：(1)单位时间产能非恒定——能力/学习效率/悟性三层加速度的复利；(2)面向未来的可能性而非稳定性——获得不可逆的能力增长优于积攒可消耗的存粮；(3)了解自我节律——节律里有成功也有懈怠，不是本质。",
     "domain": "domain_psychology"
   },
   {
     "id": "ps_optimal_distinctiveness",
     "type": "KnowledgeNode",
-    "description": "人类同时追求归属感（平凡的慰藉）和独特性（独特的闪光）。在身份认同上：归属需求vs独特性需求。在审美上：意料之外情理之中的'甜蜜点'。在认知上：大脑过滤冗余和无法解码的信息，最有效学习发生在最近发展区（ZPD）。新旧知识连接的火花带来多巴胺愉悦。",
     "depth": "有独立见解",
     "name": "最优独特性模式",
+    "description": "人类同时追求归属感（平凡的慰藉）和独特性（独特的闪光）。在身份认同上：归属需求vs独特性需求。在审美上：意料之外情理之中的'甜蜜点'。在认知上：大脑过滤冗余和无法解码的信息，最有效学习发生在最近发展区（ZPD）。新旧知识连接的火花带来多巴胺愉悦。",
     "domain": "domain_psychology"
   },
   {
     "id": "aa_language_as_compression",
     "type": "KnowledgeNode",
-    "outputPotential": "high",
-    "nodeRole": "personally_critical",
-    "description": "人类语言本质是对多维感官和功能信息的极致压缩（概念化）。关键词/术语/标签是高密度'压缩包'。与AI交流的核心：(1)关键词唤醒——不是输入信息而是唤醒AI网络中已有的知识体系，追求信息压缩率而非信噪比；(2)赋予视角——语言系统切换（领域行话）+认知视角切换（特定立场），防止AI在无限知识网络中迷失。",
     "depth": "可教授他人",
+    "nodeRole": "personally_critical",
     "name": "语言即压缩——与AI交流的底层逻辑",
+    "outputPotential": "high",
+    "description": "人类语言本质是对多维感官和功能信息的极致压缩（概念化）。关键词/术语/标签是高密度'压缩包'。与AI交流的核心：(1)关键词唤醒——不是输入信息而是唤醒AI网络中已有的知识体系，追求信息压缩率而非信噪比；(2)赋予视角——语言系统切换（领域行话）+认知视角切换（特定立场），防止AI在无限知识网络中迷失。",
     "domain": "domain_ai_agent"
   },
   {
     "id": "kd_cogsci_series",
     "type": "KnowledgeDeposit",
-    "outputStatus": "published",
-    "description": "2023.04-2023.10 在公众号发布的15篇认知科学科普系列文章。以Bermúdez《Cognitive Science》教材为主线，系统介绍了Marr三层级、信息处理四模型（物理符号系统/神经网络/贝叶斯/动力学）、ACT-R认知架构、元表征与心智理论、中文房间与图灵测试、说谎检测模块与合作进化、分块与Miller's 7±2、选择性注意力、脑解剖与测量技术、概念与语言的延伸、物理符号系统到NLP的进化、三类问题域（Weinberg系统论），以及电影芭比的多层解读。",
     "name": "公众号「Notes for cognition」认知科学系列",
     "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "2023.04-2023.10 在公众号发布的15篇认知科学科普系列文章。以Bermúdez《Cognitive Science》教材为主线，系统介绍了Marr三层级、信息处理四模型（物理符号系统/神经网络/贝叶斯/动力学）、ACT-R认知架构、元表征与心智理论、中文房间与图灵测试、说谎检测模块与合作进化、分块与Miller's 7±2、选择性注意力、脑解剖与测量技术、概念与语言的延伸、物理符号系统到NLP的进化、三类问题域（Weinberg系统论），以及电影芭比的多层解读。",
     "domain": null
   },
   {
     "id": "kd_zero_sum_life",
     "type": "KnowledgeDeposit",
-    "outputStatus": "published",
-    "description": "2025.04发布。将人生选择困境重构为现在的我与未来的我之间的零和博弈，提出三条突破路径：复利型能力成长、面向可能性而非稳定性、了解自我节律。融合了损失厌恶、复利思维、MBTI自我认知等多维度思考。",
     "name": "你是否过着「零和博弈」的人生？",
     "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "2025.04发布。将人生选择困境重构为现在的我与未来的我之间的零和博弈，提出三条突破路径：复利型能力成长、面向可能性而非稳定性、了解自我节律。融合了损失厌恶、复利思维、MBTI自我认知等多维度思考。",
     "domain": null
   },
   {
     "id": "kd_optimal_distinctiveness",
     "type": "KnowledgeDeposit",
-    "outputStatus": "published",
-    "description": "2025.09发布。观察到身份认同、作品审美、信息认知三个维度共享同一个底层模式——最优独特性。归属需求vs独特性需求、熟悉又陌生的甜蜜点、最近发展区(ZPD)学习理论。",
     "name": "人类的一个有趣模式：既要平凡的慰藉，也要独特的闪光",
     "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "2025.09发布。观察到身份认同、作品审美、信息认知三个维度共享同一个底层模式——最优独特性。归属需求vs独特性需求、熟悉又陌生的甜蜜点、最近发展区(ZPD)学习理论。",
     "domain": null
   },
   {
     "id": "kd_ai_communication",
     "type": "KnowledgeDeposit",
-    "outputStatus": "published",
-    "description": "2025.12发布。从底层逻辑解析与AI交流的方法：语言本质是压缩、关键词唤醒（追求信息压缩率而非信噪比）、赋予视角（语言系统+认知视角双切换）。与用户一贯的认知科学视角一致——将语言/认知/AI串联。",
     "name": "如何与AI交流",
     "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "2025.12发布。从底层逻辑解析与AI交流的方法：语言本质是压缩、关键词唤醒（追求信息压缩率而非信噪比）、赋予视角（语言系统+认知视角双切换）。与用户一贯的认知科学视角一致——将语言/认知/AI串联。",
     "domain": null
   },
   {
     "id": "link_cogsci_ai_language_compression",
     "type": "CrossDomainLink",
-    "description": "用户将认知科学中的分块/抽象/工作记忆容量理论与AI交互实践结合，提出'语言即压缩'和'关键词唤醒'框架——人类用概念压缩突破工作记忆限制，AI用解压缩释放被语言封装的知识体系。",
     "name": "认知科学×AI → 语言压缩与知识唤醒",
+    "description": "用户将认知科学中的分块/抽象/工作记忆容量理论与AI交互实践结合，提出'语言即压缩'和'关键词唤醒'框架——人类用概念压缩突破工作记忆限制，AI用解压缩释放被语言封装的知识体系。",
     "domain": null
   },
   {
     "id": "link_economics_psychology_life_game",
     "type": "CrossDomainLink",
-    "description": "用户将博弈论（零和博弈/囚徒困境/针锋相对策略）应用于个人成长哲学：'现在的我vs未来的我'的零和困境，通过复利型能力成长实现共赢。同时将说谎检测模块理论与合作进化联系起来。",
     "name": "经济学×心理学 → 人生博弈论",
+    "description": "用户将博弈论（零和博弈/囚徒困境/针锋相对策略）应用于个人成长哲学：'现在的我vs未来的我'的零和困境，通过复利型能力成长实现共赢。同时将说谎检测模块理论与合作进化联系起来。",
     "domain": null
   },
   {
     "id": "mu_mixing_fundamentals",
     "type": "KnowledgeNode",
-    "nodeRole": "practitioner",
     "userInsight": "系统性地整理了混音工作流和各效果器参数逻辑，理解了从硬件设备到软件效果器的完整链路。",
-    "description": "混音效果器体系：EQ均衡器（频率/Q值/分贝）、压缩器（阈值/压缩比/Attack/Release）、混响（直达声/早期反射/混响声/预延时/混响时间）、延时（时间同步/反馈量/乒乓延时）、侧链压缩（闪避技术）。",
     "depth": 3,
+    "nodeRole": "practitioner",
     "name": "混音基础与效果器",
+    "description": "混音效果器体系：EQ均衡器（频率/Q值/分贝）、压缩器（阈值/压缩比/Attack/Release）、混响（直达声/早期反射/混响声/预延时/混响时间）、延时（时间同步/反馈量/乒乓延时）、侧链压缩（闪避技术）。",
     "domain": "domain_music_production"
   },
   {
     "id": "mu_audio_digital_fundamentals",
     "type": "KnowledgeNode",
-    "nodeRole": "practitioner",
     "userInsight": "能向他人解释从wave信号到频谱图的完整转化过程，以及不同音色在频谱上的分布差异。",
-    "description": "音频格式（无损WAVE/AIFF vs 压缩MP3/AAC）、采样率与比特率（44.1KHz/16bit标准）、单声道与立体声、频谱分析基础、傅立叶变换与频率叠加、振幅包络ADSR（起动-衰减-维持-释放）。",
     "depth": 3,
+    "nodeRole": "practitioner",
     "name": "音频数字化基础",
+    "description": "音频格式（无损WAVE/AIFF vs 压缩MP3/AAC）、采样率与比特率（44.1KHz/16bit标准）、单声道与立体声、频谱分析基础、傅立叶变换与频率叠加、振幅包络ADSR（起动-衰减-维持-释放）。",
     "domain": "domain_music_production"
   },
   {
     "id": "aa_prompt_engineering",
     "type": "KnowledgeNode",
-    "nodeRole": "practitioner",
     "userInsight": "观察到算法人使用GPT时的惯性思维（先打分再排序而非直接让GPT筛选、用python格式化而非让GPT直接输出），发现传统技术思维会限制AI工具的灵活使用。",
-    "description": "DeepLearning.ai ChatGPT Prompt Engineering课程核心：两大原则（清晰具体指令+给模型思考时间）、迭代方法（Idea→Implementation→Result→Analysis）、五大功能模式（Summarizing/Inferring/Transforming/Expanding/Chatbot）、temperature参数控制随机性。",
     "depth": 3,
+    "nodeRole": "practitioner",
     "name": "提示词工程方法论",
+    "description": "DeepLearning.ai ChatGPT Prompt Engineering课程核心：两大原则（清晰具体指令+给模型思考时间）、迭代方法（Idea→Implementation→Result→Analysis）、五大功能模式（Summarizing/Inferring/Transforming/Expanding/Chatbot）、temperature参数控制随机性。",
     "domain": "domain_ai_agent"
   },
   {
@@ -1493,244 +1493,244 @@ const graphNodes = [
   {
     "id": "kd_beauty_of_math_notes",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "吴军《数学之美》全书架构梳理：信息源→编码→通道→解码→接收方。三大部分：NLP（统计方法/HMM/信息熵）、搜索引擎（PageRank/TF-IDF/图论/密码学）、数学模型（最大熵/贝叶斯/EM/神经网络）。",
     "name": "《数学之美》读书笔记",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "吴军《数学之美》全书架构梳理：信息源→编码→通道→解码→接收方。三大部分：NLP（统计方法/HMM/信息熵）、搜索引擎（PageRank/TF-IDF/图论/密码学）、数学模型（最大熵/贝叶斯/EM/神经网络）。",
     "domain": null
   },
   {
     "id": "kd_mixing_notes",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "系统性的混音入门知识整理：硬件设备选择、音频格式与参数、四大效果器（EQ/压缩/混响/延时）的原理与参数设定、侧链压缩应用场景。",
     "name": "混音学习笔记",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "系统性的混音入门知识整理：硬件设备选择、音频格式与参数、四大效果器（EQ/压缩/混响/延时）的原理与参数设定、侧链压缩应用场景。",
     "domain": null
   },
   {
     "id": "kd_prompt_engineering_notes",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "DeepLearning.ai课程笔记：提示词两大原则、迭代方法论、五大功能（总结/推断/转换/扩展/聊天机器人）、chatbot记忆机制与点单系统示例。",
     "name": "ChatGPT提示词工程笔记",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "DeepLearning.ai课程笔记：提示词两大原则、迭代方法论、五大功能（总结/推断/转换/扩展/聊天机器人）、chatbot记忆机制与点单系统示例。",
     "domain": null
   },
   {
     "id": "td_three_level_decision",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "从股市和毛选的交叉体验中提炼的原创模型：显著重大决策（有限选择→可预测影响）→不起眼的小决策（自由选择→难以预估影响）→毫无感知的元决策（完全自由→贯穿一生的影响）。每层可决策范围受下层限制。元决策是'决策逻辑的决策'，决定了哪些认知参与决策过程。",
     "name": "人生决策三层级模型",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "从股市和毛选的交叉体验中提炼的原创模型：显著重大决策（有限选择→可预测影响）→不起眼的小决策（自由选择→难以预估影响）→毫无感知的元决策（完全自由→贯穿一生的影响）。每层可决策范围受下层限制。元决策是'决策逻辑的决策'，决定了哪些认知参与决策过程。",
     "domain": null
   },
   {
     "id": "td_attention_as_meta_resource",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "注意力是比智力和勤奋更元的东西。注意力优先级分布由环境、性格（长期经历塑造的价值观）、近期经历共同决定。注意力会疲劳（时间消耗+迁移机制），需要强大外力（欲望/热情）或反复迁移机制（艺术共鸣/学习顿悟）来维持。风变营销本质上是面向社会大众的注意力迁移。",
     "name": "注意力作为元资源理论",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "注意力是比智力和勤奋更元的东西。注意力优先级分布由环境、性格（长期经历塑造的价值观）、近期经历共同决定。注意力会疲劳（时间消耗+迁移机制），需要强大外力（欲望/热情）或反复迁移机制（艺术共鸣/学习顿悟）来维持。风变营销本质上是面向社会大众的注意力迁移。",
     "domain": null
   },
   {
     "id": "td_compound_feedback_education",
     "type": "ThinkingDeposit",
     "userInsight": "2024.01 教育伦理追问：知识分为'结果知识'（启蒙性/漂浮的/可游戏化减少痛苦）和'过程知识'（把很多点连成线/需要亲自吃苦去现实中经历打磨）。直接拿用户的人性需求赚钱——'降低学习成本''减少焦虑'——是满足捷径意图，但帮他们去掉了应吃的苦，他们怎么成长？教育产品的伦理边界在于：不应消除成长之苦，而应消除无关之苦。",
-    "outputStatus": "deposited",
-    "description": "游戏吸引人的核心不是'好玩'，而是'复利反馈'——付出成本后获得的东西能让后续追逐体验到明显的成本下降或效率提升。当前教育产品游戏化仅在自我层面（降低认知负荷），很少在本我层面达成复利反馈。结合弗洛伊德三我理论：超我（焦虑营销）、自我（认知负荷优化）、本我（复利反馈）。2021年早期思考：没有场景时缺乏学习动机，遇到场景时缺乏学习时间——前人场景库+虚拟人物引导+在完成场景中构建学习体系，本质是给予动机与动力。",
     "name": "复利反馈与游戏化教育",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "游戏吸引人的核心不是'好玩'，而是'复利反馈'——付出成本后获得的东西能让后续追逐体验到明显的成本下降或效率提升。当前教育产品游戏化仅在自我层面（降低认知负荷），很少在本我层面达成复利反馈。结合弗洛伊德三我理论：超我（焦虑营销）、自我（认知负荷优化）、本我（复利反馈）。2021年早期思考：没有场景时缺乏学习动机，遇到场景时缺乏学习时间——前人场景库+虚拟人物引导+在完成场景中构建学习体系，本质是给予动机与动力。",
     "domain": null
   },
   {
     "id": "td_subjectivity_four_stages",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "基于生理发展的主体性建构模型：1.观察阶段（线性因果/边界确立）→2.模仿阶段（网状关联/镜像神经元/客体化自我）→3.自指阶段（静态系统/祛魅/主体化自我）→4.流动阶段（系统流动/无我/与时间和解）。每阶段含苦（成长痛/卡点）与乐（充盈体验），通过否定之否定螺旋上升。配套开发了完整的心理评估问卷。",
     "name": "主体性发展四阶段模型",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "基于生理发展的主体性建构模型：1.观察阶段（线性因果/边界确立）→2.模仿阶段（网状关联/镜像神经元/客体化自我）→3.自指阶段（静态系统/祛魅/主体化自我）→4.流动阶段（系统流动/无我/与时间和解）。每阶段含苦（成长痛/卡点）与乐（充盈体验），通过否定之否定螺旋上升。配套开发了完整的心理评估问卷。",
     "domain": null
   },
   {
     "id": "td_compression_progress",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "基于LSTM之父Schmidhuber的compression progress论文展开：美=压缩后CB足够小（规律/熟悉），趣味=压缩优化的时间导数。发展出ABCD学习者分类：A反压缩优化（形式主义）、B补丁型（学信息本身）、C进化者（学压缩/系统性）、D智者（学压缩优化本质/元学习）。结合Piaget的同化/顺应、表面复杂度/可展开性概念。",
     "name": "压缩进步与学习层级理论",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "基于LSTM之父Schmidhuber的compression progress论文展开：美=压缩后CB足够小（规律/熟悉），趣味=压缩优化的时间导数。发展出ABCD学习者分类：A反压缩优化（形式主义）、B补丁型（学信息本身）、C进化者（学压缩/系统性）、D智者（学压缩优化本质/元学习）。结合Piaget的同化/顺应、表面复杂度/可展开性概念。",
     "domain": null
   },
   {
     "id": "td_civilization_five_stages",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "与AI共创的文明演进模型：图腾（敬畏→巫术教条）→哲学（理性→诡辩）→宗教（虔诚→赎罪券）→艺术（美与人本→浪漫无力）→科学（客观→机械决定论/AI）。每阶段良质（道）实体化为朴质（术）后僵化，引发下一轮良质涌现。AI是第五阶段的封棺之作，人类被迫走向第六阶段：意义感与存在美学。延伸出'道与术教育六环节'模型。",
     "name": "西方文明五阶段与道术回路",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "与AI共创的文明演进模型：图腾（敬畏→巫术教条）→哲学（理性→诡辩）→宗教（虔诚→赎罪券）→艺术（美与人本→浪漫无力）→科学（客观→机械决定论/AI）。每阶段良质（道）实体化为朴质（术）后僵化，引发下一轮良质涌现。AI是第五阶段的封棺之作，人类被迫走向第六阶段：意义感与存在美学。延伸出'道与术教育六环节'模型。",
     "domain": null
   },
   {
     "id": "td_procrastination_dynamics",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "拖延的力学模型：驱动力（问题驱动/目标驱动/他人期待/从众意识，即'自我后推/自我前拉/他人后推/他人前拉'）vs 阻碍力（主观：生理精神健康程度 + 客观：事情难度与卡点）。钩子是改变静态现状的干预手段，可作用于驱动力或阻碍力。",
     "name": "拖延动因动力学模型",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "拖延的力学模型：驱动力（问题驱动/目标驱动/他人期待/从众意识，即'自我后推/自我前拉/他人后推/他人前拉'）vs 阻碍力（主观：生理精神健康程度 + 客观：事情难度与卡点）。钩子是改变静态现状的干预手段，可作用于驱动力或阻碍力。",
     "domain": null
   },
   {
     "id": "td_storytelling_as_life_skill",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "从《Show Your Work!》阅读中顿悟：故事性本身具有可衡量的价值（同一幅画因故事不同价值不同）。讲故事不是写作技巧而是人生修行——从自我介绍到社区发言到路演到教学。三种故事结构的整理。从'学习social'转变为'学习讲故事的能力'。",
     "name": "讲故事作为人生底层能力",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "从《Show Your Work!》阅读中顿悟：故事性本身具有可衡量的价值（同一幅画因故事不同价值不同）。讲故事不是写作技巧而是人生修行——从自我介绍到社区发言到路演到教学。三种故事结构的整理。从'学习social'转变为'学习讲故事的能力'。",
     "domain": null
   },
   {
     "id": "td_gender_self_acceptance",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "性别社会化让男孩女孩各'减半自己'：女孩保留共情但被压制自信主张，男孩被鼓励自信但被推离情感深度。女性课题：否定（认识人性自私等本质，打破粉红泡泡）→否定的否定（这些不是缺点而是本质，真正接纳自己）→在人性基础上构建让世界美好的东西。男性课题：学习重构（视角切换/共情），打破大自我。好的亲密关系是最好的课堂。'减半'理论也解释了男性抑郁的修复困境：被砍掉的情感连接能力正是修复所需的通道。",
     "name": "性别化自我接纳的否定之否定",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "性别社会化让男孩女孩各'减半自己'：女孩保留共情但被压制自信主张，男孩被鼓励自信但被推离情感深度。女性课题：否定（认识人性自私等本质，打破粉红泡泡）→否定的否定（这些不是缺点而是本质，真正接纳自己）→在人性基础上构建让世界美好的东西。男性课题：学习重构（视角切换/共情），打破大自我。好的亲密关系是最好的课堂。'减半'理论也解释了男性抑郁的修复困境：被砍掉的情感连接能力正是修复所需的通道。",
     "domain": null
   },
   {
     "id": "td_medicine_3_0",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "从《超越百岁》提炼：医学2.0是接鸡蛋系统（只治急性病，不找楼顶扔鸡蛋的人），慢性病是连续光谱而非黑白。四大慢性病+情绪问题框架。健康数据四维度对比：睡眠（简单，人脑可处理）vs 运动/营养/情绪（数据爆炸，需技术辅助）。基因检测的社会阻碍在于阶级分层恐惧。",
     "name": "医学3.0与预防性健康框架",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "从《超越百岁》提炼：医学2.0是接鸡蛋系统（只治急性病，不找楼顶扔鸡蛋的人），慢性病是连续光谱而非黑白。四大慢性病+情绪问题框架。健康数据四维度对比：睡眠（简单，人脑可处理）vs 运动/营养/情绪（数据爆炸，需技术辅助）。基因检测的社会阻碍在于阶级分层恐惧。",
     "domain": null
   },
   {
     "id": "td_founder_vs_manager",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "创始人模式关心过程/价值导向，经理人模式关心结果/形式导向。经理人假设存在完美指标体系能从结果推演过程好坏，但现实中好过程可产生坏结果、反之亦然。创业不同阶段主要矛盾在两种模式间迁移。类比毛泽东的一腔热血+系统知识的辩证关系。",
     "name": "创始人模式与经理人模式辩证",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "创始人模式关心过程/价值导向，经理人模式关心结果/形式导向。经理人假设存在完美指标体系能从结果推演过程好坏，但现实中好过程可产生坏结果、反之亦然。创业不同阶段主要矛盾在两种模式间迁移。类比毛泽东的一腔热血+系统知识的辩证关系。",
     "domain": null
   },
   {
     "id": "td_practice_theory_integration",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "从毛泽东实践论出发：感性→理性→实践校正的循环。与冰山模型结合：冰山上小下大是价值模型，但启发性模型应上大下小（足够多实践才渗透认知）。渗透由两变量决定：实践量（眼）× 思考能力（脑），对应系统论的眼-脑定律。两者互相影响，形成螺旋上升回路。",
     "name": "实践论与冰山渗透模型",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "从毛泽东实践论出发：感性→理性→实践校正的循环。与冰山模型结合：冰山上小下大是价值模型，但启发性模型应上大下小（足够多实践才渗透认知）。渗透由两变量决定：实践量（眼）× 思考能力（脑），对应系统论的眼-脑定律。两者互相影响，形成螺旋上升回路。",
     "domain": null
   },
   {
     "id": "ec_macro_fiscal_monetary",
     "type": "KnowledgeNode",
-    "nodeRole": "learner",
-    "description": "财政政策（扩张/紧缩、赤字支出/国债、乘数效应MPC）与货币政策（美联储、准备金要求、折扣率、公开市场操作、量化宽松QE）。GDP/失业率/通胀率三大指标。",
     "depth": 3,
+    "nodeRole": "learner",
     "name": "宏观经济政策工具",
+    "description": "财政政策（扩张/紧缩、赤字支出/国债、乘数效应MPC）与货币政策（美联储、准备金要求、折扣率、公开市场操作、量化宽松QE）。GDP/失业率/通胀率三大指标。",
     "domain": "domain_economics"
   },
   {
     "id": "cs_dmn_fpn_networks",
     "type": "KnowledgeNode",
-    "nodeRole": "integrator",
     "userInsight": "FPN模式下只能通过别人教学学新东西（一切在理性范围内），而DMN的漫游模式支撑创造力——莫名其妙的连接能力是人类创造力的核心。",
-    "description": "DMN（自我参照/自传记忆/展望未来/社会认知/走神）与FPN（任务聚焦/抑制无关信息）的交互。DMN核心节点：后扣带皮层PCC、内侧前额叶mPFC、角回。睡眠中NREM期DMN连接减弱，REM期增强。DMN过强→失眠/反刍，DMN不足→低自我关怀。",
     "depth": 4,
+    "nodeRole": "integrator",
     "name": "DMN默认模式网络与FPN任务正性网络",
+    "description": "DMN（自我参照/自传记忆/展望未来/社会认知/走神）与FPN（任务聚焦/抑制无关信息）的交互。DMN核心节点：后扣带皮层PCC、内侧前额叶mPFC、角回。睡眠中NREM期DMN连接减弱，REM期增强。DMN过强→失眠/反刍，DMN不足→低自我关怀。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "hw_bdnf_sleep_emotion",
     "type": "KnowledgeNode",
-    "nodeRole": "researcher",
-    "description": "BDNF(脑源性神经营养因子)：海马体高表达，REM期分泌增加。BDNF不足→抑郁/焦虑/噩梦。有氧运动、富含酪氨酸/omega-3饮食提升BDNF。Val66Met变异导致恐惧消退学习受损(PTSD风险)。BDNF调节深度睡眠(SWA)和REM睡眠。",
     "depth": 3,
+    "nodeRole": "researcher",
     "name": "BDNF与睡眠-情绪-记忆关联",
+    "description": "BDNF(脑源性神经营养因子)：海马体高表达，REM期分泌增加。BDNF不足→抑郁/焦虑/噩梦。有氧运动、富含酪氨酸/omega-3饮食提升BDNF。Val66Met变异导致恐惧消退学习受损(PTSD风险)。BDNF调节深度睡眠(SWA)和REM睡眠。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "mu_tuning_systems",
     "type": "KnowledgeNode",
-    "nodeRole": "learner",
-    "description": "人耳对频率和分贝的感知是等比数列，泛音排列是等差数列。纯律（泛音等差，离基频越近越清晰）、五度相生律（3/2频率关系生成旋律）、十二平均律（精致等比，近似纯律）。美感需要等差保证，秩序感需要等比保证。",
     "depth": 2,
+    "nodeRole": "learner",
     "name": "音律体系：纯律/五度相生律/十二平均律",
+    "description": "人耳对频率和分贝的感知是等比数列，泛音排列是等差数列。纯律（泛音等差，离基频越近越清晰）、五度相生律（3/2频率关系生成旋律）、十二平均律（精致等比，近似纯律）。美感需要等差保证，秩序感需要等比保证。",
     "domain": "domain_music_production"
   },
   {
     "id": "ph_waves_electromagnetic_mechanical",
     "type": "KnowledgeNode",
-    "nodeRole": "learner",
     "userInsight": "眼睛和耳朵都是生物突破身体感知极限的工具——将身体无法察觉的细致刺激转化为可感知信号。",
-    "description": "电磁波（横波/光速/真空传播）：无线电→红外→可见光→紫外→X射线→伽马。机械波（需介质）：次声→声波→超声。眼睛特化捕捉可见光，耳朵特化捕捉空气振动。带宽概念：高频电磁波有更大带宽范围但更易被阻挡。",
     "depth": 2,
+    "nodeRole": "learner",
     "name": "电磁波与机械波物理基础",
+    "description": "电磁波（横波/光速/真空传播）：无线电→红外→可见光→紫外→X射线→伽马。机械波（需介质）：次声→声波→超声。眼睛特化捕捉可见光，耳朵特化捕捉空气振动。带宽概念：高频电磁波有更大带宽范围但更易被阻挡。",
     "domain": "domain_western_philosophy"
   },
   {
     "id": "da_oltp_vs_olap",
     "type": "KnowledgeNode",
-    "nodeRole": "practitioner",
     "userInsight": "大脑做的事情之一就像把采集到的事务型信息处理成可使用的分析型信息。这个类比帮助解释了为什么底层数据库用OLTP更好。",
-    "description": "事务型(OLTP)：一事一表，数据源管理好但难聚合分析。分析型(OLAP)：数据并在一起方便分析但数据源管理复杂。类比人脑：感受器(眼耳肤)采集→大脑处理(事务→分析转换)→效应器输出。采集阶段不应直接用分析格式，因为多来源优先级和历史追溯问题。",
     "depth": 4,
+    "nodeRole": "practitioner",
     "name": "事务型存储与分析型存储的辩证",
+    "description": "事务型(OLTP)：一事一表，数据源管理好但难聚合分析。分析型(OLAP)：数据并在一起方便分析但数据源管理复杂。类比人脑：感受器(眼耳肤)采集→大脑处理(事务→分析转换)→效应器输出。采集阶段不应直接用分析格式，因为多来源优先级和历史追溯问题。",
     "domain": "domain_data_analysis"
   },
   {
     "id": "da_analyst_capability_model",
     "type": "KnowledgeNode",
-    "nodeRole": "practitioner",
     "userInsight": "大多数人对数据分析的能力模型不清楚。尤其'尾'(业务洞察/复盘)比'头'更难更重要，但新人最容易忽略。分析文档缺少业务洞察就只有分析没有推动力；方案缺少复盘就缺乏长期风险意识和经验积累。",
-    "description": "五维能力模型：1.业务知识(实际理解+指标概念拆解)、2.数据工程(库表设计/面向事务vs分析)、3.技术能力(SQL/Python/前后端基本概念)、4.可视化(工具+设计意识)、5.业务分析(统计学+分析框架+文档能力)。分析文档三段式：确定分析目标→分析→业务洞察。方案三段式：框架(时间线+决策项)→内容(含风险预案)→复盘。数据团队应面向业务拆分人员而非面向产出/功能拆分——核心能力是业务经验，产出物形态需由分析师自行判断。",
     "depth": 4,
+    "nodeRole": "practitioner",
     "name": "数据分析师能力模型",
+    "description": "五维能力模型：1.业务知识(实际理解+指标概念拆解)、2.数据工程(库表设计/面向事务vs分析)、3.技术能力(SQL/Python/前后端基本概念)、4.可视化(工具+设计意识)、5.业务分析(统计学+分析框架+文档能力)。分析文档三段式：确定分析目标→分析→业务洞察。方案三段式：框架(时间线+决策项)→内容(含风险预案)→复盘。数据团队应面向业务拆分人员而非面向产出/功能拆分——核心能力是业务经验，产出物形态需由分析师自行判断。",
     "domain": "domain_data_analysis"
   },
   {
     "id": "ps_active_living_present",
     "type": "KnowledgeNode",
-    "nodeRole": "integrator",
     "userInsight": "裸辞后发现人生不是旷野——因为被圈养的人从未学会旷野的规则。我们在别人编织的环境中都不懂观察感受并交互，又怎么能在自由中编织自己的环境？",
-    "description": "Adler积极心理学核心：活在当下而非为未来某点而活。高中不是为了高考，大学不是为了毕业。社会和父母用谎言做的泡沫驱使孩子逃离当下。精神分析让自我活在过去，父母期待让自我活在未来。心理健康一词概括：自洽。",
     "depth": 3,
+    "nodeRole": "integrator",
     "name": "积极心理学与活在当下",
+    "description": "Adler积极心理学核心：活在当下而非为未来某点而活。高中不是为了高考，大学不是为了毕业。社会和父母用谎言做的泡沫驱使孩子逃离当下。精神分析让自我活在过去，父母期待让自我活在未来。心理健康一词概括：自洽。",
     "domain": "domain_psychology"
   },
   {
     "id": "ps_attachment_trauma_tree",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "2022.06：'只要你还站在这岸，就永远帮不了彼岸的人；你不曾体验过那种沉重，就无法为那些人带来解脱。'——共情需要体验，理论上的理解不够。2026.03：爸爸有自我孤立倾向。自己过去也会通过自我孤立表达愤怒，但作为女性保留了情感连接能力，亲密关系成为消融那堵墙的通道，逐渐打破了代际传递。",
-    "description": "创伤五类：虐待、忽视、遗弃、纠结（界限模糊）、目睹悲惨。创伤树四分支：成瘾（含工作/完美主义上瘾）、相互依赖、习惯性生存策略（如愤怒）、依恋障碍。四种依恋型：安全/痴迷(焦虑)/回避(疏离)/恐惧型。男性抑郁症（covert depression）：外化表现为孤立+愤怒，不同于传统内化抑郁，会伤害亲密之人并导致代际传递。社会将外化抑郁当行为问题'堵'而非'疏'，形成越堵越孤立的恶性循环。",
     "depth": "有独立见解",
+    "nodeRole": "knowledge",
     "name": "依恋类型与创伤树",
+    "description": "创伤五类：虐待、忽视、遗弃、纠结（界限模糊）、目睹悲惨。创伤树四分支：成瘾（含工作/完美主义上瘾）、相互依赖、习惯性生存策略（如愤怒）、依恋障碍。四种依恋型：安全/痴迷(焦虑)/回避(疏离)/恐惧型。男性抑郁症（covert depression）：外化表现为孤立+愤怒，不同于传统内化抑郁，会伤害亲密之人并导致代际传递。社会将外化抑郁当行为问题'堵'而非'疏'，形成越堵越孤立的恶性循环。",
     "domain": "domain_psychology"
   },
   {
     "id": "ps_zero_sum_to_positive_sum",
     "type": "KnowledgeNode",
-    "nodeRole": "integrator",
     "userInsight": "人生的旷野需要两个维度：对内探索（找到自己的目标）+ 对外掌握正和博弈规则。教育系统在这两方面都反其道而行之。",
-    "description": "中产阶级在时代更迭中落入时间缝隙：父母在资源匮乏时代通过拼杀成长，继承了零和博弈价值观给资源充裕的下一代。底层仍在零和中，富人天然懂社交网络共赢，唯独中产既知道个人力量有限又充满竞争意识。",
     "depth": 4,
+    "nodeRole": "integrator",
     "name": "零和博弈到正和博弈的代际转变",
+    "description": "中产阶级在时代更迭中落入时间缝隙：父母在资源匮乏时代通过拼杀成长，继承了零和博弈价值观给资源充裕的下一代。底层仍在零和中，富人天然懂社交网络共赢，唯独中产既知道个人力量有限又充满竞争意识。",
     "domain": "domain_psychology"
   },
   {
     "id": "gd_board_game_mechanism_exposure",
     "type": "KnowledgeNode",
-    "nodeRole": "explorer",
     "userInsight": "玩了近十年手游都是快感为主，桌游仅两周就产生了爆发性不同——因为机制外放让我看到系统的搭建和涌现。",
-    "description": "桌游因需要手动结算，底层机制和数值设计完全暴露——对比手游的黑箱体验。机制外放缩小了玩家与制作者的距离。教育启示：做体验而不是做教育——教育是阶级的（我比你好，你来学我），体验是平等的（我来分享，你来体验）。",
     "depth": 3,
+    "nodeRole": "explorer",
     "name": "桌游机制外放与体验设计",
+    "description": "桌游因需要手动结算，底层机制和数值设计完全暴露——对比手游的黑箱体验。机制外放缩小了玩家与制作者的距离。教育启示：做体验而不是做教育——教育是阶级的（我比你好，你来学我），体验是平等的（我来分享，你来体验）。",
     "domain": "domain_game_design"
   },
   {
@@ -1744,13 +1744,13 @@ const graphNodes = [
   {
     "id": "mat_mao_selected_works",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "毛泽东"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
-    "description": "通行版共四卷四册，收录1925-1949年间229篇著作。第五卷（1949-1957）1977年出版后不再印刷。",
     "name": "毛泽东选集（全四卷）",
+    "description": "通行版共四卷四册，收录1925-1949年间229篇著作。第五卷（1949-1957）1977年出版后不再印刷。",
     "domain": null
   },
   {
@@ -1758,8 +1758,8 @@ const graphNodes = [
     "type": "Material",
     "materialType": "book",
     "readingStatus": "in_progress",
-    "description": "良质（道/浪漫/体验之河流）与朴质（术/知识/终点之结论）的辩证。作者用意识流记录思考的河流而非终点。",
     "name": "禅与摩托车维修艺术",
+    "description": "良质（道/浪漫/体验之河流）与朴质（术/知识/终点之结论）的辩证。作者用意识流记录思考的河流而非终点。",
     "domain": null
   },
   {
@@ -1767,8 +1767,8 @@ const graphNodes = [
     "type": "Material",
     "materialType": "book",
     "readingStatus": "completed",
-    "description": "简历美德vs悼词美德，亚当一号（创造力/竞争/短期激素）vs亚当二号（道德逻辑/否定之否定/长期价值）。",
     "name": "品格之路 (The Road to Character)",
+    "description": "简历美德vs悼词美德，亚当一号（创造力/竞争/短期激素）vs亚当二号（道德逻辑/否定之否定/长期价值）。",
     "domain": null
   },
   {
@@ -1776,8 +1776,8 @@ const graphNodes = [
     "type": "Material",
     "materialType": "book",
     "readingStatus": "completed",
-    "description": "硅谷的傲慢：被技术取代工作的人的命运，商业态度介于半心半意的再培训和不加掩饰的漠不关心之间。",
     "name": "我看见的世界（李飞飞）",
+    "description": "硅谷的傲慢：被技术取代工作的人的命运，商业态度介于半心半意的再培训和不加掩饰的漠不关心之间。",
     "domain": null
   },
   {
@@ -1791,200 +1791,200 @@ const graphNodes = [
   {
     "id": "mat_designing_your_life",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Bill Burnett",
       "Dave Evans"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
-    "description": "斯坦福大学设计学院最受欢迎的人生规划课。运用设计思维（原型制作、头脑风暴、重新定义问题）帮助人找到人生方向。核心工具包括能量日志、奥德赛计划（3条平行人生路径）、心流地图等。",
     "name": "斯坦福大学人生设计课",
+    "description": "斯坦福大学设计学院最受欢迎的人生规划课。运用设计思维（原型制作、头脑风暴、重新定义问题）帮助人找到人生方向。核心工具包括能量日志、奥德赛计划（3条平行人生路径）、心流地图等。",
     "domain": "domain_personal_growth"
   },
   {
     "id": "link_decision_stock_war_life",
     "type": "CrossDomainLink",
-    "description": "从股市体验（一次亏损可损失半年盈利）到毛选战争论（一次败仗拖垮胜仗积累）到人生决策：极低成本决策→远倍数后果。发现关联→发现矛盾→元思考→系统性建模的推理路径。",
     "name": "股市×战争×人生 → 决策层级理论",
+    "description": "从股市体验（一次亏损可损失半年盈利）到毛选战争论（一次败仗拖垮胜仗积累）到人生决策：极低成本决策→远倍数后果。发现关联→发现矛盾→元思考→系统性建模的推理路径。",
     "domain": null
   },
   {
     "id": "link_cogsci_education_compression",
     "type": "CrossDomainLink",
-    "description": "将Schmidhuber的compression progress理论与Piaget的同化/顺应、系统论的表面复杂度概念融合，发展出ABCD学习者分类（反压缩优化/补丁型/进化者/智者）和'低表面复杂度+高可展开性=宏大感动'的审美模型。",
     "name": "认知科学×教育 → 压缩与学习层级",
+    "description": "将Schmidhuber的compression progress理论与Piaget的同化/顺应、系统论的表面复杂度概念融合，发展出ABCD学习者分类（反压缩优化/补丁型/进化者/智者）和'低表面复杂度+高可展开性=宏大感动'的审美模型。",
     "domain": null
   },
   {
     "id": "link_psychology_health_sleep",
     "type": "CrossDomainLink",
-    "description": "将DMN/FPN脑网络理论应用于睡眠问题分析：四种睡前错误激活（情绪反刍/深夜加班/过度警觉/创伤侵入）+两种额外问题（过度兴奋/奖励回路）。每种对应不同的干预策略。",
     "name": "心理学×健康 → 睡前脑网络与睡眠质量",
+    "description": "将DMN/FPN脑网络理论应用于睡眠问题分析：四种睡前错误激活（情绪反刍/深夜加班/过度警觉/创伤侵入）+两种额外问题（过度兴奋/奖励回路）。每种对应不同的干预策略。",
     "domain": null
   },
   {
     "id": "link_philosophy_civilization_education",
     "type": "CrossDomainLink",
-    "description": "从文明五阶段（图腾→哲学→宗教→艺术→科学）的良质/朴质辩证，推导出教育六环节：得道(体验领悟)→由道生术(压缩表达+传递)→学术(筛选+学习)→由术生道(融入生活)。AI作为新宗教改革的'印刷术'将实现科学平权。",
     "name": "哲学×文明史 → 道与术的教育模型",
+    "description": "从文明五阶段（图腾→哲学→宗教→艺术→科学）的良质/朴质辩证，推导出教育六环节：得道(体验领悟)→由道生术(压缩表达+传递)→学术(筛选+学习)→由术生道(融入生活)。AI作为新宗教改革的'印刷术'将实现科学平权。",
     "domain": null
   },
   {
     "id": "link_game_psychology_education",
     "type": "CrossDomainLink",
-    "description": "桌游机制外放→教育启示：教育是阶级的(我视角比你高)，体验是平等的(来体验一下吧)。结合复利反馈理论：游戏化教育应达成本我层面的复利反馈而非仅自我层面的认知负荷优化。",
     "name": "游戏设计×心理学×教育 → 体验式学习",
+    "description": "桌游机制外放→教育启示：教育是阶级的(我视角比你高)，体验是平等的(来体验一下吧)。结合复利反馈理论：游戏化教育应达成本我层面的复利反馈而非仅自我层面的认知负荷优化。",
     "domain": null
   },
   {
     "id": "link_music_physics_perception",
     "type": "CrossDomainLink",
-    "description": "人耳感知频率/分贝为等比数列，泛音排列为等差数列——美感(等差)与秩序感(等比)的张力。三种音律体系本质是对这种张力的不同妥协。音频数字化完整链路：声波→采样→傅立叶变换→频谱→特征提取。",
     "name": "音乐×物理×认知 → 感知与音律",
+    "description": "人耳感知频率/分贝为等比数列，泛音排列为等差数列——美感(等差)与秩序感(等比)的张力。三种音律体系本质是对这种张力的不同妥协。音频数字化完整链路：声波→采样→傅立叶变换→频谱→特征提取。",
     "domain": null
   },
   {
     "id": "td_ai_as_forced_opensourcing",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "AI本质是'已沉淀为术的东西'的强行开源——破除的是知识壁垒而非创造力。拆分艺术的功能性（AI可满足）与艺术的热爱（磨练永远是应吃的苦），AI净化了创作者的动机纯度。类比20世纪扫盲运动。同时从数据主权角度揭示去中心化的权力下放暗线：ITO在数据层面、AI在知识层面做同一件事。延伸思考：AI协作产出中人类的贡献是切入角度、方向控制和压缩提炼，AI的贡献是展开和知识汇编——区分'种子vs展开'。",
     "name": "AI作为已沉淀知识的强行开源",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "AI本质是'已沉淀为术的东西'的强行开源——破除的是知识壁垒而非创造力。拆分艺术的功能性（AI可满足）与艺术的热爱（磨练永远是应吃的苦），AI净化了创作者的动机纯度。类比20世纪扫盲运动。同时从数据主权角度揭示去中心化的权力下放暗线：ITO在数据层面、AI在知识层面做同一件事。延伸思考：AI协作产出中人类的贡献是切入角度、方向控制和压缩提炼，AI的贡献是展开和知识汇编——区分'种子vs展开'。",
     "domain": null
   },
   {
     "id": "td_human_world_interaction_model",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "原创框架图：人从现实世界的'对象'中感应出概念，概念间组建有机记忆结构。认知作为中枢，通过两条路径与世界交互：迭代方式（科技/规则/学习/经济不断打磨对象与虚拟对象）和表现形式（通过文/图/声/触/味/嗅等介质外化认知）。记忆分为图像记忆、形态记忆、触觉记忆、逻辑记忆、关系记忆五种类型。群体思维惯性作为系统反馈回路影响整体认知走向。底层通过层层框架实现连接、理解、创新。",
     "name": "人与世界的交互模型",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "原创框架图：人从现实世界的'对象'中感应出概念，概念间组建有机记忆结构。认知作为中枢，通过两条路径与世界交互：迭代方式（科技/规则/学习/经济不断打磨对象与虚拟对象）和表现形式（通过文/图/声/触/味/嗅等介质外化认知）。记忆分为图像记忆、形态记忆、触觉记忆、逻辑记忆、关系记忆五种类型。群体思维惯性作为系统反馈回路影响整体认知走向。底层通过层层框架实现连接、理解、创新。",
     "domain": null
   },
   {
     "id": "aa_mcp_protocol",
     "type": "KnowledgeNode",
-    "nodeRole": "skill",
-    "description": "由Anthropic发起、Linux Foundation主持的开放协议，为LLM应用提供标准化的外部数据源和工具集成接口。采用Client-Server-Transport三层架构，核心功能模块包括Tools（工具调用）、Resources（资源访问）、Prompts（提示管理）、Sampling（采样）。提供TypeScript/Python/Java/Kotlin/C#/Go/Ruby/Rust/Swift/PHP共10种语言SDK。",
     "depth": "理解",
+    "nodeRole": "skill",
     "name": "Model Context Protocol (MCP)",
+    "description": "由Anthropic发起、Linux Foundation主持的开放协议，为LLM应用提供标准化的外部数据源和工具集成接口。采用Client-Server-Transport三层架构，核心功能模块包括Tools（工具调用）、Resources（资源访问）、Prompts（提示管理）、Sampling（采样）。提供TypeScript/Python/Java/Kotlin/C#/Go/Ruby/Rust/Swift/PHP共10种语言SDK。",
     "domain": "domain_ai_agent"
   },
   {
     "id": "mat_mcp_spec",
     "type": "Material",
     "materialType": "documentation",
-    "progress": "已完成学习",
     "readingStatus": "completed",
     "name": "Model Context Protocol 官方文档与规范",
+    "progress": "已完成学习",
     "domain": "domain_ai_agent"
   },
   {
     "id": "kd_data_analysis_doc_standard",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "系统化的数据分析文档写作方法论。三段式结构：背景与需求目标→分析过程详述→结论提炼与汇总。每个部分面向不同读者（写作者/需求方/协作者）。分析六步法：框架→数据源→清洗→统计可视化→总结现象→归纳结论。强调目标与手段的区分、数据现象的客观性、结论的主观性，以及疑问-回答式的阅读结构设计。引用金字塔原理和幸存者偏差案例。",
     "name": "数据分析文档标准",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "系统化的数据分析文档写作方法论。三段式结构：背景与需求目标→分析过程详述→结论提炼与汇总。每个部分面向不同读者（写作者/需求方/协作者）。分析六步法：框架→数据源→清洗→统计可视化→总结现象→归纳结论。强调目标与手段的区分、数据现象的客观性、结论的主观性，以及疑问-回答式的阅读结构设计。引用金字塔原理和幸存者偏差案例。",
     "domain": null
   },
   {
     "id": "mat_grit",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Angela Duckworth"
     ],
-    "progress": "已读完并完成详细笔记",
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "Grit: The Power of Passion and Perseverance",
+    "progress": "已读完并完成详细笔记",
     "domain": "domain_psychology"
   },
   {
     "id": "ps_grit_theory",
     "type": "KnowledgeNode",
-    "nodeRole": "mental_model",
     "userInsight": "Grit判断的是「半途而废」的人；适合以「从能力符合条件的人中去掉坚毅度不足的人」为目标来使用。时间窗口越长Grit影响越大。",
-    "description": "Angela Duckworth提出的成就心理学模型：talent × effort = skill, skill × effort = achievement。Grit由两个维度构成：passion（长期目标一致性，如指南针而非烟花）和perseverance（面对逆境的持续努力）。Grit与talent完全无关，但在长期时间窗口下对成就的预测力极强。西点军校实验证明Grit预测退学率，而入学分数预测学术成绩，两者正交。",
     "depth": "有独立见解",
+    "nodeRole": "mental_model",
     "name": "坚毅理论 (Grit Theory)",
+    "description": "Angela Duckworth提出的成就心理学模型：talent × effort = skill, skill × effort = achievement。Grit由两个维度构成：passion（长期目标一致性，如指南针而非烟花）和perseverance（面对逆境的持续努力）。Grit与talent完全无关，但在长期时间窗口下对成就的预测力极强。西点军校实验证明Grit预测退学率，而入学分数预测学术成绩，两者正交。",
     "domain": "domain_psychology"
   },
   {
     "id": "ps_growth_mindset",
     "type": "KnowledgeNode",
-    "nodeRole": "mental_model",
-    "description": "Carol Dweck提出：固定型思维认为智力不可改变，遇挫折归因于能力不足；成长型思维认为智力可发展，遇挫折归因于努力不够。习得性无助的根源不是害怕失败，而是习惯性将失败解释为缺乏能力的证据。青春期经历强大逆境并克服的人会对习得性无助产生免疫力。语言塑造：'You're a learner' > 'You're a natural'。",
     "depth": "有独立见解",
+    "nodeRole": "mental_model",
     "name": "成长型思维 vs 固定型思维 (Growth/Fixed Mindset)",
+    "description": "Carol Dweck提出：固定型思维认为智力不可改变，遇挫折归因于能力不足；成长型思维认为智力可发展，遇挫折归因于努力不够。习得性无助的根源不是害怕失败，而是习惯性将失败解释为缺乏能力的证据。青春期经历强大逆境并克服的人会对习得性无助产生免疫力。语言塑造：'You're a learner' > 'You're a natural'。",
     "domain": "domain_psychology"
   },
   {
     "id": "ps_deliberate_practice",
     "type": "KnowledgeNode",
-    "nodeRole": "methodology",
-    "description": "精通技能需要大量高质量时间投入（万小时/十年定律）。四要素：明确的挑战目标、全神贯注的努力、即时反馈、反思改进后的重复。刻意练习痛苦且疲惫（每天3-5小时上限），但与心流形成正反馈回路：刻意练习提升能力→心流体验→更多承受刻意练习的动力。Experience ≠ excellence：有的人工作20年，有的人工作20个1年。",
     "depth": "理解",
+    "nodeRole": "methodology",
     "name": "刻意练习 (Deliberate Practice)",
+    "description": "精通技能需要大量高质量时间投入（万小时/十年定律）。四要素：明确的挑战目标、全神贯注的努力、即时反馈、反思改进后的重复。刻意练习痛苦且疲惫（每天3-5小时上限），但与心流形成正反馈回路：刻意练习提升能力→心流体验→更多承受刻意练习的动力。Experience ≠ excellence：有的人工作20年，有的人工作20个1年。",
     "domain": "domain_psychology"
   },
   {
     "id": "ps_learned_helplessness",
     "type": "KnowledgeNode",
-    "description": "Seligman的经典实验：不是痛苦本身导致无助，而是'你认为自己无法控制的痛苦'导致无助。乐观主义者将坏事归因于暂时的、具体的原因，悲观主义者归因于永久的、普遍的原因。即使在习得性无助实验中，仍有1/3的个体保持韧性（resilience）。",
     "depth": "理解",
     "name": "习得性无助 (Learned Helplessness)",
+    "description": "Seligman的经典实验：不是痛苦本身导致无助，而是'你认为自己无法控制的痛苦'导致无助。乐观主义者将坏事归因于暂时的、具体的原因，悲观主义者归因于永久的、普遍的原因。即使在习得性无助实验中，仍有1/3的个体保持韧性（resilience）。",
     "domain": "domain_psychology"
   },
   {
     "id": "kd_grit_notes",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "Angela Duckworth《Grit》全书详细笔记。核心框架：Grit = Passion + Perseverance，talent × effort = skill, skill × effort = achievement。四层培养路径：Interest（early years, foster not follow）→ Practice（middle years, deliberate practice + flow循环）→ Purpose（later years, 利他使命感）→ Hope（growth mindset + 习得性乐观）。包含西点军校实验、Seligman习得性无助实验、Carol Dweck成长型思维实验等核心研究的完整梳理。用户注释了关于talent偏见、passion作为指南针而非烟花、以及《斯坦福大学人生设计课》的关联。",
     "name": "《Grit》读书笔记",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "Angela Duckworth《Grit》全书详细笔记。核心框架：Grit = Passion + Perseverance，talent × effort = skill, skill × effort = achievement。四层培养路径：Interest（early years, foster not follow）→ Practice（middle years, deliberate practice + flow循环）→ Purpose（later years, 利他使命感）→ Hope（growth mindset + 习得性乐观）。包含西点军校实验、Seligman习得性无助实验、Carol Dweck成长型思维实验等核心研究的完整梳理。用户注释了关于talent偏见、passion作为指南针而非烟花、以及《斯坦福大学人生设计课》的关联。",
     "domain": null
   },
   {
     "id": "td_signal_catcher",
     "type": "ThinkingDeposit",
+    "name": "信号捕手——认知×内容交互模型与AI产品设计",
     "outputPotential": "high",
+    "depositType": "thinking",
     "outputStatus": "deposited",
     "description": "原创AI产品设计框架「信号捕手」。核心理念：产品不仅提供服务（Service），更提供成长（Growth）——在不打扰用户的前提下潜移默化提升认知。三大模块：1)用户状态解析器（认知带宽×结构分辨率双轴）；2)内容认知评估器（抽象阶梯×认知密度双轴，10点预算分配法）；3)认知-内容交互模型（5×5矩阵，每个密度的内容都有栖身之所）。融合Hayakawa抽象阶梯理论的哑铃策略：最有力量的沟通发生在阶梯两极（L5智慧+L1/L2感官），中间层L3是'迷雾沼泽'。针对中间层陷阱提出离心机策略：向下锚定（增加密度/真实感）+向上升维（增加深度/元规则）。",
-    "name": "信号捕手——认知×内容交互模型与AI产品设计",
-    "depositType": "thinking",
     "domain": null
   },
   {
     "id": "cs_abstraction_ladder",
     "type": "KnowledgeNode",
-    "nodeRole": "mental_model",
     "userInsight": "在输出实践中验证：写出来的东西被看懂只是第一步，不是全部。产生共鸣——感性层面的共鸣而不仅仅是理性层面的理解——产生连接，才是真正有力的沟通。用通用比喻（厨师）替代个人故事（琴键触感）写出的文章，停留在中间层（L3：正确的道理、合理的分类），读者'点头但不转发'。用真实故事（'我愣住了'）+ 原理（'结构不等于思考'）重写后落在两极，读者跟着经历而不是被教导。侯世达反复说的也是同一件事：类比和共振是认知的核心，不是装饰。AI时代延伸：L3中间层内容最容易被AI摘要消灭——观点清晰、结构完整、论证合理的'好文章'，其价值全在逻辑链条里，而逻辑链条是AI最擅长压缩的。L1（故事/身体反应）和L5（锐利原理）能穿透摘要层。写作策略因此要变：不是写得更清晰，而是写得更有触感。",
-    "description": "语言学家早川一会（S.I. Hayakawa）提出。从极度具象（感官/数据）到极度抽象（符号/元逻辑）的五层光谱。哑铃策略：最有力量的沟通发生在阶梯两极——顶端（L5 智慧/原理，提供解释力）和底端（L1/L2 感官/数据，提供证据和信任），中间层（L3 评价/标签）是大脑的偷懒区，丢失真实性和深刻性。",
     "depth": "有独立见解",
+    "nodeRole": "mental_model",
     "name": "抽象阶梯 (Ladder of Abstraction)",
+    "description": "语言学家早川一会（S.I. Hayakawa）提出。从极度具象（感官/数据）到极度抽象（符号/元逻辑）的五层光谱。哑铃策略：最有力量的沟通发生在阶梯两极——顶端（L5 智慧/原理，提供解释力）和底端（L1/L2 感官/数据，提供证据和信任），中间层（L3 评价/标签）是大脑的偷懒区，丢失真实性和深刻性。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "mat_excursions_modern_math",
     "type": "Material",
     "userInsight": "第一章投票理论带来双向认知震撼：直觉上极简的事物（一个词、一个票箱）深入后展开庞大复杂性——同时数学又天然在从复杂中提炼简洁。这种'从简单中看到复杂、从复杂中看到简单'的双向运动可能是数学家思维的本质特征。",
-    "materialType": "book",
     "author": [
       "Peter Tannenbaum"
     ],
-    "progress": "上册第二章（加权投票系统）进行中——班扎夫权力指数、夏普里-舒比克权力指数",
+    "materialType": "book",
     "readingStatus": "in_progress",
     "name": "现代数学之旅 (Excursions in Modern Mathematics)",
+    "progress": "上册第二章（加权投票系统）进行中——班扎夫权力指数、夏普里-舒比克权力指数",
     "domain": "domain_mathematics"
   },
   {
     "id": "mat_guns_germs_steel",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Jared Diamond"
     ],
+    "materialType": "book",
     "readingStatus": "wishlist",
     "name": "枪炮、病菌与钢铁 (Guns, Germs, and Steel)",
     "domain": "domain_history"
@@ -1992,10 +1992,10 @@ const graphNodes = [
   {
     "id": "mat_third_chimpanzee",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Jared Diamond"
     ],
+    "materialType": "book",
     "readingStatus": "wishlist",
     "name": "第三类黑猩猩 (The Third Chimpanzee)",
     "domain": "domain_history"
@@ -2003,10 +2003,10 @@ const graphNodes = [
   {
     "id": "mat_collapse",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Jared Diamond"
     ],
+    "materialType": "book",
     "readingStatus": "wishlist",
     "name": "崩溃 (Collapse: How Societies Choose to Fail or Succeed)",
     "domain": "domain_history"
@@ -2014,131 +2014,132 @@ const graphNodes = [
   {
     "id": "domain_mathematics",
     "type": "DomainRoot",
+    "name": "数学",
     "priority": "supplementary",
     "description": "纯数学与应用数学的基础理论，包括数论、代数、几何、分析、离散数学、概率论等。与数据分析的统计分支有交叉但侧重不同——数据分析偏应用方法论，数学偏理论基础。",
-    "name": "数学",
     "domain": "domain_mathematics"
   },
   {
     "id": "branch_math_discrete",
     "type": "BranchScaffold",
     "userInsight": "投票理论是从直觉上极简之处展开复杂性的典型案例。与系统论的'压缩'方向（把不同领域抽象为形式与功能）形成对比——系统论从复杂到简洁，数学从简单到复杂，但数学独特在于同时做两个方向。建模方法论观察（从Banzhaf vs Shapley-Shubik中提炼）：模型越贴近直觉，往往假设越多；模型越'干净'，往往越抽象。无假设的模型更客观但离体验更远，有假设的模型更像'真的'但引入了可质疑的前提。",
-    "description": "图论、组合学、投票理论、博弈论数学基础等。《现代数学之旅》的主要覆盖领域。",
     "depth": "浅读",
     "name": "离散数学",
+    "description": "图论、组合学、投票理论、博弈论数学基础等。《现代数学之旅》的主要覆盖领域。",
     "domain": "domain_mathematics"
   },
   {
     "id": "branch_math_analysis",
     "type": "BranchScaffold",
-    "description": "微积分、实分析、复分析、分形几何等连续数学分支。",
     "name": "数学分析与连续数学",
+    "description": "微积分、实分析、复分析、分形几何等连续数学分支。",
     "domain": "domain_mathematics"
   },
   {
     "id": "branch_math_algebra",
     "type": "BranchScaffold",
-    "description": "线性代数、抽象代数、数论等。音律体系中的等比/等差数列、密码学基础等与此相关。",
     "name": "代数与数论",
+    "description": "线性代数、抽象代数、数论等。音律体系中的等比/等差数列、密码学基础等与此相关。",
     "domain": "domain_mathematics"
   },
   {
     "id": "branch_math_probability",
     "type": "BranchScaffold",
-    "description": "概率论的数学基础。与数据分析领域的统计分支互补——此处侧重数学理论，数据分析侧重应用方法。",
     "name": "概率论与统计基础",
+    "description": "概率论的数学基础。与数据分析领域的统计分支互补——此处侧重数学理论，数据分析侧重应用方法。",
     "domain": "domain_mathematics"
   },
   {
     "id": "domain_history",
     "type": "DomainRoot",
+    "name": "历史通识",
     "priority": "supplementary",
     "description": "人类文明发展史、大历史视角、地理与环境决定论、文明兴衰规律等。侧重宏观叙事和跨文明比较，而非某一国别断代史。",
-    "name": "历史通识",
     "domain": "domain_history"
   },
   {
     "id": "branch_hist_macro",
     "type": "BranchScaffold",
-    "description": "从地理、生物、技术角度解释文明兴衰。Jared Diamond 的核心视角：环境决定论、社会崩溃模式等。",
     "name": "大历史与文明演化",
+    "description": "从地理、生物、技术角度解释文明兴衰。Jared Diamond 的核心视角：环境决定论、社会崩溃模式等。",
     "domain": "domain_history"
   },
   {
     "id": "branch_hist_modern",
     "type": "BranchScaffold",
-    "description": "20世纪以来的世界历史、全球化进程、技术革命与社会变迁。",
     "name": "近现代史",
+    "description": "20世纪以来的世界历史、全球化进程、技术革命与社会变迁。",
     "domain": "domain_history"
   },
   {
     "id": "branch_hist_anthropology",
     "type": "BranchScaffold",
-    "description": "人类物种演化、行为生态学、从灵长类到文明的过渡。《第三类黑猩猩》的核心视角。",
     "name": "人类学与人类演化",
+    "description": "人类物种演化、行为生态学、从灵长类到文明的过渡。《第三类黑猩猩》的核心视角。",
     "domain": "domain_history"
   },
   {
     "id": "domain_personal_growth",
     "type": "DomainRoot",
+    "name": "个人成长",
     "priority": "supplementary",
     "description": "人生设计、财富哲学、个人效能、生活方式选择等。与心理学有交叉但侧重不同——心理学偏认知机制，个人成长偏实践智慧和人生策略。",
-    "name": "个人成长",
     "domain": "domain_personal_growth"
   },
   {
     "id": "branch_pg_life_design",
     "type": "BranchScaffold",
-    "description": "设计思维应用于人生规划，奥德赛计划，原型制作式试错。斯坦福人生设计课的核心框架。",
     "name": "人生设计与决策",
+    "description": "设计思维应用于人生规划，奥德赛计划，原型制作式试错。斯坦福人生设计课的核心框架。",
     "domain": "domain_personal_growth"
   },
   {
     "id": "branch_pg_wealth_philosophy",
     "type": "BranchScaffold",
-    "description": "纳瓦尔式的财富思考：专属知识、杠杆（代码/媒体/资本/劳动力）、长期博弈、判断力。",
     "name": "财富哲学与个人杠杆",
+    "description": "纳瓦尔式的财富思考：专属知识、杠杆（代码/媒体/资本/劳动力）、长期博弈、判断力。",
     "domain": "domain_personal_growth"
   },
   {
     "id": "ps_compound_emotion_framework",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "用户从鬼灭之刃中提炼出前三维（温情渲染伤痛、渺小渲染永恒、仇恨渲染悲悯），后三维由 Gemini 在用户框架上扩展。用户的核心贡献是提炼方向和音乐-情绪同构的切入角度。",
-    "description": "六维复合情绪模型：(1)宏大复合细腻——温情渲染伤痛 (2)悲剧复合积极——渺小渲染永恒 (3)仇恨复合悲悯——仇恨渲染爱 (4)残缺渲染圆满——以逝去定义存在 (5)恐惧渲染勇敢——承认软弱方为史诗 (6)孤独渲染羁绊——以记忆对抗虚无。每一组都是通过极致的对立面互相渲染来产生叙事张力。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "复合情绪框架",
+    "description": "六维复合情绪模型：(1)宏大复合细腻——温情渲染伤痛 (2)悲剧复合积极——渺小渲染永恒 (3)仇恨复合悲悯——仇恨渲染爱 (4)残缺渲染圆满——以逝去定义存在 (5)恐惧渲染勇敢——承认软弱方为史诗 (6)孤独渲染羁绊——以记忆对抗虚无。每一组都是通过极致的对立面互相渲染来产生叙事张力。",
     "domain": "domain_psychology"
   },
   {
     "id": "ps_trauma_weaponization",
     "type": "KnowledgeNode",
-    "description": "将极致的负面情绪（仇恨、自责、绝望、恐惧）通过极端的自我训练转化为行动力的心理机制。鬼灭之刃中九柱的共同模式：每一位都把最深的PTSD创伤转化为斩鬼的刀。在现实中对应创伤后成长(PTG)的极端形态。",
     "depth": "理解",
     "name": "创伤武器化",
+    "description": "将极致的负面情绪（仇恨、自责、绝望、恐惧）通过极端的自我训练转化为行动力的心理机制。鬼灭之刃中九柱的共同模式：每一位都把最深的PTSD创伤转化为斩鬼的刀。在现实中对应创伤后成长(PTG)的极端形态。",
     "domain": "domain_psychology"
   },
   {
     "id": "link_music_emotion_narrative",
     "type": "CrossDomainLink",
     "userInsight": "用户从炎柱配乐的和弦分析中发现了音乐结构与叙事情绪的精确对应关系。",
-    "description": "和弦进行与情绪叙事的同构性：2-5-6（小调回落）对应悲壮与阻碍终止，2-5-1（大调解决）对应向死而生的破晓。5和弦是'已解决冲突但尚未安稳'的状态。角色心理可以映射为和弦类型：主公是根音(root)，九柱是转位和变化音，三人组是正在进行的和弦进行。",
     "name": "音乐×心理学 → 和弦进行与情绪叙事的同构",
+    "description": "和弦进行与情绪叙事的同构性：2-5-6（小调回落）对应悲壮与阻碍终止，2-5-1（大调解决）对应向死而生的破晓。5和弦是'已解决冲突但尚未安稳'的状态。角色心理可以映射为和弦类型：主公是根音(root)，九柱是转位和变化音，三人组是正在进行的和弦进行。",
     "domain": null
   },
   {
     "id": "td_demon_slayer_emotion",
     "type": "ThinkingDeposit",
+    "name": "鬼灭之刃——情绪复杂性感悟",
     "outputPotential": "high",
+    "depositType": "thinking",
     "outputStatus": "deposited",
     "description": "从炎柱配乐和弦分析出发，提炼出六维复合情绪框架，用于解构鬼灭之刃中引发共鸣的叙事张力。进一步分析了九柱(创伤武器化)、主公(至弱驾驭至强)、上弦(暗黑心理镜像)、铁三角(超我/本我/自我觉醒)的角色心理学。发现了音乐和弦进行与情绪叙事的同构性。",
-    "name": "鬼灭之刃——情绪复杂性感悟",
-    "depositType": "thinking",
     "domain": null
   },
   {
     "id": "ts_three_level_decision",
     "type": "ThinkingScript",
+    "name": "三层决策分析法",
     "scenarioTags": [
       "人生选择",
       "决策分析",
@@ -2147,12 +2148,12 @@ const graphNodes = [
     ],
     "appliedInCount": 0,
     "description": "将决策按可见度分三层（显著重大→不起眼小决策→元决策），逐层审视决策质量，尤其关注元决策层对决策逻辑本身的支配",
-    "name": "三层决策分析法",
     "domain": null
   },
   {
     "id": "ts_model_building",
     "type": "ThinkingScript",
+    "name": "三维建模法",
     "scenarioTags": [
       "搭建框架",
       "整理知识",
@@ -2161,12 +2162,12 @@ const graphNodes = [
     ],
     "appliedInCount": 0,
     "description": "用流程/层级/维度三种模型类型搭建分析框架，叠加 MECE 检验和信息处理四器完整性校验",
-    "name": "三维建模法",
     "domain": null
   },
   {
     "id": "ts_cross_domain_isomorphism",
     "type": "ThinkingScript",
+    "name": "跨域结构同构发现法",
     "scenarioTags": [
       "跨学科分析",
       "创造性洞察",
@@ -2175,12 +2176,12 @@ const graphNodes = [
     ],
     "appliedInCount": 0,
     "description": "通过抽象阶梯提升概念层级，寻找不同领域间的底层结构一致性，验证同构深度并压缩表达",
-    "name": "跨域结构同构发现法",
     "domain": null
   },
   {
     "id": "ts_motivation_diagnosis",
     "type": "ThinkingScript",
+    "name": "动机与行动力诊断法",
     "scenarioTags": [
       "拖延自检",
       "动力缺失",
@@ -2189,83 +2190,82 @@ const graphNodes = [
     ],
     "appliedInCount": 0,
     "description": "五维动机扫描 + 驱动力/阻碍力力学分析 + 钩子干预点定位 + Grit长期方向校验",
-    "name": "动机与行动力诊断法",
     "domain": null
   },
   {
     "id": "td_intelligence_multidimensional",
     "type": "ThinkingDeposit",
+    "name": "智能的多维面与双向建构回路",
     "outputPotential": "high",
+    "depositType": "thinking",
     "outputStatus": "planned",
     "description": "从猫的注意力劫持现象出发，探讨智能的多维度本质。压缩（处理器内部信息处理）、注意力（感应器带宽分配）、贝叶斯（决策更新机制，是压缩的子过程）、类比（侯世达）构成智能的不同'面'而非互斥维度。关键发现：1）注意力与压缩的关系不是层级而是双向回路——注意力决定压缩管道的选择与搭建，压缩的结果（顿悟/体验）反过来重塑注意力优先级分布；2）元控制能力（能否'看见系统本身并干预它'）是区分智能层级的关键，同一跃迁模式出现在ABCD学习者、主体性四阶段、猫→人的注意力控制中；3）不存在'最元'的概念，自指是无穷尽的。",
-    "name": "智能的多维面与双向建构回路",
-    "depositType": "thinking",
     "domain": null
   },
   {
     "id": "link_compression_attention_loop",
     "type": "CrossDomainLink",
     "userInsight": "压缩更像'努力'（在给定通道里处理得更好），注意力更像'选择'（决定信息从哪条通道进来）。底层人靠努力上层人靠选择——不是阶级论，是视角开阔性。",
-    "description": "注意力分配决定信息进入哪些压缩管道（选择），压缩结果（顿悟/产出/体验）反过来重塑注意力优先级分布（反馈）。两者形成螺旋回路而非层级关系。猫在食物面前失去的不是压缩能力而是选择能力——元控制被本能劫持。",
     "name": "压缩×注意力 → 智能的双向建构回路",
+    "description": "注意力分配决定信息进入哪些压缩管道（选择），压缩结果（顿悟/产出/体验）反过来重塑注意力优先级分布（反馈）。两者形成螺旋回路而非层级关系。猫在食物面前失去的不是压缩能力而是选择能力——元控制被本能劫持。",
     "domain": null
   },
   {
     "id": "link_music_math_fifths_symmetry",
     "type": "CrossDomainLink",
     "userInsight": "键盘排布2212221是对数学最纯排布2221221（Lydian）的稳定性妥协。Dorian在五度链正中间，教会音乐用它作基准不是巧合。",
-    "description": "五度圈本质是Z12群上的生成元运算（×7 mod 12）。大调/小调的对称是这个代数结构的直接产物。负和谐的镜像操作对应群上的逆元。调式亮度光谱对应五度链上的位置（F-C-G-D-A-E-B），与音律体系中等比/等差数列的张力一脉相承。",
     "name": "音乐×数学 → 五度圈的对称与模运算",
+    "description": "五度圈本质是Z12群上的生成元运算（×7 mod 12）。大调/小调的对称是这个代数结构的直接产物。负和谐的镜像操作对应群上的逆元。调式亮度光谱对应五度链上的位置（F-C-G-D-A-E-B），与音律体系中等比/等差数列的张力一脉相承。",
     "domain": null
   },
   {
     "id": "mu_chord_functional_groups",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "给旋律配和弦时倾向先听'哪个对'再选择，容易落入pattern式和弦，张力不足。升sol的3 major虽然好听但会堵死回大调1的路——亮度是有限预算，借了要还。",
-    "description": "和弦按功能分三族：下属（2,4）、属（5,3）、主（1,6）。同族内互换保持功能骨架不变，只改变明暗色彩。256可变为456/236/436。6→1的区别是'跌回谷中'vs'平稳着陆'。356张力不足因为3和5同属功能区，缺少跨区的起承转。3 major（升sol）会提前消耗亮度预算，导致后续1和弦的着陆感被削弱——和声能量是有限资源，需要全程统筹分配。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "和弦功能族与互换",
+    "description": "和弦按功能分三族：下属（2,4）、属（5,3）、主（1,6）。同族内互换保持功能骨架不变，只改变明暗色彩。256可变为456/236/436。6→1的区别是'跌回谷中'vs'平稳着陆'。356张力不足因为3和5同属功能区，缺少跨区的起承转。3 major（升sol）会提前消耗亮度预算，导致后续1和弦的着陆感被削弱——和声能量是有限资源，需要全程统筹分配。",
     "domain": "domain_music_production"
   },
   {
     "id": "mu_voicing_and_color",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "人类是相对的动物而不是绝对的动物——和弦色彩感知也是如此，亮暗是比较出来的而非标准值。",
-    "description": "同一和弦进行（如4-5-3m-6），不同最低音排列会产生完全不同的色彩感。根音排列（Fa-Sol-Ti-La）中3m原位带来'惊艳的漂亮感'——暗到极致的反差亮；转位排列（1-2-3-3做低音）中6和弦三音在底部，声部间距展开带来'广阔感'。两种'亮'的机制不同：前者是对比产生的亮，后者是空间产生的亮。七和弦在功能骨架上添加'滤镜'，同时改变色温和质感（'温度小毛刺'）。Fmaj7-Emaj7-D7-Cmaj7看似叛逆实为6-3-4-1的七和弦变体。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "和弦排列（转位）与色彩差异",
+    "description": "同一和弦进行（如4-5-3m-6），不同最低音排列会产生完全不同的色彩感。根音排列（Fa-Sol-Ti-La）中3m原位带来'惊艳的漂亮感'——暗到极致的反差亮；转位排列（1-2-3-3做低音）中6和弦三音在底部，声部间距展开带来'广阔感'。两种'亮'的机制不同：前者是对比产生的亮，后者是空间产生的亮。七和弦在功能骨架上添加'滤镜'，同时改变色温和质感（'温度小毛刺'）。Fmaj7-Emaj7-D7-Cmaj7看似叛逆实为6-3-4-1的七和弦变体。",
     "domain": "domain_music_production"
   },
   {
     "id": "td_chord_color_guide",
     "type": "ThinkingDeposit",
+    "name": "和弦色彩导览——用流行作品解读和声设计",
     "outputPotential": "high",
+    "depositType": "thinking",
     "outputStatus": "planned",
     "description": "用脍炙人口的作品做和弦色彩分析视频：小调卡农系列（周杰伦夜曲、flower dance）的忧郁循环 vs 256系列（炎柱音乐、eutopia）的悲壮宏大感。包含弹奏演示和剪辑，帮助听众直觉理解和弦色彩设计。",
-    "name": "和弦色彩导览——用流行作品解读和声设计",
-    "depositType": "thinking",
     "domain": null
   },
   {
     "id": "ed_cognitive_load_theory",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "将认知负荷理论应用到内容产品设计：流量入口侧（泛标签→垂直标签→转化侧→教学侧），不同阶段用户接受认知负荷的意愿不同，教学策略也应不同。'完全不准备接受认知负荷'和'准备好接受一些认知负荷'的人群需要完全不同的策略。",
-    "description": "Sweller提出。人类认知结构由有效的无限长时记忆和处理能力有限的工作记忆组成。三类认知负荷：固有负荷IL（问题复杂度×学生先验知识）、无关负荷EL（对学习无益的教学设计特征）、有关负荷GL（对学习有益的教学设计特征）。教学设计应优化IL、最小化EL、适当引入GL。动机=任务价值+自我效能（兴趣+自信）。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "认知负荷理论 (Cognitive Load Theory)",
+    "description": "Sweller提出。人类认知结构由有效的无限长时记忆和处理能力有限的工作记忆组成。三类认知负荷：固有负荷IL（问题复杂度×学生先验知识）、无关负荷EL（对学习无益的教学设计特征）、有关负荷GL（对学习有益的教学设计特征）。教学设计应优化IL、最小化EL、适当引入GL。动机=任务价值+自我效能（兴趣+自信）。",
     "domain": "domain_education"
   },
   {
     "id": "mat_predictably_irrational",
     "type": "Material",
     "userInsight": "对免费效应的独立思考：免费吸引了'本无打算的人'，导致总体样本变化，而非单纯的非理性反应。",
-    "materialType": "book",
     "author": [
       "Dan Ariely"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "怪诞行为学",
     "domain": null
@@ -2273,194 +2273,194 @@ const graphNodes = [
   {
     "id": "ec_behavioral_biases",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "社会规范vs市场规范的切换机制对产品设计有启示：一旦引入金钱信号就会破坏社会规范下的创造力和合作意愿。教育产品如果过度市场化定价，可能破坏学习者的内在动机。",
-    "description": "诱饵效应（人通过比较相似物体获得标准）、锚定效应（首次'决定购买'的价格锚定价值评价且难以改变）、免费效应（对免费过度反应）、所有权效应/禀赋效应（对已拥有的迷恋、关注失去而非获得、假定他人看法与己相同、虚拟所有权驱动广告业）、社会规范vs市场规范（提到钱→进入市场规范→社会规范消失；社会规范带来更惬意充实有创造力的生活）、预期效应（事先相信好→体验就好）、多余选择陷阱（追逐毫无价值的多余选项）。人在理性与非理性状态下思想和行为不同。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "行为经济学核心偏差",
+    "description": "诱饵效应（人通过比较相似物体获得标准）、锚定效应（首次'决定购买'的价格锚定价值评价且难以改变）、免费效应（对免费过度反应）、所有权效应/禀赋效应（对已拥有的迷恋、关注失去而非获得、假定他人看法与己相同、虚拟所有权驱动广告业）、社会规范vs市场规范（提到钱→进入市场规范→社会规范消失；社会规范带来更惬意充实有创造力的生活）、预期效应（事先相信好→体验就好）、多余选择陷阱（追逐毫无价值的多余选项）。人在理性与非理性状态下思想和行为不同。",
     "domain": null
   },
   {
     "id": "cs_memory_classification",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
-    "description": "陈述性记忆（需意识指导）：语义记忆（一般事实和数据）+情景记忆（自传式片段，特定时间地点的经历，组合图像/声音/时间/地点）。工作记忆：每时每刻指导生活的即时处理。非陈述性记忆：涉及脑深层较古老部分的机械记忆（学习→习惯→熟练技能）。包含情绪的记忆从杏仁核得到额外刺激，提取时下丘脑和交感神经系统激活，促发与情绪相关的生理变化。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "记忆系统分类",
+    "description": "陈述性记忆（需意识指导）：语义记忆（一般事实和数据）+情景记忆（自传式片段，特定时间地点的经历，组合图像/声音/时间/地点）。工作记忆：每时每刻指导生活的即时处理。非陈述性记忆：涉及脑深层较古老部分的机械记忆（学习→习惯→熟练技能）。包含情绪的记忆从杏仁核得到额外刺激，提取时下丘脑和交感神经系统激活，促发与情绪相关的生理变化。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "kd_five_thinking_methods",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "系统化的思维方法论框架，从多个来源整合为五大思考法：本质思考（定义=属+种差、底层逻辑四特点）、溯因推理（穆勒五法/5Why/结构性分析/系统性分析+求证三法）、迁移思考（SWOT/SMART/波特三战略/甜蜜区/熵增对抗）、升维思考（NLP逻辑层次/时间轴四法/上帝视角/第三选择/无限游戏）、逆向思考（成功-失败/变化-不变/加法-减法/幸福-痛苦/组合-反向模型）。",
     "name": "五大思考法：本质·迁移·升维·逆向·溯因",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "系统化的思维方法论框架，从多个来源整合为五大思考法：本质思考（定义=属+种差、底层逻辑四特点）、溯因推理（穆勒五法/5Why/结构性分析/系统性分析+求证三法）、迁移思考（SWOT/SMART/波特三战略/甜蜜区/熵增对抗）、升维思考（NLP逻辑层次/时间轴四法/上帝视角/第三选择/无限游戏）、逆向思考（成功-失败/变化-不变/加法-减法/幸福-痛苦/组合-反向模型）。",
     "domain": null
   },
   {
     "id": "st_abductive_reasoning",
     "type": "KnowledgeNode",
-    "nodeRole": "tool",
-    "description": "从现象B推出原因A，解释已知事物的产生过程。'大胆假设，小心求证'。假设方法：求同求异法（找相似与不同）、先归纳后抽象（个别→一般→提取共性本质）。穆勒五法：求同/求异/求同求异/共变/剩余。求证方法：追问替代假设（逻辑合理性+知识一致性+解释力）、实验验证、举反例。常见谬误：相关性≠因果性、过度简化因果、混淆均值回归与因果、当下认知偏见。",
     "depth": "理解",
+    "nodeRole": "tool",
     "name": "溯因推理 (Abductive Reasoning)",
+    "description": "从现象B推出原因A，解释已知事物的产生过程。'大胆假设，小心求证'。假设方法：求同求异法（找相似与不同）、先归纳后抽象（个别→一般→提取共性本质）。穆勒五法：求同/求异/求同求异/共变/剩余。求证方法：追问替代假设（逻辑合理性+知识一致性+解释力）、实验验证、举反例。常见谬误：相关性≠因果性、过度简化因果、混淆均值回归与因果、当下认知偏见。",
     "domain": "domain_systems_theory"
   },
   {
     "id": "st_entropy_open_system",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "熵增对抗的'流量思维'——分享好书而非收藏、深入交流而非隐藏想法——本身就是ITO Engine的设计哲学：知识系统必须是开放的，输入输出都流动起来，才能对抗认知的熵增。",
-    "description": "熵代表系统无序程度。孤立系统熵增不断增大→衰亡；对抗方法是成为开放系统。个人层面三种对抗：成长型思维代替固定型（不怕犯错、专注成长）、流量思维代替存量（与外界能量交换，不死守能量不接受输入）、终身学习代替临时学习（平时有意识拓宽知识库，不断尝试新事物）。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "熵增与开放系统",
+    "description": "熵代表系统无序程度。孤立系统熵增不断增大→衰亡；对抗方法是成为开放系统。个人层面三种对抗：成长型思维代替固定型（不怕犯错、专注成长）、流量思维代替存量（与外界能量交换，不死守能量不接受输入）、终身学习代替临时学习（平时有意识拓宽知识库，不断尝试新事物）。",
     "domain": "domain_systems_theory"
   },
   {
     "id": "td_ito_engine",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "文件系统驱动的个人知识管理Agent，开源于GitHub。架构：JSON-LD统一知识图谱（本体构建）+ JSONL append-only Memory层（session/plan/milestone/rlhf）+ Markdown Skill系统 + ITO（Input-Think-Output）认知模型。核心理念：Local-first数据主权、事件驱动CLI、云端无状态推理、个人本体不断生长。从2022.03的proto-ITO思考（'顺应线性思维的三维记录方式'）到2026.03的Agent架构推演，四年认知碎片收敛为一个可运行的系统。与滑雪AI Coach共享完全相同的技术骨架，证明了C端Local-first架构的通用性。",
     "depth": "可教授他人",
     "name": "ITO Engine — 个人知识管理 Agent（开源）",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "文件系统驱动的个人知识管理Agent，开源于GitHub。架构：JSON-LD统一知识图谱（本体构建）+ JSONL append-only Memory层（session/plan/milestone/rlhf）+ Markdown Skill系统 + ITO（Input-Think-Output）认知模型。核心理念：Local-first数据主权、事件驱动CLI、云端无状态推理、个人本体不断生长。从2022.03的proto-ITO思考（'顺应线性思维的三维记录方式'）到2026.03的Agent架构推演，四年认知碎片收敛为一个可运行的系统。与滑雪AI Coach共享完全相同的技术骨架，证明了C端Local-first架构的通用性。",
     "domain": null
   },
   {
     "id": "td_ski_coach_system",
     "type": "ThinkingDeposit",
-    "outputPotential": "high",
-    "outputStatus": "deposited",
-    "description": "基于Agent知识库架构推演的滑雪AI Coach落地方案。双回路教学：积木式（目标导向，知识图谱推荐）+反馈式（问题导向，数据+Memory+输出逻辑门）。TTPPEE六维评估：Technical（观测靶点）/Tactical（导航意图）/Physical（物理天花板）/Psychological（技术阻断器）/Environment（容错系数）/Equipment（传输介质）。I.A.C.R.C.V.五阶段技能掌握模型：Initiation→Acquisition→Consolidation→Refinement→Creative Variation，每阶段对应不同AI反馈策略（保姆→引导→闭嘴→数据分析→平级交流）。技术架构完全同构于ITO Engine：JSON-LD图谱+JSONL Memory+PDCA闭环+Skill路由。",
     "depth": "可教授他人",
     "name": "AI滑雪私人教练系统：知识图谱×PDCA×多维评估",
+    "outputPotential": "high",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "基于Agent知识库架构推演的滑雪AI Coach落地方案。双回路教学：积木式（目标导向，知识图谱推荐）+反馈式（问题导向，数据+Memory+输出逻辑门）。TTPPEE六维评估：Technical（观测靶点）/Tactical（导航意图）/Physical（物理天花板）/Psychological（技术阻断器）/Environment（容错系数）/Equipment（传输介质）。I.A.C.R.C.V.五阶段技能掌握模型：Initiation→Acquisition→Consolidation→Refinement→Creative Variation，每阶段对应不同AI反馈策略（保姆→引导→闭嘴→数据分析→平级交流）。技术架构完全同构于ITO Engine：JSON-LD图谱+JSONL Memory+PDCA闭环+Skill路由。",
     "domain": null
   },
   {
     "id": "td_agent_knowledge_architecture",
     "type": "ThinkingDeposit",
-    "outputPotential": "high",
-    "outputStatus": "deposited",
-    "description": "ITO Engine设计蓝图。B端三阶段演进：中心化枢纽（SOP→协议对齐）→工种Agent挂载（调度中心）→去中心化协作（Agentic Mesh）。C端Local-first：本地数据打包+云端无状态推理引擎+事件驱动CLI+本地本体知识库。关键区分：企业=多节点高频通讯网络（做加法），个人=单节点跨时间状态机（做减法）。两者从宏观微观收敛为去中心化自治智能节点网络。'专属文件夹'就是不断生长的个人Ontology——这正是ITO Engine的架构。",
     "depth": "可教授他人",
     "name": "Agent技术带来的知识库存储逻辑：B端加法与C端减法",
+    "outputPotential": "high",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "ITO Engine设计蓝图。B端三阶段演进：中心化枢纽（SOP→协议对齐）→工种Agent挂载（调度中心）→去中心化协作（Agentic Mesh）。C端Local-first：本地数据打包+云端无状态推理引擎+事件驱动CLI+本地本体知识库。关键区分：企业=多节点高频通讯网络（做加法），个人=单节点跨时间状态机（做减法）。两者从宏观微观收敛为去中心化自治智能节点网络。'专属文件夹'就是不断生长的个人Ontology——这正是ITO Engine的架构。",
     "domain": null
   },
   {
     "id": "kd_exercise_health_framework",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "工作文档。运动健康三维框架（健康/损伤/成长）+ HRV深度解析（rMSSD/测量协议/趋势判读四状态）+ 训练负荷管理（TSS/TSB/ACWR/Monotony/长期磨损监测）+ AI Coach PDCA框架（用户驱动力四象限）。从运动手表硬件客户需求延伸。",
     "name": "运动健康指标体系与AI Coach框架",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "工作文档。运动健康三维框架（健康/损伤/成长）+ HRV深度解析（rMSSD/测量协议/趋势判读四状态）+ 训练负荷管理（TSS/TSB/ACWR/Monotony/长期磨损监测）+ AI Coach PDCA框架（用户驱动力四象限）。从运动手表硬件客户需求延伸。",
     "domain": null
   },
   {
     "id": "hw_hrv_training_monitoring",
     "type": "KnowledgeNode",
-    "nodeRole": "professionally_critical",
     "userInsight": "晨间HRV反映'对新一天的准备情况'（前日压力影响+睡眠恢复效果），夜间HRV有助于理解行为影响——两者角色不同不可互替。夜间HRV与HR高相关时不比HR更有帮助，且低质量HRV数据只会导致虚高数值。",
-    "description": "rMSSD衡量副交感神经活动（静息态），不是越高越好而是越'正常'越好。测量：晨间最佳（整体机能+恢复状态）、夜间受行为影响波动大。指标体系：每日HRV分数→7天基线→normal_range正常范围带。指标组合：HRV baseline + HR baseline + HRV变异系数。趋势判读：稳定→良好适应（HRV↑/HR↓/低变异系数）→适应不良（HR+变异系数↑、HRV↓）→疲劳积累（HR↑、HRV↓、变异系数已低于正常→优先休息）。HRV不是健身预测指标而是长期健康和压力适应能力的反馈。运动员副交感饱和：极低心率下HRV数值不高但恢复良好。",
     "depth": "有独立见解",
+    "nodeRole": "professionally_critical",
     "name": "HRV训练监测与压力适应评估",
+    "description": "rMSSD衡量副交感神经活动（静息态），不是越高越好而是越'正常'越好。测量：晨间最佳（整体机能+恢复状态）、夜间受行为影响波动大。指标体系：每日HRV分数→7天基线→normal_range正常范围带。指标组合：HRV baseline + HR baseline + HRV变异系数。趋势判读：稳定→良好适应（HRV↑/HR↓/低变异系数）→适应不良（HR+变异系数↑、HRV↓）→疲劳积累（HR↑、HRV↓、变异系数已低于正常→优先休息）。HRV不是健身预测指标而是长期健康和压力适应能力的反馈。运动员副交感饱和：极低心率下HRV数值不高但恢复良好。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "hw_training_load_management",
     "type": "KnowledgeNode",
-    "nodeRole": "professionally_critical",
     "userInsight": "TSS的绝对负荷和个人承受力（相对负荷）需分别作为决策依据——这和教育领域'结果知识vs过程知识'的区分逻辑异曲同工：客观数据和主观适应是两个独立维度。Training-injury paradox说明：保护用户不是减少训练，而是优化负荷分配。",
-    "description": "TSS（训练压力分数）衡量绝对负荷。TSB Model：体能指标CTL（42天指数加权慢性负荷）- 疲劳指标ATL = TSB训练压力平衡。ACWR（急慢性负荷比，28天指数加权）评估损伤风险。长期磨损监测：CTL每周增长不超5-8 TSS、Ef效率系数（标准化功率/均HR）下降检测、心率漂移Decoupling（恒功率后半程HR升高>5%=动作变形）、绝对红线（年龄×职业的周时长/里程上限）。Monotony（单调性）：肌肉群负荷过于单一→受伤风险↑。IOC共识：training-injury prevention paradox——训练负荷过低同样增加损伤风险。",
     "depth": "有独立见解",
+    "nodeRole": "professionally_critical",
     "name": "训练负荷管理（TSS/TSB/ACWR）",
+    "description": "TSS（训练压力分数）衡量绝对负荷。TSB Model：体能指标CTL（42天指数加权慢性负荷）- 疲劳指标ATL = TSB训练压力平衡。ACWR（急慢性负荷比，28天指数加权）评估损伤风险。长期磨损监测：CTL每周增长不超5-8 TSS、Ef效率系数（标准化功率/均HR）下降检测、心率漂移Decoupling（恒功率后半程HR升高>5%=动作变形）、绝对红线（年龄×职业的周时长/里程上限）。Monotony（单调性）：肌肉群负荷过于单一→受伤风险↑。IOC共识：training-injury prevention paradox——训练负荷过低同样增加损伤风险。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "kd_sleep_science_needs_analysis",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "工作文档。睡眠三大核心功能的神经科学基础（类淋巴系统废物清除/记忆巩固与突触稳态/系统性生理修复）+ 声波引导睡眠技术栈（双耳节拍/Endel AI声景/Dreem 3闭环EEG）+ 入睡困难四大分类（生理/精神/意愿/社会生态）+ 睡眠中质量问题分类 + 睡眠后起床障碍神经机制。每个用户痛点都有对应的神经科学机制解释。",
     "name": "睡眠科学与用户需求分析",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "工作文档。睡眠三大核心功能的神经科学基础（类淋巴系统废物清除/记忆巩固与突触稳态/系统性生理修复）+ 声波引导睡眠技术栈（双耳节拍/Endel AI声景/Dreem 3闭环EEG）+ 入睡困难四大分类（生理/精神/意愿/社会生态）+ 睡眠中质量问题分类 + 睡眠后起床障碍神经机制。每个用户痛点都有对应的神经科学机制解释。",
     "domain": null
   },
   {
     "id": "hw_glymphatic_system",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
-    "description": "睡眠期间脑脊液（CSF）流速增加60%，通过类淋巴系统清除代谢废物。NREM慢波睡眠阶段最高效：β-淀粉样蛋白和tau蛋白被加速清除（异常堆积→阿尔茨海默病）。脑血流量周期性波动驱动CSF涌入脑间质，星形胶质细胞终足通过AQP4水通道蛋白调节液体交换效率。脑内ATP水平在SWS期升高30%，线粒体PGC-1α表达上调。",
     "depth": "有独立见解",
+    "nodeRole": "knowledge",
     "name": "类淋巴系统与脑内废物清除",
+    "description": "睡眠期间脑脊液（CSF）流速增加60%，通过类淋巴系统清除代谢废物。NREM慢波睡眠阶段最高效：β-淀粉样蛋白和tau蛋白被加速清除（异常堆积→阿尔茨海默病）。脑血流量周期性波动驱动CSF涌入脑间质，星形胶质细胞终足通过AQP4水通道蛋白调节液体交换效率。脑内ATP水平在SWS期升高30%，线粒体PGC-1α表达上调。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "hw_brainwave_entrainment",
     "type": "KnowledgeNode",
-    "nodeRole": "professionally_critical",
     "userInsight": "Endel的AI实时调制+心理声学补偿是目前最先进的消费级方案；Dreem 3的闭环EEG+相位锁定是精准度最高的方案。两者代表了'易用性'与'精准度'两个极端——产品设计需要在这个光谱上找到合适位置。",
-    "description": "通过特定频率声波诱导脑电波共振。技术路径：双耳节拍（左右耳频率差→大脑生成差频，如300vs310Hz→10Hz α波）、等时音频（规律脉冲如40Hz γ波干预AD）、单耳节拍（AM调幅，兼容单声道但效率低30%）、颅骨传导、跨模态视听同步（θ功率提升58%）。产品前沿：Endel（AI实时声景=RNN预测+GAN合成+心理声学补偿：谐波强化/掩蔽效应/HRTF空间音频）、Dreem 3（闭环EEG+相位锁定声脉冲，N3慢波功率+41%，睡眠效率78%→91%）。未来方向：多模态融合/云端脑库/时间干涉无创深脑刺激。",
     "depth": "有独立见解",
+    "nodeRole": "professionally_critical",
     "name": "脑波夹带与声波引导睡眠",
+    "description": "通过特定频率声波诱导脑电波共振。技术路径：双耳节拍（左右耳频率差→大脑生成差频，如300vs310Hz→10Hz α波）、等时音频（规律脉冲如40Hz γ波干预AD）、单耳节拍（AM调幅，兼容单声道但效率低30%）、颅骨传导、跨模态视听同步（θ功率提升58%）。产品前沿：Endel（AI实时声景=RNN预测+GAN合成+心理声学补偿：谐波强化/掩蔽效应/HRTF空间音频）、Dreem 3（闭环EEG+相位锁定声脉冲，N3慢波功率+41%，睡眠效率78%→91%）。未来方向：多模态融合/云端脑库/时间干涉无创深脑刺激。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "hw_sleep_difficulty_taxonomy",
     "type": "KnowledgeNode",
-    "nodeRole": "professionally_critical",
     "userInsight": "四分类体系的产品设计启示：生理性→需要硬件监测+医学建议（超出产品边界需转诊）；精神性→CBT-I+认知干预（产品内容层可做）；意愿型→行为设计+动机引导（产品交互层核心）；社会生态型→环境优化+社会规范重塑（产品最难触达的层）。第三类'意愿型'的腹侧纹状体机制解释了为什么用户明知该睡却不睡——这不是'懒'，是多巴胺系统的生理反应。",
-    "description": "按因果机制将入睡困难分为四类：(1)生理性/生物医学型——神经化学紊乱（咖啡因/褪黑素/皮质醇/GABA）、病理型（失眠/呼吸暂停/不宁腿）、感官超敏（ipRGC光敏/丘脑过滤失效/认床=DMN异常）、节律紊乱（SCN敏感性降低/社交时差）、药源性、代谢免疫型（IL-6/肠脑轴）；(2)精神性/心理认知型——认知超负荷（Zeigarnik效应/dmPFC-PCC过度连接反刍）、情绪驱动（杏仁核-岛叶环路/PTSD海马解耦）、条件性觉醒（负性床联结/睡眠努力悖论）；(3)意愿型/行为动机型——奖赏驱动（腹侧纹状体VS过度激活→低估睡眠剥夺代价）、蓝光/社会时差、自我调节失效（DLPFC不足/时间贴现偏差）；(4)社会生态型——过度工作文化/技术侵入/睡眠监测焦虑。",
     "depth": "有独立见解",
+    "nodeRole": "professionally_critical",
     "name": "入睡困难四大分类体系",
+    "description": "按因果机制将入睡困难分为四类：(1)生理性/生物医学型——神经化学紊乱（咖啡因/褪黑素/皮质醇/GABA）、病理型（失眠/呼吸暂停/不宁腿）、感官超敏（ipRGC光敏/丘脑过滤失效/认床=DMN异常）、节律紊乱（SCN敏感性降低/社交时差）、药源性、代谢免疫型（IL-6/肠脑轴）；(2)精神性/心理认知型——认知超负荷（Zeigarnik效应/dmPFC-PCC过度连接反刍）、情绪驱动（杏仁核-岛叶环路/PTSD海马解耦）、条件性觉醒（负性床联结/睡眠努力悖论）；(3)意愿型/行为动机型——奖赏驱动（腹侧纹状体VS过度激活→低估睡眠剥夺代价）、蓝光/社会时差、自我调节失效（DLPFC不足/时间贴现偏差）；(4)社会生态型——过度工作文化/技术侵入/睡眠监测焦虑。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "kd_sleep_monitoring_framework",
     "type": "KnowledgeDeposit",
-    "outputStatus": "deposited",
-    "description": "工作文档。睡眠监测技术全栈梳理（PSG/EEG金标准→PPG可穿戴→非接触式雷达/视觉）+ 四维睡眠健康评估框架（入睡健康度/睡眠时长/睡眠质量/睡眠规律性），每个维度含数据指标层和干预建议层。EEG睡眠分期核心：α→θ（N1）、纺锤波+K-复合波（N2）、δ波（N3）、低幅θ+β（REM）。PPG算法流程：数据采集→特征提取（HR/HRV/体动）→ML分类（RF/SVM/LSTM）→噪声处理+个性化校准。",
     "name": "睡眠监测技术与四维健康评估框架",
     "depositType": "knowledge",
+    "outputStatus": "deposited",
+    "description": "工作文档。睡眠监测技术全栈梳理（PSG/EEG金标准→PPG可穿戴→非接触式雷达/视觉）+ 四维睡眠健康评估框架（入睡健康度/睡眠时长/睡眠质量/睡眠规律性），每个维度含数据指标层和干预建议层。EEG睡眠分期核心：α→θ（N1）、纺锤波+K-复合波（N2）、δ波（N3）、低幅θ+β（REM）。PPG算法流程：数据采集→特征提取（HR/HRV/体动）→ML分类（RF/SVM/LSTM）→噪声处理+个性化校准。",
     "domain": null
   },
   {
     "id": "hw_psg_sleep_staging",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
-    "description": "多导睡眠图（PSG）通过EEG/EOG/EMG/ECG/呼吸/血氧多通道同步记录，精确划分睡眠阶段。EEG核心：N1（α减弱→θ波4-7Hz）、N2（纺锤波12-14Hz+K-复合波，占50%+）、N3（δ波0.5-4Hz，体力恢复+免疫调节）、REM（低幅θ+β波，类似清醒但肌张力消失，梦境+记忆巩固）。异常识别：REM提前出现→发作性睡病，N3 δ波不足→失眠/呼吸暂停，微觉醒（α波≥3秒）→睡眠片段化。PSG是诊断睡眠呼吸暂停综合征的金标准。",
     "depth": "有独立见解",
+    "nodeRole": "knowledge",
     "name": "PSG与EEG睡眠分期",
+    "description": "多导睡眠图（PSG）通过EEG/EOG/EMG/ECG/呼吸/血氧多通道同步记录，精确划分睡眠阶段。EEG核心：N1（α减弱→θ波4-7Hz）、N2（纺锤波12-14Hz+K-复合波，占50%+）、N3（δ波0.5-4Hz，体力恢复+免疫调节）、REM（低幅θ+β波，类似清醒但肌张力消失，梦境+记忆巩固）。异常识别：REM提前出现→发作性睡病，N3 δ波不足→失眠/呼吸暂停，微觉醒（α波≥3秒）→睡眠片段化。PSG是诊断睡眠呼吸暂停综合征的金标准。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "hw_ppg_wearable_sleep",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
-    "description": "绿光LED照射皮肤→血红蛋白吸光变化→提取HR/HRV/SpO₂。结合加速度计（体动频率/幅度/静止时长）进行多传感器融合。特征提取：PPG时域（HR均值/方差/动态变化）+频域（LF/HF功率比→交感/副交感平衡）+加速度时域。分类：经典ML（随机森林/SVM基于PSG标注训练）或深度学习（LSTM/1D-CNN捕捉时序关联）。局限：REM与清醒心率特征相似易误判、信号受皮肤/佩戴/温度影响、个体差异需个性化校准。",
     "depth": "有独立见解",
+    "nodeRole": "knowledge",
     "name": "PPG可穿戴睡眠监测算法",
+    "description": "绿光LED照射皮肤→血红蛋白吸光变化→提取HR/HRV/SpO₂。结合加速度计（体动频率/幅度/静止时长）进行多传感器融合。特征提取：PPG时域（HR均值/方差/动态变化）+频域（LF/HF功率比→交感/副交感平衡）+加速度时域。分类：经典ML（随机森林/SVM基于PSG标注训练）或深度学习（LSTM/1D-CNN捕捉时序关联）。局限：REM与清醒心率特征相似易误判、信号受皮肤/佩戴/温度影响、个体差异需个性化校准。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "hw_sleep_health_dimensions",
     "type": "KnowledgeNode",
-    "nodeRole": "professionally_critical",
     "userInsight": "四维框架的设计逻辑：从'可测量指标'出发，每个维度都有数据层→诊断层→干预层的完整闭环。与 td_medicine_3_0 中健康数据四维度对比思路一致。难点在于消费级设备（PPG手环）能覆盖的指标有限，N2纺锤波等关键特征目前无法监测。",
-    "description": "将睡眠健康拆解为四个可量化维度，每个维度含数据指标层+干预建议层：(1)入睡健康度——时间点/潜伏时长/心率体温下降曲线→生物钟同步/睡前优化/CBT-I；(2)睡眠时长——日周达标/分布/日间休息→睡眠银行/年龄基因适配；(3)睡眠质量——N3+REM时长/周期完整性/夜间HRV→环境工程学/生理增强/日间行为杠杆；(4)睡眠规律性——入睡起床中值变异性/基因型→社会时差量化/相位重置/特殊场景预案。",
     "depth": "有独立见解",
+    "nodeRole": "professionally_critical",
     "name": "四维睡眠健康评估框架",
+    "description": "将睡眠健康拆解为四个可量化维度，每个维度含数据指标层+干预建议层：(1)入睡健康度——时间点/潜伏时长/心率体温下降曲线→生物钟同步/睡前优化/CBT-I；(2)睡眠时长——日周达标/分布/日间休息→睡眠银行/年龄基因适配；(3)睡眠质量——N3+REM时长/周期完整性/夜间HRV→环境工程学/生理增强/日间行为杠杆；(4)睡眠规律性——入睡起床中值变异性/基因型→社会时差量化/相位重置/特殊场景预案。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "mat_work_consumerism_new_poor",
     "type": "Material",
     "userInsight": "消费者社会的元价值就是'选择'。工作等同于有偿工作破坏了人际关系和道德联系。解法：用工艺伦理（创造性）取代工作伦理（收益），恢复人的尊严——收入权利与收入能力脱钩，工作与劳动力市场脱钩。",
-    "materialType": "book",
     "author": [
       "Zygmunt Bauman"
     ],
+    "materialType": "book",
     "readingStatus": "completed",
     "name": "工作、消费主义和新穷人",
     "domain": null
@@ -2468,140 +2468,140 @@ const graphNodes = [
   {
     "id": "td_scholars_robe_dialectic",
     "type": "ThinkingDeposit",
-    "outputPotential": "high",
-    "outputStatus": "deposited",
-    "description": "'脱不下长衫'和'知识的诅咒'不是走过了回不去，而是到达了否定但还没有到达否定之否定。禅宗'远离才是靠近'——被困住说明在往前走，解法是继续向前而非回头。长衫两面：不愿弄脏双手的清高 vs 思想自由后不愿囿于温饱。理解长衫→成为长衫→超越长衫，这就是螺旋上升的完整路径。与鲍曼'用工艺伦理取代工作伦理'形成理论支撑。",
     "depth": "有独立见解",
     "name": "长衫不是诅咒，是否定之否定的中间态",
+    "outputPotential": "high",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "'脱不下长衫'和'知识的诅咒'不是走过了回不去，而是到达了否定但还没有到达否定之否定。禅宗'远离才是靠近'——被困住说明在往前走，解法是继续向前而非回头。长衫两面：不愿弄脏双手的清高 vs 思想自由后不愿囿于温饱。理解长衫→成为长衫→超越长衫，这就是螺旋上升的完整路径。与鲍曼'用工艺伦理取代工作伦理'形成理论支撑。",
     "domain": null
   },
   {
     "id": "td_meritocracy_three_layers",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "优绩主义不是一层而是至少三层：学生标准（分数）→社会评价（职场/婚姻时间表）→自我价值观（浪费时间必须被合理化）。每跳出一层都以为自由了。最深层的bug：对他人犯错耐心极低——因为无法将他人导致的时间浪费合理化。破题：为什么浪费时间一定是错误的？最难抛下的不是别人的标准，而是自己已经内化的标准。",
     "depth": "可教授他人",
     "name": "优绩主义的三层桎梏",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "优绩主义不是一层而是至少三层：学生标准（分数）→社会评价（职场/婚姻时间表）→自我价值观（浪费时间必须被合理化）。每跳出一层都以为自由了。最深层的bug：对他人犯错耐心极低——因为无法将他人导致的时间浪费合理化。破题：为什么浪费时间一定是错误的？最难抛下的不是别人的标准，而是自己已经内化的标准。",
     "domain": null
   },
   {
     "id": "td_human_as_data_source",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "AI最缺的是领域数据——真实世界的稀有场景数据极其稀缺。由此推导出乐观可能性：人类可以通过体验世界、产生数据来换取价值。2026-03深化：不是即时可兑现的数据变现模式，而是方向性判断——AI把标准化劳动价值压到接近零时，人的差异化价值（独特经验、罕见判断力、不可复制的审美）变得更稀缺。好好生活是积累AI替代不了的东西。同时提出'AI削弱all-in结构性优势'——替代功利系统一后，不牺牲也能有足够执行力。进一步闭环：三环链条——好好生活（积累差异化经验）→结构化表达（隐性→显性，Polanyi隐性知识理论）→被看见和连接（转化为机会）。连接机制两个方向：①结构化表达本身降低'被看见'门槛；②AI重塑去中心化匹配——个人认知图谱作为公开能力画像，不依赖平台中间人。'快就是慢，慢就是快'：假设力（而非验证速度）是AI时代穿越不确定性的限速环节。",
     "depth": "可教授他人",
     "name": "人活着本身，就是意义：AI时代的乐观可能性",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "AI最缺的是领域数据——真实世界的稀有场景数据极其稀缺。由此推导出乐观可能性：人类可以通过体验世界、产生数据来换取价值。2026-03深化：不是即时可兑现的数据变现模式，而是方向性判断——AI把标准化劳动价值压到接近零时，人的差异化价值（独特经验、罕见判断力、不可复制的审美）变得更稀缺。好好生活是积累AI替代不了的东西。同时提出'AI削弱all-in结构性优势'——AI压缩系统一占比后，不牺牲也能有足够执行力。进一步闭环：三环链条——好好生活（积累差异化经验）→结构化表达（隐性→显性，Polanyi隐性知识理论）→被看见和连接（转化为机会）。连接机制两个方向：①结构化表达本身降低'被看见'门槛；②AI重塑去中心化匹配——个人认知图谱作为公开能力画像，不依赖平台中间人。'快就是慢，慢就是快'：假设力（而非验证速度）是AI时代穿越不确定性的限速环节。进一步推至产品/市场层面：AI拉平显性知识→隐性知识成为唯一差异化→主体性时代的核心需求是'帮人活得更好'→理解这个需求必须入局（亲历者的体感/使命感/审美优势 vs 调研者只能获取显性知识）→罔顾幸福的人无法满足追求幸福的市场。",
     "domain": null
   },
   {
     "id": "td_quality_as_emergence",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "用涌现概念重新诠释良质/朴质：朴质=涌现完成后可追溯可复现的过程，良质=尚未到来的新涌现。艺术不被事物属性定义，而被人的灵魂与之共鸣后涌现的东西定义。终极类比：良质像停机问题——不到涌现出现的那一刻都不可解。",
     "depth": "可教授他人",
     "name": "良质即涌现：禅与摩托车维修艺术的系统论重读",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "用涌现概念重新诠释良质/朴质：朴质=涌现完成后可追溯可复现的过程，良质=尚未到来的新涌现。艺术不被事物属性定义，而被人的灵魂与之共鸣后涌现的东西定义。终极类比：良质像停机问题——不到涌现出现的那一刻都不可解。",
     "domain": null
   },
   {
     "id": "td_subjectivity_practical_guide",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "Arrow（主体性强）vs Mirror（主体性弱）的悖论：当你审视'我是否有主体性问题'时，主体瞬间变成客体，而客体无法拥有主体性。实操路径：先构建自我意识（关注感受和喜好）→自我解构（辨别外界影响vs真实自我）→主体性自然浮现。辩证觉察：区分'将自己作为客体的审查'和'将自己作为他者的非评价性观察'，后者拓宽他者视角并发展共情能力。",
     "depth": "可教授他人",
     "name": "不要再把问题归在主体性上：Arrow与Mirror的悖论",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "Arrow（主体性强）vs Mirror（主体性弱）的悖论：当你审视'我是否有主体性问题'时，主体瞬间变成客体，而客体无法拥有主体性。实操路径：先构建自我意识（关注感受和喜好）→自我解构（辨别外界影响vs真实自我）→主体性自然浮现。辩证觉察：区分'将自己作为客体的审查'和'将自己作为他者的非评价性观察'，后者拓宽他者视角并发展共情能力。",
     "domain": null
   },
   {
     "id": "hw_chronic_stress_mechanism",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "很多长辈自身深陷压力问题而不自知（消不下去的肚子、深夜嗜甜、烟酒成瘾），却说'压力扛一扛就过去了'。压力管理不是矫情，是生理层面的真实需求。",
-    "description": "进化遗留的战斗或逃跑反应在现代环境中的错配。急性压力下：激素飙升→加速糖分转化为能量→皮下脂肪运输到内脏囤积（内脏脂肪转化效率更高）。慢性压力下：持续高激素水平→激素紊乱（妇科/内分泌/甲状腺）；脂肪持续向内脏运输但不燃烧（运动减少）→内脏脂肪堆积→高血脂/心脑血管风险。衍生：失眠→大脑代谢废物排放受阻→老年痴呆风险。",
     "depth": "有独立见解",
+    "nodeRole": "knowledge",
     "name": "慢性压力的身体机制 (Chronic Stress Response)",
+    "description": "进化遗留的战斗或逃跑反应在现代环境中的错配。急性压力下：激素飙升→加速糖分转化为能量→皮下脂肪运输到内脏囤积（内脏脂肪转化效率更高）。慢性压力下：持续高激素水平→激素紊乱（妇科/内分泌/甲状腺）；脂肪持续向内脏运输但不燃烧（运动减少）→内脏脂肪堆积→高血脂/心脑血管风险。衍生：失眠→大脑代谢废物排放受阻→老年痴呆风险。",
     "domain": "domain_health_wellness"
   },
   {
     "id": "kd_chronic_stress_body",
     "type": "KnowledgeDeposit",
-    "outputStatus": "published",
-    "description": "从进化视角解释慢性压力对身体的影响：战斗或逃跑反应在现代环境的错配，导致激素紊乱、内脏脂肪堆积、代谢负担和衍生问题。与线粒体代谢文章互补——压力状态下即使运动代谢效率也更差。",
     "name": "压力和身体的关系：从祖先的生存机制到现代的慢性病",
     "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "从进化视角解释慢性压力对身体的影响：战斗或逃跑反应在现代环境的错配，导致激素紊乱、内脏脂肪堆积、代谢负担和衍生问题。与线粒体代谢文章互补——压力状态下即使运动代谢效率也更差。",
     "domain": null
   },
   {
     "id": "td_jealousy_zero_sum_to_positive",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "从嫉妒心的根源追溯到教育系统塑造的零和博弈世界观。中产阶级落入'时间缝隙'——父母在资源匮乏时代通过拼杀成长，将零和价值观继承给资源充裕的下一代。人生成为旷野需要两个维度：对内探索（找到自己的目标）+ 对外掌握正和博弈规则。教育系统在这两方面都反其道而行之——这才是这一代人'真正应吃的苦'。",
     "depth": "可教授他人",
     "name": "怎么和自己的嫉妒心相处：从零和博弈到正和博弈",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "从嫉妒心的根源追溯到教育系统塑造的零和博弈世界观。中产阶级落入'时间缝隙'——父母在资源匮乏时代通过拼杀成长，将零和价值观继承给资源充裕的下一代。人生成为旷野需要两个维度：对内探索（找到自己的目标）+ 对外掌握正和博弈规则。教育系统在这两方面都反其道而行之——这才是这一代人'真正应吃的苦'。",
     "domain": null
   },
   {
     "id": "td_reframe_family_martyrdom",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "十几年解题经历：妈妈以'完整家庭'的价值观苦苦坚持不顾家的爸爸。早期策略'放弃吧'无效——因为这要求否定核心价值观。破题点：不要求她放弃价值观，而是重构方法——'爱自己是正确经营家庭的方式'。精准利用主观意愿机制：目标不变，方法从自我牺牲转向自我成长。与'爱自己vs爱他人'分析形成理论-实践闭环。",
     "depth": "可教授他人",
     "name": "妈妈的圣母心：重构家庭价值观的出路",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "十几年解题经历：妈妈以'完整家庭'的价值观苦苦坚持不顾家的爸爸。早期策略'放弃吧'无效——因为这要求否定核心价值观。破题点：不要求她放弃价值观，而是重构方法——'爱自己是正确经营家庭的方式'。精准利用主观意愿机制：目标不变，方法从自我牺牲转向自我成长。与'爱自己vs爱他人'分析形成理论-实践闭环。",
     "domain": null
   },
   {
     "id": "td_dropout_as_signal",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "从'辍学创业为何是创投圈正向标签'切入，理解其背后逻辑：意味着一个人有自己的判断，不按社会共识把学历当最关键的东西。反思自身经历——任何阶段的目标都是结束这个阶段，本质是逃避思考和逃避为自己负责。判断标准：是为了逃亡还是为了新的开始。与阿德勒'活在当下'、反PUA'以终为始'形成思想闭环。",
     "depth": "可教授他人",
     "name": "辍学作为信号：逃亡还是新的开始",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "从'辍学创业为何是创投圈正向标签'切入，理解其背后逻辑：意味着一个人有自己的判断，不按社会共识把学历当最关键的东西。反思自身经历——任何阶段的目标都是结束这个阶段，本质是逃避思考和逃避为自己负责。判断标准：是为了逃亡还是为了新的开始。与阿德勒'活在当下'、反PUA'以终为始'形成思想闭环。",
     "domain": null
   },
   {
     "id": "kd_mitochondria_fat_metabolism",
     "type": "KnowledgeDeposit",
-    "outputStatus": "published",
-    "description": "从《超越百岁》自行车手实验出发，厘清有氧运动与燃脂的真实关系：线粒体代谢灵活性决定了运动时燃烧脂肪还是葡萄糖。长期不运动者线粒体退化，即使做有氧运动也发生近似无氧代谢。恢复运动早期是修复线粒体（数月），之后有氧运动才真正燃脂。发育期运动习惯是线粒体健康的长期资产。",
     "name": "线粒体、有氧运动与脂肪燃烧的真实关系",
     "depositType": "knowledge",
+    "outputStatus": "published",
+    "description": "从《超越百岁》自行车手实验出发，厘清有氧运动与燃脂的真实关系：线粒体代谢灵活性决定了运动时燃烧脂肪还是葡萄糖。长期不运动者线粒体退化，即使做有氧运动也发生近似无氧代谢。恢复运动早期是修复线粒体（数月），之后有氧运动才真正燃脂。发育期运动习惯是线粒体健康的长期资产。",
     "domain": null
   },
   {
     "id": "td_self_love_vs_altruism",
     "type": "ThinkingDeposit",
     "userInsight": "2022.05早期种子：'你可以不喜欢小孩，但你要爱他们，这样他们才会成为我们。'喜欢是感受层面的偏好，爱是行动层面的选择——这正是后来'爱自己vs爱他人'分析的原始雏形。2026.03 Matthew Hussey 视频进一步深化：自爱是无条件的，不需要先喜欢自己；自爱≠自我照顾≠自我纵容（ego），三件不同的事；用浪漫爱去爱自己注定失败（熟悉滋生轻蔑，你是自己最熟悉的人），自爱更像亲子关系——18岁从父母手中接过自己的完全监护权，不可替换，爱她是唯一要做的事。这与早期种子完美闭环：不需要喜欢，就可以先爱。进一步延伸：自爱不是二元开关而是清晰度问题——掌握不够清晰的部分会以变形方式代际传递（如自我牺牲=美德）；'我与我的爱也是相互的'——身体支撑你、情绪告诉你真相、经历给你智慧，不是单向施予。健康亲密关系是两个完成自爱的人互相补充缺失，而非索取或物化。更深层的发现：激情的爱与无条件的爱不是来源不同，而是内在结构不同——客体化和主体性就是两种爱本身的运作方式。主体性与自爱是共生关系（同一事物的两个维度），不是因果。传统亲子之爱被美化前的真实形态是占有和延伸（客体化），无私的亲子之爱需要父母自身的主体性。完整发展路径：客体性（看见他人→看见自己）→主体性/自爱共生→视角迁移（由己及人→无条件的爱）→系统视角（认知复杂性跃升）。每一步都是视角迁移，质量取决于上一步是否完成。",
-    "outputStatus": "published",
-    "description": "分析'爱他人高于爱自己'模式的心理机制：这种善良更多是对社会预期的内化而非发自内心，产生委屈感和不自洽。当事人还会要求身份认同群体践行同样价值观（唐僧式/传统母亲式），反而离'无我'更远。哲学追问：强迫未来的自己遵循今天的价值观，对未来的自己是无私的吗？对比模型：先爱自己再爱他人，有明确主轴和边界，在自身成长中惠及他人，内在一致性更强。",
     "depth": "可教授他人",
     "name": "爱自己 vs 爱他人：自洽性分析",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "分析'爱他人高于爱自己'模式的心理机制：这种善良更多是对社会预期的内化而非发自内心，产生委屈感和不自洽。当事人还会要求身份认同群体践行同样价值观（唐僧式/传统母亲式），反而离'无我'更远。哲学追问：强迫未来的自己遵循今天的价值观，对未来的自己是无私的吗？对比模型：先爱自己再爱他人，有明确主轴和边界，在自身成长中惠及他人，内在一致性更强。",
     "domain": null
   },
   {
     "id": "td_anti_pua_dialectics",
     "type": "ThinkingDeposit",
-    "outputStatus": "published",
-    "description": "从裸辞经历提炼的反隐性操控方法论。四个辩证工具：跳出语境（不在对方框架里讨论，往外跳一层）、重新定义概念（追问模糊词汇真实含义）、动态视角（考虑道理的适用边界）、以终为始（用目标过滤无关论点）。核心洞察：社会中存在大量无意识的PUA，发出者自身不自知，反PUA的关键是辩证思维而非逐条反驳。",
     "depth": "可教授他人",
     "name": "反隐性操控的四个辩证思维工具",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "从裸辞经历提炼的反隐性操控方法论。四个辩证工具：跳出语境（不在对方框架里讨论，往外跳一层）、重新定义概念（追问模糊词汇真实含义）、动态视角（考虑道理的适用边界）、以终为始（用目标过滤无关论点）。核心洞察：社会中存在大量无意识的PUA，发出者自身不自知，反PUA的关键是辩证思维而非逐条反驳。",
     "domain": null
   },
   {
     "id": "mat_i_dont_want_to_talk",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Terrence Real"
     ],
+    "materialType": "book",
     "readingStatus": "abandoned",
     "name": "I Don't Want to Talk About It",
     "domain": "domain_psychology"
@@ -2609,74 +2609,74 @@ const graphNodes = [
   {
     "id": "ph_labor_alienation",
     "type": "KnowledgeNode",
-    "nodeRole": "knowledge",
     "userInsight": "由于劳动异化，我们把其他人也看作劳动力而不是完整的人。我们用'劳动力'的标准去衡量自己和他人，却忽视了人本身的意义。鲍曼的解法：用工艺伦理（创造性）取代工作伦理（收益），收入权利与收入能力脱钩——人是创造性的生物，不应被还原为劳动力商品。",
-    "description": "马克思在《1844年经济学哲学手稿》中提出的核心概念。资本主义生产方式下，劳动者与其劳动产品、劳动过程、类本质（人之为人的创造性）以及其他人四重分离。劳动从自我实现的手段沦为谋生的工具，人被还原为'劳动力'而非完整的人。",
     "depth": "理解",
+    "nodeRole": "knowledge",
     "name": "劳动异化 (Entfremdung / Alienation of Labor)",
+    "description": "马克思在《1844年经济学哲学手稿》中提出的核心概念。资本主义生产方式下，劳动者与其劳动产品、劳动过程、类本质（人之为人的创造性）以及其他人四重分离。劳动从自我实现的手段沦为谋生的工具，人被还原为'劳动力'而非完整的人。",
     "domain": "domain_western_philosophy"
   },
   {
     "id": "td_pessimism_optimism_spiral",
     "type": "ThinkingDeposit",
-    "outputPotential": "potential",
     "userInsight": "悲观主义的功能是帮人看到差异性。不先承认'我和别人不一样，是因为我被不同的东西塑造了'，就没有真正的个体化起点。看清现实，而不是盲目追随宏大叙事。",
-    "outputStatus": "deposited",
-    "description": "悲观主义与乐观主义不是对立关系，而是协作关系——悲观主义负责'看见枷锁'（揭示差异性），乐观主义负责'打破枷锁'（基于差异性实现个体成长）。现代例证：弗洛伊德的原生家庭创伤叙事（悲观——我被过去定义了）催生了阿德勒的个体心理学（乐观——看清塑造我的东西才能真正谈成长）。悲观主义的核心功能是帮人脱离主观全能感，看到自己的独特性，为真正的个体化发展提供坚实起点。",
     "depth": "有独立见解",
     "name": "悲观主义与乐观主义的螺旋协作",
+    "outputPotential": "potential",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "悲观主义与乐观主义不是对立关系，而是协作关系——悲观主义负责'看见枷锁'（揭示差异性），乐观主义负责'打破枷锁'（基于差异性实现个体成长）。现代例证：弗洛伊德的原生家庭创伤叙事（悲观——我被过去定义了）催生了阿德勒的个体心理学（乐观——看清塑造我的东西才能真正谈成长）。悲观主义的核心功能是帮人脱离主观全能感，看到自己的独特性，为真正的个体化发展提供坚实起点。",
     "domain": null
   },
   {
     "id": "td_perspective_subjectivity_growth",
     "type": "ThinkingDeposit",
-    "outputPotential": "high",
     "userInsight": "忘掉学过的所有知识，剩下的就是成长——内化的视角不会遗忘。真正的双螺旋不是视角×主体性，而是主体性×认知复杂性。视角是地基——原料供给；认知复杂性向内运用帮助主体性发展，主体性发展带来更丰富的感知力（像给更多色彩命名），反过来确认和扩展认知复杂性。身体机能是贯穿的侧柱。视角打破傲慢，主体性开启觉察。视角遗忘的具体形态之一：在热爱的东西面前会忘记别人还不在你的语境里——不是缺少他人视角，是视角被热情淹没了。不是傲慢（不愿切换），是遗忘（浸入太深）。",
-    "outputStatus": "deposited",
-    "description": "成长的空间模型：底层是视角（地基/原料，铺得越广思考范围越大，但数量不自动产生思维复杂性）；上层是主体性×认知复杂性的真正双螺旋（认知复杂性向内运用→主体性深化→感知更丰富→认知复杂性扩展）；侧柱是身体机能（物理约束）。模型经历三轮演化：第一轮建立视角×主体性双轴互为天花板；第二轮发现切换灵活性是系统运作质量的检验指标（视角打破傲慢，主体性开启觉察）；第三轮将认知复杂性从视角中独立出来，修正为三层空间模型。前额叶没长好的小孩证明：视角多≠思维复杂，关键是从多视角交叉中获得的认知复杂性。这个话题被认为是未来的社会命题。",
     "depth": "有独立见解",
     "name": "成长的空间模型：视角、主体性与认知复杂性",
+    "outputPotential": "high",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "成长的空间模型：底层是视角（地基/原料，铺得越广思考范围越大，但数量不自动产生思维复杂性）；上层是主体性×认知复杂性的真正双螺旋（认知复杂性向内运用→主体性深化→感知更丰富→认知复杂性扩展）；侧柱是身体机能（物理约束）。模型经历三轮演化：第一轮建立视角×主体性双轴互为天花板；第二轮发现切换灵活性是系统运作质量的检验指标（视角打破傲慢，主体性开启觉察）；第三轮将认知复杂性从视角中独立出来，修正为三层空间模型。前额叶没长好的小孩证明：视角多≠思维复杂，关键是从多视角交叉中获得的认知复杂性。这个话题被认为是未来的社会命题。",
     "domain": null
   },
   {
     "id": "link_perspective_meta_ability",
     "type": "CrossDomainLink",
-    "description": "认知科学（看见认知本身的局限）和系统论（看见世界复杂性和认知谬误）交汇于主体性话题，共同构成'元视角'——不照亮具体切面而让你意识到还有切面存在的能力。这个跨域连接解释了为什么这两个领域在用户认知版图中具有基础地位。",
     "name": "视角即元能力：认知科学×系统论→成长的元框架",
+    "description": "认知科学（看见认知本身的局限）和系统论（看见世界复杂性和认知谬误）交汇于主体性话题，共同构成'元视角'——不照亮具体切面而让你意识到还有切面存在的能力。这个跨域连接解释了为什么这两个领域在用户认知版图中具有基础地位。",
     "domain": null
   },
   {
     "id": "td_empathy_requires_subjectivity",
     "type": "ThinkingDeposit",
     "userInsight": "共情字面就是把对自己的感受力迁移到他人的境遇，首先要求足够的主体性。教条共情的典型：为家庭奉献的妈妈要求女儿也成为奉献者——缺乏自主思考的理解和包容能力。'走火入魔'就是在否定阶段卡住：视角打开了但认知复杂性没跟上，只能看见问题不能消化问题。",
-    "outputStatus": "published",
-    "description": "回应'主体性增强是否削弱共情'：主体性弱的共情是讨好或教条共情（被教育要对别人好，而非由己及人），真正的共情要求主体视角迁移能力，主体性是前置技能。共情=技能（主体视角迁移）+经验（相关亲身体验）。主体视角共情发现对方需要力量，客体视角共情只产生'这人很可怜'的居高临下。否定之否定解释了发展路径：找到主体性暂时缩窄视野是必经的否定阶段。映射元问题：'越思考越痛苦'不是思考的错，是站在否定阶段尚未到达否定之否定——痛苦说明在半山腰，不是走错了路。",
     "depth": "可教授他人",
     "name": "共情的前提是主体性：教条共情 vs 真正的共情",
     "depositType": "thinking",
+    "outputStatus": "published",
+    "description": "回应'主体性增强是否削弱共情'：主体性弱的共情是讨好或教条共情（被教育要对别人好，而非由己及人），真正的共情要求主体视角迁移能力，主体性是前置技能。共情=技能（主体视角迁移）+经验（相关亲身体验）。主体视角共情发现对方需要力量，客体视角共情只产生'这人很可怜'的居高临下。否定之否定解释了发展路径：找到主体性暂时缩窄视野是必经的否定阶段。映射元问题：'越思考越痛苦'不是思考的错，是站在否定阶段尚未到达否定之否定——痛苦说明在半山腰，不是走错了路。",
     "domain": null
   },
   {
     "id": "mat_thinking_fast_slow",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Daniel Kahneman"
     ],
-    "progress": "粗略读过部分章节，看过他人笔记",
+    "materialType": "book",
     "readingStatus": "paused",
     "name": "思考，快与慢 (Thinking, Fast and Slow)",
+    "progress": "粗略读过部分章节，看过他人笔记",
     "domain": "domain_psychology"
   },
   {
     "id": "mat_tacit_dimension",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Michael Polanyi"
     ],
+    "materialType": "book",
     "readingStatus": "wishlist",
     "name": "The Tacit Dimension (隐性知识的维度)",
     "domain": "domain_cognitive_science"
@@ -2684,32 +2684,32 @@ const graphNodes = [
   {
     "id": "td_ito_product_philosophy",
     "type": "ThinkingDeposit",
-    "outputPotential": "high",
-    "userInsight": "功利的系统一是为外人负责的系统一，热爱的系统一是我与世界连接的触手。老手艺人亲手做事不是低效，而是判断力的来源——没有亲手做过就不知道AI该怎么做。被替代焦虑的本质：'你是可替换的'直接瓦解主体性根基。大脑可视是对这个叙事的直接反驳——你亲眼看着独属于自己的洞察在生长。AI既是世界知识的触手（参数中的学科知识），也是外部信息的触手（实时获取），又是记忆的触手（连接和唤起自己的思考）。ITO既是巧合也是表达——产品就是价值观的产品化。",
-    "outputStatus": "deposited",
-    "description": "以Kahneman的System 1/2框架重新定义ITO的产品价值观。区分'功利的系统一'（为外人负责的事务型劳动）和'热爱的系统一'（与世界连接的触手——手指触琴键、亲手做数据分析）。AI应替代前者、保护后者。大部分人用AI的方式是老板-员工关系（帮我写/帮我实现），把人变成老板与AI之间的传话筒，压缩了系统二和休息时间。ITO的方式是协作者-启发者关系：苏格拉底式对话激发系统二，AI作为世界知识的触手+记忆的触手，大脑可视化对抗被替代焦虑。四层价值：①替代功利系统一 ②激发系统二（对话+协作+知识触手+记忆触手）③可视化成长（对抗焦虑）④保护热爱系统一。与成长空间模型完全对齐：视角（输入/触手）、主体性×认知复杂性（系统二）、身体（休息/恢复）。",
+    "userInsight": "亲手做事不是低效，而是判断力的来源——没有亲手做过就不知道AI该怎么做。关键不是区分哪些系统一该替代哪些不该，而是整体比例失调需要纠正。被替代焦虑的本质：'你是可替换的'直接瓦解主体性根基。大脑可视是对这个叙事的直接反驳——你亲眼看着独属于自己的洞察在生长。AI既是世界知识的触手（参数中的学科知识），也是外部信息的触手（实时获取），又是记忆的触手（连接和唤起自己的思考）。ITO既是巧合也是表达——产品就是价值观的产品化。",
     "depth": "有独立见解",
-    "name": "ITO产品价值观：替代功利的系统一，激发系统二",
+    "name": "ITO产品价值观：压缩系统一、释放系统二与休息",
+    "outputPotential": "high",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "以Kahneman的System 1/2框架定义ITO的产品价值观。核心判断：人类处在系统一（自动化、事务型处理）的时长太长，而当前AI应用非但没有改善，反而在继续剥夺系统二时间——大部分人用AI是老板-员工关系，使用者变成老板与AI之间的传话筒，连实现过程中的思考空间都丢了。AI的正确角色应该是：压缩系统一占比、释放系统二时间、保证完全休息的时长和质量。系统一本身不是坏的，只是当下比例失调。ITO的方式是协作者-启发者关系：苏格拉底式对话激发系统二，AI作为三重触手（世界知识+外部信息+记忆），大脑可视化对抗被替代焦虑。三层价值：①压缩系统一，把人从事务型劳动中解放 ②激发系统二（对话+协作+三重触手）③可视化成长（对抗焦虑）。与成长空间模型完全对齐：视角（输入/触手）、主体性×认知复杂性（系统二）、身体（休息/恢复）。",
     "domain": null
   },
   {
     "id": "cs_predictive_coding",
     "type": "KnowledgeNode",
     "userInsight": "预期构建是内容AI设计的第零层——在离心分层和按状态呈现之前，必须先为用户建立锚点。个性化AI（有用户大脑模型）能从用户的经历和关注点构建预期（'这篇和你做的事很像但方向不同'），通用chatbot只能从内容摘要构建（'这篇讲了三个要点'），后者无法产生波动。钩子应来自作者的意图而非内容——意图比摘要更能与人产生连接。",
-    "description": "大脑持续生成对即将到来的感觉输入的预测，将实际输入与预测进行比较。预期命中→流畅感（processing fluency），预期违背→惊讶和深度加工（prediction error）。在沟通/阅读中，连接词和语境提示是帮助接收者提前构建预期的工具——没有预期则无波动，无论内容质量如何。",
     "depth": "有独立见解",
     "name": "预测编码 (Predictive Coding)",
+    "description": "大脑持续生成对即将到来的感觉输入的预测，将实际输入与预测进行比较。预期命中→流畅感（processing fluency），预期违背→惊讶和深度加工（prediction error）。在沟通/阅读中，连接词和语境提示是帮助接收者提前构建预期的工具——没有预期则无波动，无论内容质量如何。",
     "domain": "domain_cognitive_science"
   },
   {
     "id": "mat_koylan_filesystem_os",
     "type": "Material",
     "userInsight": "ITO Engine的直接灵感来源。读这篇文章后想到PDCA教练回路的工程实现方式，结合滑雪场景需求和图数据库，完成了ITO的架构雏形。架构几乎同构（文件系统驱动、JSONL记忆、渐进式上下文加载），但方向完全不同——Koylan在优化AI效率，ITO在保护人的思考。",
-    "materialType": "article",
     "author": [
       "Muratcan Koylan"
     ],
+    "materialType": "article",
     "readingStatus": "completed",
     "name": "The File System Is the New Database: How I Built a Personal OS for AI Agents",
     "domain": "domain_ai_agent"
@@ -2717,62 +2717,62 @@ const graphNodes = [
   {
     "id": "td_content_ai_design",
     "type": "ThinkingDeposit",
-    "outputPotential": "high",
     "userInsight": "替人读内容的AI如果全压成L3——正确但不扎心，和被评价'道理都对但跟我无关'的文章同一个问题。两种场景差异巨大：有用户大脑模型的AI能从意图构建预期（'这篇和你做的事很像但方向不同'），通用chatbot只能说'这篇讲了三个要点'。Koylan文章的预期构建示范：我知道你是谁、你在做什么，所以能把文章放进你的坐标系，让你在读之前就有锚点去碰撞而非被动接收。",
-    "outputStatus": "deposited",
-    "description": "信号捕手框架的重大扩展。三层设计：①预期构建（基于预测编码理论，个性化AI从用户模型构建锚点，钩子来自作者意图而非内容摘要）→②离心分层（内容AI应是离心机而非压缩机，分离L1-L5层级保留各层特征）→③按状态呈现（根据用户认知带宽决定呈现哪层）。同时提出AI时代内容创作策略：L1（故事/身体反应）+L5（锐利原理）能穿透AI摘要层，L3中间层最容易被消灭——写作者应写得更有触感而非更清晰。",
     "depth": "有独立见解",
     "name": "内容AI设计框架：预期构建→离心分层→按状态呈现",
+    "outputPotential": "high",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "信号捕手框架的重大扩展。三层设计：①预期构建（基于预测编码理论，个性化AI从用户模型构建锚点，钩子来自作者意图而非内容摘要）→②离心分层（内容AI应是离心机而非压缩机，分离L1-L5层级保留各层特征）→③按状态呈现（根据用户认知带宽决定呈现哪层）。同时提出AI时代内容创作策略：L1（故事/身体反应）+L5（锐利原理）能穿透AI摘要层，L3中间层最容易被消灭——写作者应写得更有触感而非更清晰。",
     "domain": null
   },
   {
     "id": "td_graph_paradigm_renaissance",
     "type": "ThinkingDeposit",
-    "outputPotential": "high",
     "userInsight": "文件系统优于给每个人配一个图数据库。AI天然有世界知识，世界知识天然由于高校规模化而产生了统一的术语体系。在这个基础上，无论是小学生学习工具、信号捕手、思考笔记工具还是项目管理工具，JSON-LD的理念都可以带来新生机。我聊的不是图数据库，而是对象与边的概念——一种被图数据库承载但不等于图数据库的建模范式。AI知识库三角困境：RAG最不稳定（概率性召回→矛盾建议→健康领域是安全风险），完全结构化策略库凸显不出AI价值（像查表），图范式给AI装护栏但不锁死（沿图遍历=确定性路径=可审计）。健康Coach是最有商业说服力的场景，滑雪AI Coach已是原型验证。",
-    "outputStatus": "deposited",
-    "description": "核心论点：被低估的不是图数据库技术，而是'对象+带属性的边'这个数据建模范式。AI提供了两个之前缺失的条件：世界知识作为现成的术语骨架（学科体系经高校规模化已产生统一的标签体系/术语表），以及自动化的实体构建能力。关键区分：大部分AI时代的垂直场景（教育、内容、笔记、项目管理）需要的是图的schema表达力（边有类型、属性、方向），不是图的计算力（遍历、PageRank、社区发现）。因此实现层应是轻量的JSON-LD文件而非重型图数据库——更轻、AI可直接读写、不需要额外基础设施。ITO Engine是这个范式的第一个落地实例。图范式的两条核心理念：①连接本身和对象一样重要，边是一等公民②一旦切入边的概念，信息复杂性超越二维关系结构的承载能力。",
     "depth": "有独立见解",
     "name": "图范式复兴论：被低估的不是图数据库，是对象+边的建模范式",
+    "outputPotential": "high",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "核心论点：被低估的不是图数据库技术，而是'对象+带属性的边'这个数据建模范式。AI提供了两个之前缺失的条件：世界知识作为现成的术语骨架（学科体系经高校规模化已产生统一的标签体系/术语表），以及自动化的实体构建能力。关键区分：大部分AI时代的垂直场景（教育、内容、笔记、项目管理）需要的是图的schema表达力（边有类型、属性、方向），不是图的计算力（遍历、PageRank、社区发现）。因此实现层应是轻量的JSON-LD文件而非重型图数据库——更轻、AI可直接读写、不需要额外基础设施。ITO Engine是这个范式的第一个落地实例。图范式的两条核心理念：①连接本身和对象一样重要，边是一等公民②一旦切入边的概念，信息复杂性超越二维关系结构的承载能力。",
     "domain": null
   },
   {
     "id": "math_banzhaf_power_index",
     "type": "KnowledgeNode",
     "userInsight": "与 Shapley-Shubik 的本质区别是组合 vs 排列：Banzhaf 只看全员组合中胜利的可能性（3人无独裁者时有4种赢联盟 [2^3-1-3]），Shapley-Shubik 只看全排序后谁是临门一脚（3人有3!=6种排列）。两种不同的数学视角，内核都是排列组合。Banzhaf 更'干净'——不依赖任何关于过程的假设，纯看结构（你在不在、去掉你还能不能赢）。更像公开探讨大家的重要性，更客观但更抽象。",
-    "description": "衡量加权投票系统中每个投票者实际权力的指数。枚举所有可能的赢联盟（子集/组合），统计某个投票者在多少个赢联盟中是关键票（critical voter）——移除该投票者后联盟从赢变输。核心数学工具是组合——只关心'谁在联盟里'，不关心加入顺序。",
     "depth": "理解",
     "name": "班扎夫权力指数 (Banzhaf Power Index)",
+    "description": "衡量加权投票系统中每个投票者实际权力的指数。枚举所有可能的赢联盟（子集/组合），统计某个投票者在多少个赢联盟中是关键票（critical voter）——移除该投票者后联盟从赢变输。核心数学工具是组合——只关心'谁在联盟里'，不关心加入顺序。",
     "domain": "domain_mathematics"
   },
   {
     "id": "math_shapley_shubik_index",
     "type": "KnowledgeNode",
     "userInsight": "与 Banzhaf 的本质区别是排列 vs 组合：Shapley-Shubik 看全排序后谁最关键（pivotal），Banzhaf 看全组合中谁是关键票（critical）。两者结果不同因为计数基数不同——3人时组合空间是4种赢联盟，排列空间是6种序列。Shapley-Shubik 更贴近直觉（现实中联盟确实是一个个人加入的），但多了一个'所有排列等概率'的假设。人的感知上更'像是真的'，但假设更多。",
-    "description": "衡量加权投票系统中每个投票者实际权力的指数。枚举所有可能的投票者加入顺序（排列），统计某个投票者在多少个排列中是关键转折点（pivotal voter）——该投票者加入的那一刻联盟从输变赢。核心数学工具是排列——关心'谁先加入谁后加入'。源自 Shapley 值（合作博弈论的核心概念）。",
     "depth": "理解",
     "name": "夏普里-舒比克权力指数 (Shapley-Shubik Power Index)",
+    "description": "衡量加权投票系统中每个投票者实际权力的指数。枚举所有可能的投票者加入顺序（排列），统计某个投票者在多少个排列中是关键转折点（pivotal voter）——该投票者加入的那一刻联盟从输变赢。核心数学工具是排列——关心'谁先加入谁后加入'。源自 Shapley 值（合作博弈论的核心概念）。",
     "domain": "domain_mathematics"
   },
   {
     "id": "td_ai_era_tech_philosophy",
     "type": "ThinkingDeposit",
-    "outputStatus": "deposited",
-    "description": "从ITO项目出发推导出的AI时代软件形态论。四个核心主张：图/网状存储（知识组织权归个人）、文件本地化（数据所有权归个人）、去工程化（自然语言做架构、代码只做IO）、个体主权（工程复杂性是控制欲的副产品）。提出工程复杂性三层膨胀模型和'前端也是一种中心化设计'的判断。",
     "depth": "有独立见解",
     "name": "AI时代技术哲学：去工程化、文件本地化与个体主权",
     "depositType": "thinking",
+    "outputStatus": "deposited",
+    "description": "从ITO项目出发推导出的AI时代软件形态论。四个核心主张：图/网状存储（知识组织权归个人）、文件本地化（数据所有权归个人）、去工程化（自然语言做架构、代码只做IO）、个体主权（工程复杂性是控制欲的副产品）。提出工程复杂性三层膨胀模型和'前端也是一种中心化设计'的判断。",
     "domain": null
   },
   {
     "id": "mat_effectuation",
     "type": "Material",
-    "materialType": "book",
     "author": [
       "Saras D. Sarasvathy"
     ],
+    "materialType": "book",
     "readingStatus": "wishlist",
     "name": "Effectuation: Elements of Entrepreneurial Expertise",
     "domain": null
@@ -4012,16 +4012,11 @@ const graphLinks = [
   },
   {
     "source": "st_structured_expression",
-    "target": "domain_systems_theory",
-    "type": "belongsTo"
+    "target": "kd_pyramid_principle_notes",
+    "type": "relatedDeposits"
   },
   {
     "source": "st_structured_expression",
-    "target": "kd_pyramid_principle_notes",
-    "type": "relatedDeposits"
-  },
-  {
-    "source": "st_logical_reasoning_taxonomy",
     "target": "domain_systems_theory",
     "type": "belongsTo"
   },
@@ -4031,7 +4026,7 @@ const graphLinks = [
     "type": "relatedDeposits"
   },
   {
-    "source": "st_mece_principle",
+    "source": "st_logical_reasoning_taxonomy",
     "target": "domain_systems_theory",
     "type": "belongsTo"
   },
@@ -4039,6 +4034,11 @@ const graphLinks = [
     "source": "st_mece_principle",
     "target": "kd_pyramid_principle_notes",
     "type": "relatedDeposits"
+  },
+  {
+    "source": "st_mece_principle",
+    "target": "domain_systems_theory",
+    "type": "belongsTo"
   },
   {
     "source": "kd_pyramid_principle_notes",
@@ -4067,13 +4067,13 @@ const graphLinks = [
   },
   {
     "source": "da_metrics_framework_toc",
-    "target": "domain_data_analysis",
-    "type": "belongsTo"
+    "target": "kd_toc_metrics_framework",
+    "type": "relatedDeposits"
   },
   {
     "source": "da_metrics_framework_toc",
-    "target": "kd_toc_metrics_framework",
-    "type": "relatedDeposits"
+    "target": "domain_data_analysis",
+    "type": "belongsTo"
   },
   {
     "source": "da_data_consumer_layers",
@@ -5342,16 +5342,11 @@ const graphLinks = [
   },
   {
     "source": "ps_compound_emotion_framework",
-    "target": "domain_psychology",
-    "type": "belongsTo"
+    "target": "td_demon_slayer_emotion",
+    "type": "relatedDeposits"
   },
   {
     "source": "ps_compound_emotion_framework",
-    "target": "td_demon_slayer_emotion",
-    "type": "relatedDeposits"
-  },
-  {
-    "source": "ps_trauma_weaponization",
     "target": "domain_psychology",
     "type": "belongsTo"
   },
@@ -5359,6 +5354,11 @@ const graphLinks = [
     "source": "ps_trauma_weaponization",
     "target": "td_demon_slayer_emotion",
     "type": "relatedDeposits"
+  },
+  {
+    "source": "ps_trauma_weaponization",
+    "target": "domain_psychology",
+    "type": "belongsTo"
   },
   {
     "source": "ps_trauma_weaponization",
@@ -5667,16 +5667,6 @@ const graphLinks = [
   },
   {
     "source": "td_ito_engine",
-    "target": "td_agent_knowledge_architecture",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_ito_engine",
-    "target": "td_ski_coach_system",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_ito_engine",
     "target": "domain_ai_agent",
     "type": "aboutDomains"
   },
@@ -5689,6 +5679,16 @@ const graphLinks = [
     "source": "td_ito_engine",
     "target": "domain_cognitive_science",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_ito_engine",
+    "target": "td_agent_knowledge_architecture",
+    "type": "derivedFrom"
+  },
+  {
+    "source": "td_ito_engine",
+    "target": "td_ski_coach_system",
+    "type": "derivedFrom"
   },
   {
     "source": "td_ito_engine",
@@ -5717,11 +5717,6 @@ const graphLinks = [
   },
   {
     "source": "td_ski_coach_system",
-    "target": "td_agent_knowledge_architecture",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_ski_coach_system",
     "target": "domain_ai_agent",
     "type": "aboutDomains"
   },
@@ -5734,6 +5729,11 @@ const graphLinks = [
     "source": "td_ski_coach_system",
     "target": "domain_health_wellness",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_ski_coach_system",
+    "target": "td_agent_knowledge_architecture",
+    "type": "derivedFrom"
   },
   {
     "source": "td_ski_coach_system",
@@ -6177,11 +6177,6 @@ const graphLinks = [
   },
   {
     "source": "td_quality_as_emergence",
-    "target": "td_civilization_five_stages",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_quality_as_emergence",
     "target": "mat_zen_motorcycle",
     "type": "inspiredBy"
   },
@@ -6194,6 +6189,11 @@ const graphLinks = [
     "source": "td_quality_as_emergence",
     "target": "domain_systems_theory",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_quality_as_emergence",
+    "target": "td_civilization_five_stages",
+    "type": "derivedFrom"
   },
   {
     "source": "td_quality_as_emergence",
@@ -6212,11 +6212,6 @@ const graphLinks = [
   },
   {
     "source": "td_subjectivity_practical_guide",
-    "target": "td_subjectivity_four_stages",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_subjectivity_practical_guide",
     "target": "domain_psychology",
     "type": "aboutDomains"
   },
@@ -6224,6 +6219,11 @@ const graphLinks = [
     "source": "td_subjectivity_practical_guide",
     "target": "domain_education",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_subjectivity_practical_guide",
+    "target": "td_subjectivity_four_stages",
+    "type": "derivedFrom"
   },
   {
     "source": "td_subjectivity_practical_guide",
@@ -6327,13 +6327,13 @@ const graphLinks = [
   },
   {
     "source": "td_reframe_family_martyrdom",
-    "target": "td_self_love_vs_altruism",
-    "type": "derivedFrom"
+    "target": "domain_psychology",
+    "type": "aboutDomains"
   },
   {
     "source": "td_reframe_family_martyrdom",
-    "target": "domain_psychology",
-    "type": "aboutDomains"
+    "target": "td_self_love_vs_altruism",
+    "type": "derivedFrom"
   },
   {
     "source": "td_reframe_family_martyrdom",
@@ -6447,11 +6447,6 @@ const graphLinks = [
   },
   {
     "source": "td_anti_pua_dialectics",
-    "target": "cs_abstraction_ladder",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_anti_pua_dialectics",
     "target": "domain_psychology",
     "type": "aboutDomains"
   },
@@ -6459,6 +6454,11 @@ const graphLinks = [
     "source": "td_anti_pua_dialectics",
     "target": "domain_cognitive_science",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_anti_pua_dialectics",
+    "target": "cs_abstraction_ladder",
+    "type": "derivedFrom"
   },
   {
     "source": "td_anti_pua_dialectics",
@@ -6492,23 +6492,18 @@ const graphLinks = [
   },
   {
     "source": "ph_labor_alienation",
-    "target": "domain_western_philosophy",
-    "type": "belongsTo"
-  },
-  {
-    "source": "ph_labor_alienation",
     "target": "td_scholars_robe_dialectic",
     "type": "relatedDeposits"
   },
   {
     "source": "ph_labor_alienation",
-    "target": "ec_money_vs_ideals",
-    "type": "relatedTo"
+    "target": "domain_western_philosophy",
+    "type": "belongsTo"
   },
   {
-    "source": "td_pessimism_optimism_spiral",
-    "target": "td_subjectivity_four_stages",
-    "type": "derivedFrom"
+    "source": "ph_labor_alienation",
+    "target": "ec_money_vs_ideals",
+    "type": "relatedTo"
   },
   {
     "source": "td_pessimism_optimism_spiral",
@@ -6519,6 +6514,11 @@ const graphLinks = [
     "source": "td_pessimism_optimism_spiral",
     "target": "domain_psychology",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_pessimism_optimism_spiral",
+    "target": "td_subjectivity_four_stages",
+    "type": "derivedFrom"
   },
   {
     "source": "td_pessimism_optimism_spiral",
@@ -6542,11 +6542,6 @@ const graphLinks = [
   },
   {
     "source": "td_perspective_subjectivity_growth",
-    "target": "td_subjectivity_four_stages",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_perspective_subjectivity_growth",
     "target": "domain_cognitive_science",
     "type": "aboutDomains"
   },
@@ -6564,6 +6559,11 @@ const graphLinks = [
     "source": "td_perspective_subjectivity_growth",
     "target": "domain_education",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_perspective_subjectivity_growth",
+    "target": "td_subjectivity_four_stages",
+    "type": "derivedFrom"
   },
   {
     "source": "td_perspective_subjectivity_growth",
@@ -6637,11 +6637,6 @@ const graphLinks = [
   },
   {
     "source": "td_empathy_requires_subjectivity",
-    "target": "td_subjectivity_four_stages",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_empathy_requires_subjectivity",
     "target": "domain_psychology",
     "type": "aboutDomains"
   },
@@ -6649,6 +6644,11 @@ const graphLinks = [
     "source": "td_empathy_requires_subjectivity",
     "target": "domain_education",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_empathy_requires_subjectivity",
+    "target": "td_subjectivity_four_stages",
+    "type": "derivedFrom"
   },
   {
     "source": "td_empathy_requires_subjectivity",
@@ -6722,16 +6722,6 @@ const graphLinks = [
   },
   {
     "source": "td_ito_product_philosophy",
-    "target": "td_ai_as_forced_opensourcing",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_ito_product_philosophy",
-    "target": "td_perspective_subjectivity_growth",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_ito_product_philosophy",
     "target": "domain_ai_agent",
     "type": "aboutDomains"
   },
@@ -6749,6 +6739,16 @@ const graphLinks = [
     "source": "td_ito_product_philosophy",
     "target": "domain_education",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_ito_product_philosophy",
+    "target": "td_ai_as_forced_opensourcing",
+    "type": "derivedFrom"
+  },
+  {
+    "source": "td_ito_product_philosophy",
+    "target": "td_perspective_subjectivity_growth",
+    "type": "derivedFrom"
   },
   {
     "source": "td_ito_product_philosophy",
@@ -6822,11 +6822,6 @@ const graphLinks = [
   },
   {
     "source": "td_content_ai_design",
-    "target": "td_signal_catcher",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_content_ai_design",
     "target": "domain_ai_agent",
     "type": "aboutDomains"
   },
@@ -6834,6 +6829,11 @@ const graphLinks = [
     "source": "td_content_ai_design",
     "target": "domain_cognitive_science",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_content_ai_design",
+    "target": "td_signal_catcher",
+    "type": "derivedFrom"
   },
   {
     "source": "td_content_ai_design",
@@ -6862,21 +6862,6 @@ const graphLinks = [
   },
   {
     "source": "td_graph_paradigm_renaissance",
-    "target": "td_ito_product_philosophy",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_graph_paradigm_renaissance",
-    "target": "mat_koylan_filesystem_os",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_graph_paradigm_renaissance",
-    "target": "td_ski_coach_system",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_graph_paradigm_renaissance",
     "target": "domain_ai_agent",
     "type": "aboutDomains"
   },
@@ -6889,6 +6874,21 @@ const graphLinks = [
     "source": "td_graph_paradigm_renaissance",
     "target": "domain_health_wellness",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_graph_paradigm_renaissance",
+    "target": "td_ito_product_philosophy",
+    "type": "derivedFrom"
+  },
+  {
+    "source": "td_graph_paradigm_renaissance",
+    "target": "mat_koylan_filesystem_os",
+    "type": "derivedFrom"
+  },
+  {
+    "source": "td_graph_paradigm_renaissance",
+    "target": "td_ski_coach_system",
+    "type": "derivedFrom"
   },
   {
     "source": "td_graph_paradigm_renaissance",
@@ -6947,16 +6947,6 @@ const graphLinks = [
   },
   {
     "source": "td_ai_era_tech_philosophy",
-    "target": "td_ito_product_philosophy",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_ai_era_tech_philosophy",
-    "target": "td_graph_paradigm_renaissance",
-    "type": "derivedFrom"
-  },
-  {
-    "source": "td_ai_era_tech_philosophy",
     "target": "domain_ai_agent",
     "type": "aboutDomains"
   },
@@ -6964,6 +6954,16 @@ const graphLinks = [
     "source": "td_ai_era_tech_philosophy",
     "target": "domain_systems_theory",
     "type": "aboutDomains"
+  },
+  {
+    "source": "td_ai_era_tech_philosophy",
+    "target": "td_ito_product_philosophy",
+    "type": "derivedFrom"
+  },
+  {
+    "source": "td_ai_era_tech_philosophy",
+    "target": "td_graph_paradigm_renaissance",
+    "type": "derivedFrom"
   },
   {
     "source": "td_ai_era_tech_philosophy",
