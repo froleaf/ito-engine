@@ -486,5 +486,23 @@
     "createdAt": "2026-03-12T04:00:00+08:00",
     "updatedAt": "2026-03-12T04:00:00+08:00",
     "completedAt": null
+  },
+  {
+    "id": "todo_029",
+    "type": "action_item",
+    "title": "扩展 visualization.html 为简易前端（Builder+Reader 双模式）",
+    "description": "在现有 D3.js 力导向图基础上扩展，加入侧边栏对话入口和笔记面板，作为 Reader 模式的前端。CLI 保持为 Builder 模式。验证去工程化理念——一个 HTML 文件就够。",
+    "status": "open",
+    "relatedNodes": [
+      "td_ai_era_tech_philosophy",
+      "branch_ai_product"
+    ],
+    "relatedDomains": [
+      "domain_ai_agent"
+    ],
+    "source": "chat_2026-03-12",
+    "createdAt": "2026-03-12T22:00:00+08:00",
+    "updatedAt": "2026-03-12T22:00:00+08:00",
+    "completedAt": null
   }
 ]

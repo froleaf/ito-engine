@@ -468,6 +468,8 @@
       "name": "AI产品设计",
       "description": "AI产品方法论、用户体验、商业化、产品经理视角",
       "parentBranch": "domain_ai_agent",
+      "depth": "有独立见解",
+      "userInsight": "AI时代的软件应该去工程化：自然语言做宏观架构，代码只做微观IO。工程复杂性的根源不是技术需求而是商业控制欲——开源分发零复杂性，skill私有化需要服务器，数据中心化引发工程爆炸。前端也是一种中心化设计，它在降低门槛的同时框住了用户能做的事。",
       "createdAt": "2026-03-07T00:00:00+08:00"
     },
     {
@@ -3792,6 +3794,25 @@
       "relatedTo": ["math_banzhaf_power_index"],
       "depth": "理解",
       "userInsight": "与 Banzhaf 的本质区别是排列 vs 组合：Shapley-Shubik 看全排序后谁最关键（pivotal），Banzhaf 看全组合中谁是关键票（critical）。两者结果不同因为计数基数不同——3人时组合空间是4种赢联盟，排列空间是6种序列。Shapley-Shubik 更贴近直觉（现实中联盟确实是一个个人加入的），但多了一个'所有排列等概率'的假设。人的感知上更'像是真的'，但假设更多。",
+      "createdAt": "2026-03-12T00:00:00+08:00"
+    },
+
+    {"_comment": "═══════ 2026-03-12 chat: AI时代技术哲学——去工程化与个体主权 ═══════"},
+    {
+      "@type": "ThinkingDeposit",
+      "@id": "td_ai_era_tech_philosophy",
+      "name": "AI时代技术哲学：去工程化、文件本地化与个体主权",
+      "depositType": "thinking",
+      "outputStatus": "deposited",
+      "description": "从ITO项目出发推导出的AI时代软件形态论。四个核心主张：图/网状存储（知识组织权归个人）、文件本地化（数据所有权归个人）、去工程化（自然语言做架构、代码只做IO）、个体主权（工程复杂性是控制欲的副产品）。提出工程复杂性三层膨胀模型和'前端也是一种中心化设计'的判断。",
+      "contentPath": "output/deposits/td_ai_era_tech_philosophy.md",
+      "aboutNodes": ["branch_ai_product", "branch_st_architecture", "td_ito_product_philosophy", "td_graph_paradigm_renaissance", "td_agent_knowledge_architecture"],
+      "aboutDomains": ["domain_ai_agent", "domain_systems_theory"],
+      "derivedFrom": ["td_ito_product_philosophy", "td_graph_paradigm_renaissance"],
+      "coCreatedWith": "Claude",
+      "sourceRef": "inbox/conversations/2026-03-12_chat_ai_era_tech_philosophy.md",
+      "depth": "有独立见解",
+      "updatedAt": "2026-03-12T00:00:00+08:00",
       "createdAt": "2026-03-12T00:00:00+08:00"
     }
   ]
