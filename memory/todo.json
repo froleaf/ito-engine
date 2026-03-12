@@ -504,5 +504,23 @@
     "createdAt": "2026-03-12T22:00:00+08:00",
     "updatedAt": "2026-03-12T22:00:00+08:00",
     "completedAt": null
+  },
+  {
+    "id": "todo_030",
+    "type": "topic_to_explore",
+    "title": "探索自然语言 Skill 的加密执行方案",
+    "description": "当前自然语言 Skill（Markdown）面临\"加密了 AI 怎么读，解密了用户能看到\"的矛盾。同态加密等方向可能解决这个问题，如果解决将带来 Skill 商业化的新可能性。值得作为科研+商业方向深入探讨。",
+    "status": "open",
+    "relatedNodes": [
+      "td_ai_era_tech_philosophy",
+      "branch_ai_product"
+    ],
+    "relatedDomains": [
+      "domain_ai_agent"
+    ],
+    "source": "chat_2026-03-12",
+    "createdAt": "2026-03-12T23:00:00+08:00",
+    "updatedAt": "2026-03-12T23:00:00+08:00",
+    "completedAt": null
   }
 ]
