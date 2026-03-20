@@ -60,6 +60,33 @@
   .filter-item input:not(:checked) + .check-box { opacity: 0.4; }
   .filter-item .dot { width: 8px; height: 8px; min-width: 8px; min-height: 8px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; flex-grow: 0; }
   .filter-item span { flex: 1; }
+  .search-box {
+    position: absolute; top: 20px; left: 260px;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(15, 20, 35, 0.9); border: 1px solid rgba(120, 140, 200, 0.3);
+    border-radius: 8px; padding: 8px 14px; color: #e8ecf4;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+    z-index: 10;
+  }
+  .search-box:focus-within { border-color: rgba(120, 140, 200, 0.6); }
+  .search-box input {
+    background: transparent; border: none; outline: none;
+    color: #e8ecf4; font-size: 13px; width: 200px;
+    font-family: inherit;
+  }
+  .search-box input::placeholder { color: #5a6a8a; }
+  .search-box .search-icon { color: #5a6a8a; font-size: 14px; flex-shrink: 0; }
+  .search-box .search-clear {
+    color: #5a6a8a; font-size: 16px; cursor: pointer; flex-shrink: 0;
+    display: none; line-height: 1;
+  }
+  .search-box .search-clear:hover { color: #e8ecf4; }
+  .search-results-hint {
+    position: absolute; top: 56px; left: 260px;
+    color: #8090b0; font-size: 11px; z-index: 10;
+    background: rgba(15, 20, 35, 0.8); padding: 4px 10px; border-radius: 4px;
+    pointer-events: none; opacity: 0; transition: opacity 0.15s;
+  }
   .title {
     position: absolute; top: 20px; right: 20px;
     color: #e8ecf4; font-size: 20px; font-weight: 600;
@@ -70,6 +97,12 @@
 </head>
 <body>
 <div class="tooltip" id="tooltip"></div>
+<div class="search-box">
+  <span class="search-icon">🔍</span>
+  <input type="text" id="search-input" placeholder="搜索节点…" autocomplete="off">
+  <span class="search-clear" id="search-clear">×</span>
+</div>
+<div class="search-results-hint" id="search-hint"></div>
 
 <div class="sidebar">
   <!-- Legend panel -->
@@ -234,6 +267,7 @@ document.getElementById("stats").textContent = statsText;
 // ============================================================
 const filterState = { types: new Set(), domains: new Set() };
 let selectedNode = null;
+let searchMatchSet = null; // Set of matched node IDs from search
 
 // Gather unique types present in data
 const typeFilterDefs = [
@@ -302,15 +336,18 @@ function getConnectedSet(nodeId) {
 
 function applyVisualState() {
   const connected = selectedNode ? getConnectedSet(selectedNode.id) : null;
+  const searching = searchMatchSet && searchMatchSet.size > 0;
 
   node.select("circle:last-of-type").attr("opacity", n => {
     if (!isNodeVisible(n)) return 0.03;
     if (connected && !connected.has(n.id)) return 0.12;
+    if (searching && !connected && !searchMatchSet.has(n.id)) return 0.08;
     return 0.9;
   });
   node.select("text").attr("opacity", n => {
     if (!isNodeVisible(n)) return 0.03;
     if (connected && !connected.has(n.id)) return 0.08;
+    if (searching && !connected && !searchMatchSet.has(n.id)) return 0.06;
     return 1;
   });
   // Glow circles for domain roots
@@ -319,6 +356,7 @@ function applyVisualState() {
   }).attr("opacity", n => {
     if (!isNodeVisible(n)) return 0;
     if (connected && !connected.has(n.id)) return 0.03;
+    if (searching && !connected && !searchMatchSet.has(n.id)) return 0.02;
     return 0.15;
   });
   // Selection ring
@@ -334,6 +372,16 @@ function applyVisualState() {
     }
     return (linkStyles[l.type] || linkStyles.relatedTo).opacity;
   });
+  // Show arrows only on highlighted links (selected node's edges)
+  link.attr("marker-end", l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    if (l.type === "subBranch" || l.type === "parentBranch") return null;
+    if (connected && (sid === selectedNode.id || tid === selectedNode.id)) {
+      return `url(#arrow-${l.type})`;
+    }
+    return null;
+  });
 }
 
 // ============================================================
@@ -347,16 +395,16 @@ const svg = d3.select("body").append("svg")
   .attr("height", height);
 
 const defs = svg.append("defs");
-// Arrow markers
+// Arrow markers — only used when a node is selected/hovered
 Object.entries(linkStyles).forEach(([type, style]) => {
   defs.append("marker")
     .attr("id", `arrow-${type}`)
     .attr("viewBox", "0 -4 8 8")
-    .attr("refX", 12).attr("refY", 0)
-    .attr("markerWidth", 6).attr("markerHeight", 6)
+    .attr("refX", 16).attr("refY", 0)
+    .attr("markerWidth", 5).attr("markerHeight", 5)
     .attr("orient", "auto")
     .append("path")
-    .attr("d", "M0,-4L8,0L0,4")
+    .attr("d", "M0,-3L7,0L0,3")
     .attr("fill", style.stroke);
 });
 
@@ -419,7 +467,7 @@ const link = g.append("g")
   .attr("stroke-width", d => (linkStyles[d.type] || linkStyles.relatedTo).width)
   .attr("stroke-dasharray", d => (linkStyles[d.type] || linkStyles.relatedTo).dasharray)
   .attr("stroke-opacity", d => (linkStyles[d.type] || linkStyles.relatedTo).opacity)
-  .attr("marker-end", d => (d.type !== "subBranch" && d.type !== "parentBranch") ? `url(#arrow-${d.type})` : null);
+  .attr("marker-end", null); // arrows hidden by default, shown on hover/select
 
 // Draw nodes
 const node = g.append("g")
@@ -510,6 +558,13 @@ node.on("mouseenter", (e, d) => {
       if (!isNodeVisible(nodeMap[sid]) || !isNodeVisible(nodeMap[tid])) return 0.02;
       return (sid === d.id || tid === d.id) ? 0.9 : 0.05;
     });
+    // Show arrows on hovered node's edges
+    link.attr("marker-end", l => {
+      const sid = typeof l.source === "object" ? l.source.id : l.source;
+      const tid = typeof l.target === "object" ? l.target.id : l.target;
+      if (l.type === "subBranch" || l.type === "parentBranch") return null;
+      return (sid === d.id || tid === d.id) ? `url(#arrow-${l.type})` : null;
+    });
   }
 })
 .on("mousemove", e => {
@@ -554,6 +609,90 @@ setTimeout(() => {
     .scale(scale);
   svg.transition().duration(800).call(zoom.transform, transform);
 }, 2000);
+
+// ============================================================
+// SEARCH
+// ============================================================
+const searchInput = document.getElementById("search-input");
+const searchClear = document.getElementById("search-clear");
+const searchHint = document.getElementById("search-hint");
+
+function fuzzyMatch(query, text) {
+  query = query.toLowerCase();
+  text = text.toLowerCase();
+  // substring match
+  if (text.includes(query)) return true;
+  // character-order fuzzy match
+  let qi = 0;
+  for (let i = 0; i < text.length && qi < query.length; i++) {
+    if (text[i] === query[qi]) qi++;
+  }
+  return qi === query.length;
+}
+
+searchInput.addEventListener("input", () => {
+  const q = searchInput.value.trim();
+  searchClear.style.display = q ? "block" : "none";
+
+  if (!q) {
+    searchMatchSet = null;
+    searchHint.style.opacity = 0;
+    applyVisualState();
+    return;
+  }
+
+  const matches = nodes.filter(n => isNodeVisible(n) && fuzzyMatch(q, n.name));
+  searchMatchSet = new Set(matches.map(n => n.id));
+
+  if (matches.length > 0) {
+    searchHint.textContent = `找到 ${matches.length} 个匹配节点`;
+    searchHint.style.opacity = 1;
+  } else {
+    searchHint.textContent = "未找到匹配节点";
+    searchHint.style.opacity = 1;
+  }
+
+  // Clear selection when searching
+  selectedNode = null;
+  applyVisualState();
+
+  // If exactly one match, pan to it
+  if (matches.length === 1) {
+    const m = matches[0];
+    const currentTransform = d3.zoomTransform(svg.node());
+    const scale = Math.max(currentTransform.k, 1.2);
+    const transform = d3.zoomIdentity
+      .translate(width / 2 - m.x * scale, height / 2 - m.y * scale)
+      .scale(scale);
+    svg.transition().duration(500).call(zoom.transform, transform);
+  }
+});
+
+searchClear.addEventListener("click", () => {
+  searchInput.value = "";
+  searchClear.style.display = "none";
+  searchMatchSet = null;
+  searchHint.style.opacity = 0;
+  applyVisualState();
+  searchInput.focus();
+});
+
+// Ctrl/Cmd+F to focus search
+document.addEventListener("keydown", e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "f") {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+  if (e.key === "Escape" && document.activeElement === searchInput) {
+    searchInput.value = "";
+    searchClear.style.display = "none";
+    searchMatchSet = null;
+    searchHint.style.opacity = 0;
+    applyVisualState();
+    searchInput.blur();
+  }
+});
 </script>
 </body>
 </html>
