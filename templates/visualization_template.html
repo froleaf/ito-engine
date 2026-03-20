@@ -87,11 +87,51 @@
     background: rgba(15, 20, 35, 0.8); padding: 4px 10px; border-radius: 4px;
     pointer-events: none; opacity: 0; transition: opacity 0.15s;
   }
+  .detail-panel {
+    position: absolute; top: 20px; right: 20px; bottom: 20px;
+    width: 280px; overflow-y: auto; overflow-x: hidden;
+    background: rgba(15, 20, 35, 0.92); border: 1px solid rgba(120, 140, 200, 0.2);
+    border-radius: 10px; padding: 20px; color: #c8d0e0; font-size: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+    transform: translateX(320px); transition: transform 0.25s ease;
+    scrollbar-width: thin; scrollbar-color: rgba(120,140,200,0.3) transparent;
+    z-index: 10;
+  }
+  .detail-panel.visible { transform: translateX(0); }
+  .detail-panel::-webkit-scrollbar { width: 4px; }
+  .detail-panel::-webkit-scrollbar-thumb { background: rgba(120,140,200,0.3); border-radius: 2px; }
+  .detail-panel .dp-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+  .detail-panel .dp-name { font-size: 16px; font-weight: 600; color: #e8ecf4; line-height: 1.4; flex: 1; }
+  .detail-panel .dp-close { color: #5a6a8a; font-size: 18px; cursor: pointer; padding: 0 0 0 8px; line-height: 1; flex-shrink: 0; }
+  .detail-panel .dp-close:hover { color: #e8ecf4; }
+  .detail-panel .dp-badge {
+    display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 4px;
+    background: rgba(120, 140, 200, 0.15); color: #8090b0; margin-bottom: 12px;
+  }
+  .detail-panel .dp-row { margin-bottom: 8px; line-height: 1.5; }
+  .detail-panel .dp-label { color: #5a6a8a; font-size: 11px; }
+  .detail-panel .dp-value { color: #c8d0e0; }
+  .detail-panel .dp-value.depth { color: #f0a860; }
+  .detail-panel .dp-value.role { color: #80b0d0; }
+  .detail-panel .dp-value.insight { color: #a0d0a0; font-style: italic; }
+  .detail-panel .dp-value.status { color: #34d399; }
+  .detail-panel .dp-divider { border: none; border-top: 1px solid rgba(120,140,200,0.12); margin: 14px 0; }
+  .detail-panel .dp-section-title { font-size: 11px; color: #8090b0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .detail-panel .dp-conn-item {
+    display: flex; align-items: center; padding: 5px 0; cursor: pointer;
+    border-bottom: 1px solid rgba(120,140,200,0.06); transition: background 0.1s;
+  }
+  .detail-panel .dp-conn-item:hover { background: rgba(120,140,200,0.08); margin: 0 -6px; padding: 5px 6px; border-radius: 4px; }
+  .detail-panel .dp-conn-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex-shrink: 0; }
+  .detail-panel .dp-conn-name { flex: 1; color: #c8d0e0; font-size: 12px; }
+  .detail-panel .dp-conn-rel { color: #5a6a8a; font-size: 10px; margin-left: 6px; flex-shrink: 0; }
   .title {
     position: absolute; top: 20px; right: 20px;
     color: #e8ecf4; font-size: 20px; font-weight: 600;
     text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    transition: opacity 0.2s;
   }
+  .title.hidden { opacity: 0; pointer-events: none; }
   .title span { font-size: 12px; color: #8090b0; display: block; margin-top: 4px; }
 </style>
 </head>
@@ -148,6 +188,14 @@
 </div>
 
 <div class="title" id="title">ITO 知识图谱<span id="stats"></span></div>
+
+<div class="detail-panel" id="detail-panel">
+  <div class="dp-header">
+    <div class="dp-name" id="dp-name"></div>
+    <span class="dp-close" id="dp-close">×</span>
+  </div>
+  <div id="dp-content"></div>
+</div>
 
 <script>
 // Panel toggle
@@ -420,6 +468,7 @@ svg.call(zoom);
 svg.on("click", (e) => {
   if (e.target.tagName === "svg" || e.target === svg.node()) {
     selectedNode = null;
+    updateDetailPanel();
     applyVisualState();
   }
 });
@@ -586,6 +635,102 @@ node.on("click", (e, d) => {
   } else {
     selectedNode = d;
   }
+  updateDetailPanel();
+  applyVisualState();
+});
+
+// ============================================================
+// DETAIL PANEL
+// ============================================================
+const detailPanel = document.getElementById("detail-panel");
+const dpName = document.getElementById("dp-name");
+const dpContent = document.getElementById("dp-content");
+const dpClose = document.getElementById("dp-close");
+const titleEl = document.getElementById("title");
+
+const linkTypeLabels = {
+  subBranch: "子分支", parentBranch: "父分支", belongsTo: "归属",
+  isA: "是一种", relatedTo: "相关", prerequisite: "前置",
+  refersTo: "引用", derivedFrom: "派生自", inspiredBy: "启发自",
+  crossDomainLink: "跨域", hasResource: "资源", coversTopics: "涵盖",
+  aboutNodes: "关于", aboutDomains: "关于领域",
+  hasMisconception: "歧义", confusedWith: "易混淆",
+};
+
+function updateDetailPanel() {
+  if (!selectedNode) {
+    detailPanel.classList.remove("visible");
+    titleEl.classList.remove("hidden");
+    return;
+  }
+  const d = selectedNode;
+  dpName.textContent = d.name;
+  titleEl.classList.add("hidden");
+
+  let html = `<div class="dp-badge">${typeLabels[d.type] || d.type}</div>`;
+  if (d.description) html += `<div class="dp-row"><span class="dp-value">${d.description}</span></div>`;
+  if (d.depth) html += `<div class="dp-row"><span class="dp-label">深度 </span><span class="dp-value depth">${d.depth}</span></div>`;
+  if (d.nodeRole) html += `<div class="dp-row"><span class="dp-label">角色 </span><span class="dp-value role">${roleLabels[d.nodeRole] || d.nodeRole}</span></div>`;
+  if (d.userInsight) html += `<div class="dp-row"><span class="dp-value insight">${d.userInsight}</span></div>`;
+  if (d.outputStatus) html += `<div class="dp-row"><span class="dp-label">状态 </span><span class="dp-value status">${statusLabels[d.outputStatus] || d.outputStatus}</span></div>`;
+  if (d.outputPotential) html += `<div class="dp-row"><span class="dp-label">输出潜力 </span><span class="dp-value role">${d.outputPotential}</span></div>`;
+  const readingLabels = { in_progress: "在读", completed: "已读完", paused: "暂停", abandoned: "已放弃" };
+  if (d.readingStatus) html += `<div class="dp-row"><span class="dp-label">阅读 </span><span class="dp-value status">${readingLabels[d.readingStatus] || d.readingStatus}</span></div>`;
+  if (d.progress) html += `<div class="dp-row"><span class="dp-label">进度 </span><span class="dp-value role">${d.progress}</span></div>`;
+
+  // Connected nodes
+  const connectedLinks = links.filter(l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    return sid === d.id || tid === d.id;
+  });
+
+  if (connectedLinks.length > 0) {
+    html += `<hr class="dp-divider"><div class="dp-section-title">关联节点 (${connectedLinks.length})</div>`;
+    connectedLinks.forEach(l => {
+      const sid = typeof l.source === "object" ? l.source.id : l.source;
+      const tid = typeof l.target === "object" ? l.target.id : l.target;
+      const otherId = sid === d.id ? tid : sid;
+      const other = nodeMap[otherId];
+      if (!other) return;
+      const cfg = typeConfig[other.type] || typeConfig.KnowledgeNode;
+      const dotColor = other.color || cfg.color || "#9ca3af";
+      const relLabel = linkTypeLabels[l.type] || l.type;
+      html += `<div class="dp-conn-item" data-node-id="${otherId}">`;
+      html += `<div class="dp-conn-dot" style="background:${dotColor}"></div>`;
+      html += `<span class="dp-conn-name">${other.name}</span>`;
+      html += `<span class="dp-conn-rel">${relLabel}</span>`;
+      html += `</div>`;
+    });
+  }
+
+  dpContent.innerHTML = html;
+  detailPanel.classList.add("visible");
+
+  // Click on connected node to navigate
+  dpContent.querySelectorAll(".dp-conn-item").forEach(el => {
+    el.addEventListener("click", () => {
+      const targetId = el.dataset.nodeId;
+      const targetNode = nodeMap[targetId];
+      if (targetNode) {
+        selectedNode = targetNode;
+        updateDetailPanel();
+        applyVisualState();
+        // Pan to the node
+        const currentTransform = d3.zoomTransform(svg.node());
+        const scale = Math.max(currentTransform.k, 1.0);
+        const transform = d3.zoomIdentity
+          .translate(width / 2 - targetNode.x * scale, height / 2 - targetNode.y * scale)
+          .scale(scale);
+        svg.transition().duration(400).call(zoom.transform, transform);
+      }
+    });
+  });
+}
+
+dpClose.addEventListener("click", () => {
+  selectedNode = null;
+  updateDetailPanel();
   applyVisualState();
 });
 
@@ -654,6 +799,7 @@ searchInput.addEventListener("input", () => {
 
   // Clear selection when searching
   selectedNode = null;
+  updateDetailPanel();
   applyVisualState();
 
   // If exactly one match, pan to it
