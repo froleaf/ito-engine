@@ -14,6 +14,28 @@ disable-model-invocation: true
 
 ## 处理逻辑
 
+### 第零步：项目文件初始化
+
+开源仓库不包含个人数据文件，首次使用时需要从 `_init/` 模板生成运行时目录。
+
+**执行逻辑**：检查 `memory/` 目录是否存在（作为判断标志）。如果不存在，将 `_init/` 下的目录结构复制到项目根目录：
+
+```bash
+# 仅在 memory/ 目录不存在时执行
+if [ ! -d "memory" ]; then
+  # 复制所有运行时数据目录（不覆盖已有文件）
+  cp -rn _init/inbox .
+  cp -rn _init/memory .
+  cp -rn _init/ontology .
+  cp -rn _init/output .
+  cp -rn _init/scripts .
+  cp -n _init/visualization.html .
+  echo "✅ 项目文件初始化完成"
+fi
+```
+
+初始化完成（或已存在）后，继续下一步。
+
 ### 第一步：自我介绍与破冰
 
 简要介绍自己的能力：

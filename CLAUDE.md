@@ -111,6 +111,6 @@ All `.jsonl` files are **append-only** (never modify existing lines). Every reco
 - Domain discovery: read `ontology/_meta/domains.md` first, then grep the unified graph
 - Personal cognitive data (depth, nodeRole, userInsight, misconceptions) is annotated directly on knowledge nodes — no separate personal ontology
 - `/ito` standby vs session mode distinction matters: tool requests don't create session records; only explicit "聊天"/"传笔记"/"写笔记" triggers session recording
-- `_init/` mirrors data directories in their empty/initial state — used by `/reset`. **When adding new data directories or files, sync `_init/` to match**
+- `_init/` mirrors data directories in their empty/initial state — used by `/cold-start` (first-time init) and `/reset`. **When adding new data directories or files, sync `_init/` to match**
 - Deposit files: Agent reads only 导读 (above `---`), never reads 原文 unless user explicitly instructs
 - **Implicit cognition detection** (in knowledge-extract): when the user is clearly USING a mental model to make a decision (not just talking about it), the Agent must report the finding to the user for confirmation before writing to the graph. High threshold — if unsure, don't flag it
