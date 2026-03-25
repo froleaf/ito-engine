@@ -133,6 +133,97 @@
   }
   .title.hidden { opacity: 0; pointer-events: none; }
   .title span { font-size: 12px; color: #8090b0; display: block; margin-top: 4px; }
+
+  /* ── Timeline Slider ── */
+  .timeline-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 72px; z-index: 20;
+    background: linear-gradient(to top, rgba(10,14,23,0.97) 0%, rgba(10,14,23,0.85) 70%, rgba(10,14,23,0) 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    padding: 0 40px 14px 40px;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .timeline-bar.hidden { opacity: 0; pointer-events: none; }
+  .timeline-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 6px; pointer-events: auto;
+  }
+  .timeline-header .tl-label {
+    font-size: 11px; color: #8090b0; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .timeline-header .tl-date {
+    font-size: 16px; font-weight: 600; color: #e8ecf4;
+    min-width: 110px; text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .timeline-header .tl-event-count {
+    font-size: 11px; color: #5a6a8a; min-width: 80px;
+  }
+  .timeline-header .tl-btn {
+    background: rgba(120,140,200,0.15); border: 1px solid rgba(120,140,200,0.3);
+    color: #c8d0e0; font-size: 12px; border-radius: 4px; padding: 3px 10px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .timeline-header .tl-btn:hover { background: rgba(120,140,200,0.25); color: #e8ecf4; }
+  .timeline-header .tl-btn.active { background: rgba(59,130,246,0.3); border-color: rgba(59,130,246,0.5); color: #93c5fd; }
+  .timeline-slider-wrap {
+    width: 100%; max-width: 900px; position: relative;
+    height: 28px; pointer-events: auto;
+  }
+  .timeline-ticks {
+    position: absolute; left: 0; right: 0; bottom: 14px; height: 14px;
+    pointer-events: none;
+  }
+  .timeline-tick {
+    position: absolute; bottom: 0; width: 1px; background: rgba(120,140,200,0.25);
+  }
+  .timeline-tick.major { background: rgba(120,140,200,0.5); }
+  .timeline-tick-label {
+    position: absolute; bottom: -2px; transform: translate(-50%, 100%);
+    font-size: 9px; color: #5a6a8a; white-space: nowrap;
+  }
+  .timeline-slider-wrap input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 4px; border-radius: 2px;
+    background: rgba(120,140,200,0.2);
+    outline: none; cursor: pointer;
+    position: relative; z-index: 1;
+  }
+  .timeline-slider-wrap input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: #3b82f6; border: 2px solid #e8ecf4;
+    box-shadow: 0 0 8px rgba(59,130,246,0.5);
+    cursor: grab;
+  }
+  .timeline-slider-wrap input[type="range"]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: #3b82f6; border: 2px solid #e8ecf4;
+    box-shadow: 0 0 8px rgba(59,130,246,0.5);
+    cursor: grab;
+  }
+  /* Event dots on the slider track */
+  .timeline-dots {
+    position: absolute; left: 0; right: 0; top: 8px; height: 4px;
+    pointer-events: none; z-index: 0;
+  }
+  .timeline-dot {
+    position: absolute; width: 3px; height: 3px; border-radius: 50%;
+    top: 0; transform: translateX(-50%);
+  }
+  .tl-toggle-wrap {
+    position: absolute; bottom: 80px; left: 50%;
+    transform: translateX(-50%); z-index: 20;
+  }
+  .tl-toggle-btn {
+    background: rgba(15, 20, 35, 0.9); border: 1px solid rgba(120, 140, 200, 0.3);
+    color: #8090b0; font-size: 11px; border-radius: 6px; padding: 5px 14px;
+    cursor: pointer; transition: all 0.15s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  .tl-toggle-btn:hover { color: #e8ecf4; border-color: rgba(120,140,200,0.5); }
+  .tl-toggle-btn.active { color: #93c5fd; border-color: rgba(59,130,246,0.5); background: rgba(59,130,246,0.15); }
 </style>
 </head>
 <body>
@@ -188,6 +279,24 @@
 </div>
 
 <div class="title" id="title">ITO 知识图谱<span id="stats"></span></div>
+
+<!-- Timeline controls -->
+<div class="tl-toggle-wrap">
+  <button class="tl-toggle-btn" id="tl-toggle" title="时间轴模式">⏱ 时间轴</button>
+</div>
+<div class="timeline-bar hidden" id="timeline-bar">
+  <div class="timeline-header">
+    <span class="tl-label">时间轴</span>
+    <span class="tl-date" id="tl-date">—</span>
+    <span class="tl-event-count" id="tl-event-count"></span>
+    <button class="tl-btn" id="tl-play">▶ 播放</button>
+    <button class="tl-btn" id="tl-reset">全部显示</button>
+  </div>
+  <div class="timeline-slider-wrap">
+    <div class="timeline-dots" id="tl-dots"></div>
+    <input type="range" id="tl-slider" min="0" max="100" value="100" step="1">
+  </div>
+</div>
 
 <div class="detail-panel" id="detail-panel">
   <div class="dp-header">
@@ -837,6 +946,226 @@ document.addEventListener("keydown", e => {
     searchHint.style.opacity = 0;
     applyVisualState();
     searchInput.blur();
+  }
+});
+
+// ============================================================
+// TIMELINE SLIDER
+// ============================================================
+const tlBar = document.getElementById("timeline-bar");
+const tlToggle = document.getElementById("tl-toggle");
+const tlSlider = document.getElementById("tl-slider");
+const tlDateEl = document.getElementById("tl-date");
+const tlEventCount = document.getElementById("tl-event-count");
+const tlPlayBtn = document.getElementById("tl-play");
+const tlResetBtn = document.getElementById("tl-reset");
+const tlDotsEl = document.getElementById("tl-dots");
+
+let timelineActive = false;
+let timelineCutoff = null;  // null = show all, string = "YYYY-MM-DD"
+let tlPlaying = false;
+let tlPlayTimer = null;
+
+// Build sorted unique dates from node_created events
+// (ThinkingScript 用 compiledAt 作为诞生时间, build_timeline.py 已统一输出为 node_created)
+const creationDateMap = {};  // nodeId → birth date string
+timelineEvents.forEach(e => {
+  if (e.event === "node_created" && e.date) {
+    creationDateMap[e.id] = e.date;
+  }
+});
+// 兜底：对于图谱节点中有 createdAt/compiledAt 但 timeline 未覆盖的，从节点数据补
+graphNodes.forEach(n => {
+  if (!creationDateMap[n.id]) {
+    const raw = n.createdAt || n.compiledAt || "";
+    const m = raw.match(/(\d{4}-\d{2}-\d{2})/);
+    if (m) creationDateMap[n.id] = m[1];
+  }
+});
+
+const allDates = [...new Set(timelineEvents.map(e => e.date))].sort();
+const uniqueCreationDates = [...new Set(
+  timelineEvents.filter(e => e.event === "node_created").map(e => e.date)
+)].sort();
+
+if (allDates.length > 0) {
+  // Configure slider: one step per unique creation date
+  tlSlider.min = 0;
+  tlSlider.max = uniqueCreationDates.length;  // max = "show all"
+  tlSlider.value = uniqueCreationDates.length;
+  tlSlider.step = 1;
+
+  // Render event dots on the slider track
+  const minDate = new Date(allDates[0]);
+  const maxDate = new Date(allDates[allDates.length - 1]);
+  const dateRange = maxDate - minDate || 1;
+
+  // Count events per date for dot sizing
+  const eventsPerDate = {};
+  timelineEvents.forEach(e => {
+    eventsPerDate[e.date] = (eventsPerDate[e.date] || 0) + 1;
+  });
+
+  const eventTypeColors = {
+    node_created: "#3b82f6",
+    first_contact: "#f59e0b",
+    last_contact: "#f59e0b",
+    deposit_updated: "#34d399",
+    material_started: "#60a5fa",
+    material_progress: "#60a5fa",
+    script_compiled: "#f472b6",
+    deposit_merged: "#fbbf24",
+  };
+
+  // Render one dot per unique date
+  Object.keys(eventsPerDate).forEach(dateStr => {
+    const d = new Date(dateStr);
+    const pct = ((d - minDate) / dateRange) * 100;
+    const count = eventsPerDate[dateStr];
+    const dot = document.createElement("div");
+    dot.className = "timeline-dot";
+    dot.style.left = pct + "%";
+    dot.style.background = count > 5 ? "#3b82f6" : count > 1 ? "rgba(59,130,246,0.6)" : "rgba(120,140,200,0.4)";
+    dot.style.width = Math.min(3 + count, 8) + "px";
+    dot.style.height = Math.min(3 + count, 8) + "px";
+    tlDotsEl.appendChild(dot);
+  });
+}
+
+function getSliderDate() {
+  const idx = parseInt(tlSlider.value);
+  if (idx >= uniqueCreationDates.length) return null;  // show all
+  return uniqueCreationDates[idx];
+}
+
+function updateTimelineDisplay() {
+  const cutoffDate = getSliderDate();
+  timelineCutoff = cutoffDate;
+
+  if (cutoffDate === null) {
+    tlDateEl.textContent = "全部";
+    tlEventCount.textContent = `${Object.keys(creationDateMap).length} 个节点`;
+  } else {
+    tlDateEl.textContent = cutoffDate.slice(0, 7);  // YYYY-MM
+    // Count visible nodes
+    const visibleCount = Object.values(creationDateMap).filter(d => d <= cutoffDate).length;
+    const totalCount = Object.keys(creationDateMap).length;
+    tlEventCount.textContent = `${visibleCount} / ${totalCount} 个节点`;
+  }
+  applyVisualState();
+}
+
+// Override isNodeVisible to incorporate timeline
+const _origIsNodeVisible = isNodeVisible;
+isNodeVisible = function(n) {
+  if (!_origIsNodeVisible(n)) return false;
+  if (timelineActive && timelineCutoff) {
+    const nodeDate = creationDateMap[n.id];
+    if (nodeDate && nodeDate > timelineCutoff) return false;
+    // Nodes without createdAt are always visible (e.g. DomainRoots without date)
+  }
+  return true;
+};
+
+// Types to auto-hide during timeline playback (navigation layer only)
+const timelineHideTypes = new Set(["DomainRoot", "Branch", "BranchScaffold"]);
+let savedFilterState = null;  // backup before timeline mode
+
+// Toggle timeline mode
+tlToggle.addEventListener("click", () => {
+  timelineActive = !timelineActive;
+  tlToggle.classList.toggle("active", timelineActive);
+  tlBar.classList.toggle("hidden", !timelineActive);
+  if (timelineActive) {
+    // 保存当前筛选状态，并取消结构节点的勾选
+    savedFilterState = new Set(filterState.types);
+    timelineHideTypes.forEach(t => filterState.types.delete(t));
+    // 同步 checkbox UI
+    typeContainer.querySelectorAll("input[data-filter-type]").forEach(cb => {
+      const keys = cb.dataset.filterType.split(",");
+      if (keys.some(k => timelineHideTypes.has(k))) {
+        cb.checked = false;
+      }
+    });
+  } else {
+    // 恢复之前的筛选状态
+    timelineCutoff = null;
+    stopPlay();
+    tlSlider.value = uniqueCreationDates.length;
+    if (savedFilterState) {
+      filterState.types = savedFilterState;
+      savedFilterState = null;
+      // 同步 checkbox UI
+      typeContainer.querySelectorAll("input[data-filter-type]").forEach(cb => {
+        const keys = cb.dataset.filterType.split(",");
+        cb.checked = keys.some(k => filterState.types.has(k));
+      });
+    }
+  }
+  applyVisualState();
+});
+
+// Slider input
+tlSlider.addEventListener("input", () => {
+  stopPlay();
+  updateTimelineDisplay();
+});
+
+// Reset button
+tlResetBtn.addEventListener("click", () => {
+  stopPlay();
+  tlSlider.value = uniqueCreationDates.length;
+  updateTimelineDisplay();
+});
+
+// Play / Pause
+function stopPlay() {
+  tlPlaying = false;
+  tlPlayBtn.textContent = "▶ 播放";
+  tlPlayBtn.classList.remove("active");
+  if (tlPlayTimer) { clearInterval(tlPlayTimer); tlPlayTimer = null; }
+}
+
+function startPlay() {
+  if (uniqueCreationDates.length === 0) return;
+  tlPlaying = true;
+  tlPlayBtn.textContent = "⏸ 暂停";
+  tlPlayBtn.classList.add("active");
+
+  // Start from beginning if at end
+  if (parseInt(tlSlider.value) >= uniqueCreationDates.length) {
+    tlSlider.value = 0;
+    updateTimelineDisplay();
+  }
+
+  tlPlayTimer = setInterval(() => {
+    const next = parseInt(tlSlider.value) + 1;
+    if (next > uniqueCreationDates.length) {
+      stopPlay();
+      return;
+    }
+    tlSlider.value = next;
+    updateTimelineDisplay();
+  }, 100);  // 100ms per step
+}
+
+tlPlayBtn.addEventListener("click", () => {
+  if (tlPlaying) {
+    stopPlay();
+  } else {
+    startPlay();
+  }
+});
+
+// Escape key to close timeline
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && timelineActive && document.activeElement !== searchInput) {
+    timelineActive = false;
+    timelineCutoff = null;
+    tlToggle.classList.remove("active");
+    tlBar.classList.add("hidden");
+    stopPlay();
+    applyVisualState();
   }
 });
 </script>

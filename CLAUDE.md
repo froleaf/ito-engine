@@ -58,18 +58,15 @@ The `/ito` skill is the main entry point (auto-activated). It routes to sub-skil
 
 ## Output System: Deposits
 
-Deposit entities (KnowledgeDeposit / ThinkingDeposit) live in the graph. Content files in `output/deposits/` use this format:
-```
-metadata header → AI 导读 → --- → 原文
-```
+Deposit entities (KnowledgeDeposit / ThinkingDeposit) live in the graph. Content files in `output/deposits/` contain **only metadata header + AI 导读** (no raw text). Raw text lives in `inbox/conversations/` or `inbox/processed/`, linked via `sourceRef` in the graph entity and `原文来源` in the deposit file header.
 
 **Three-tier access rule:**
 | Request | Agent action | Token cost |
 |---------|-------------|------------|
-| Agent needs context | Read only 导读 (above `---`) | Low |
+| Agent needs context | Read deposit file (导读 only) | Low |
 | User asks "这份讲了什么" | Answer from 导读 | Low |
-| User says "给我原文" | Bash pipe output, Agent does NOT read | None |
-| User says "帮我分析原文" | Agent reads full file | High |
+| User says "给我原文" | Follow sourceRef → Bash pipe raw file, Agent does NOT read | None |
+| User says "帮我分析原文" | Follow sourceRef → Agent reads raw file | High |
 
 No separate seeds file — use `outputPotential` markers on graph nodes to track candidates.
 
