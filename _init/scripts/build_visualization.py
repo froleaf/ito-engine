@@ -14,6 +14,10 @@ ONTOLOGY_PATH = os.path.join(BASE_DIR, "ontology", "ontology.jsonld")
 TEMPLATE_PATH = os.path.join(BASE_DIR, "templates", "visualization_template.html")
 OUTPUT_PATH = os.path.join(BASE_DIR, "visualization.html")
 
+# Import timeline extraction
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from build_timeline import extract_timeline_events
+
 # Edge properties that point to other nodes (value is @id or list of @id)
 EDGE_PROPERTIES = {
     "subBranch", "parentBranch", "belongsTo", "isA",
@@ -33,6 +37,7 @@ NODE_DISPLAY_PROPS = {
     "depositType", "materialType", "author",
     "readingStatus", "progress",
     "scenarioTags", "appliedInCount",
+    "createdAt", "compiledAt",
 }
 
 
@@ -120,11 +125,17 @@ def build_graph_data(graph_entries):
     return nodes, links
 
 
-def generate_js(nodes, links):
+def generate_js(nodes, links, timeline_events=None):
     """Generate the JS data assignment string."""
     nodes_json = json.dumps(nodes, ensure_ascii=False, indent=2)
     links_json = json.dumps(links, ensure_ascii=False, indent=2)
-    return f"const graphNodes = {nodes_json};\n\nconst graphLinks = {links_json};\n"
+    js = f"const graphNodes = {nodes_json};\n\nconst graphLinks = {links_json};\n"
+    if timeline_events is not None:
+        events_json = json.dumps(timeline_events, ensure_ascii=False, indent=2)
+        js += f"\nconst timelineEvents = {events_json};\n"
+    else:
+        js += "\nconst timelineEvents = [];\n"
+    return js
 
 
 def main():
@@ -138,7 +149,11 @@ def main():
     graph_entries = load_graph()
     nodes, links = build_graph_data(graph_entries)
 
-    js_data = generate_js(nodes, links)
+    # Extract timeline events
+    timeline_events = extract_timeline_events(graph_entries)
+    print(f"Timeline: {len(timeline_events)} events extracted")
+
+    js_data = generate_js(nodes, links, timeline_events)
 
     with open(TEMPLATE_PATH, "r", encoding="utf-8") as f:
         template = f.read()

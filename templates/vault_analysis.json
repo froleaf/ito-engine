@@ -1,0 +1,55 @@
+{
+  "_comment": "vault_analysis.json 结构模板 — 由 scripts/import_obsidian.py 生成，供 /cold-start-obsidian skill 读取",
+  "vault_path": "/absolute/path/to/vault",
+  "scan_time": "ISO 8601",
+  "stats": {
+    "total_files": 0,
+    "total_wikilinks": 0,
+    "total_tags": 0,
+    "avg_word_count": 0,
+    "files_with_frontmatter": 0,
+    "categories": {
+      "moc": 0,
+      "evergreen": 0,
+      "literature": 0,
+      "fleeting": 0,
+      "regular": 0
+    }
+  },
+  "domain_candidates": [
+    {
+      "candidate_id": "dc_001",
+      "name": "领域名（来自文件夹或标签）",
+      "source": "folder:文件夹名 | tag:标签名",
+      "note_count": 0,
+      "common_tags": ["标签1", "标签2"],
+      "representative_notes": ["入链最高的笔记名1", "笔记名2"],
+      "confidence": "high | medium | low"
+    }
+  ],
+  "hub_notes": ["入链数最高的笔记文件名列表（最多30个）"],
+  "moc_notes": ["被识别为 MOC 的笔记文件名列表"],
+  "notes": [
+    {
+      "filename": "不含扩展名的文件名",
+      "path": "相对于 vault 根的路径",
+      "folder": "所在文件夹（空字符串=根目录）",
+      "tags": ["标签列表（frontmatter + 行内合并）"],
+      "wikilinks": ["该笔记链接到的其他笔记文件名列表"],
+      "word_count": 0,
+      "has_frontmatter": true,
+      "created_time": "YYYY-MM-DD",
+      "modified_time": "YYYY-MM-DD",
+      "in_degree": 0,
+      "out_degree": 0,
+      "category": "moc | evergreen | literature | fleeting | regular",
+      "is_hub": false
+    }
+  ],
+  "link_graph": {
+    "edge_count": 0,
+    "edges": [
+      {"source": "笔记A文件名", "target": "笔记B文件名"}
+    ]
+  }
+}

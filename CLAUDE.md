@@ -46,6 +46,7 @@ Skills live in `.claude/skills/*/SKILL.md`. Skills with `user-invocable: false` 
 Call chains:
 ```
 /cold-start → ontology-init → knowledge-extract → knowledge-process (NO session_memory) + (user decides when to /bootstrap or /plan)
+/cold-start-obsidian → import_obsidian.py (zero-token) → AI reads vault_analysis.json → ontology-init → lightweight registration → selective /bootstrap (hub notes only) → knowledge-extract → knowledge-process (NO session_memory)
 /chat | /pass-note | /write-note → knowledge-extract → knowledge-process → Deposit creation
 /bootstrap → knowledge-extract → knowledge-process → Deposit creation (NO session_memory, NO plan trigger)
 /weekly-review → /plan + dormant-check
