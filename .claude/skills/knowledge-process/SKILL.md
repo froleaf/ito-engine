@@ -57,6 +57,17 @@ user-invocable: false
 - 标注 `firstContact`、`lastContact`、`contactCount: 1`
 - 如用户表达了独立见解 → 记录 `userInsight`
 
+**userInsight 挂载规则——禁止往导航层塞具体洞察**：
+
+DomainRoot、Branch、BranchScaffold 是导航层节点，它们的 `userInsight` 只应描述用户对该领域/分支的**整体熟悉度和关系**（如"工作领域核心"、"通过XX课程入门"），不应承载具体的思考洞察。
+
+当提取到一条具体的 userInsight，但最近的匹配节点是导航层节点时：
+1. **不要**把 insight 挂到导航层节点上
+2. **新建一个 KnowledgeNode**，挂在该导航节点下，用 insight 涉及的具体概念命名
+3. 把 userInsight 记录在新建的 KnowledgeNode 上
+
+判断标准：如果这条 insight 描述的是一个**具体的概念、机制或现象**（而非对整个领域的概括），它就不该挂在导航层。
+
 **再次接触的节点**（grep 确认已有 depth 等字段）：
 - 更新 `lastContact`、递增 `contactCount`
 - 按深度升级规则评估是否升级 `depth`
