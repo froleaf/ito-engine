@@ -72,7 +72,7 @@ mkdir -p output/deposits output/drafts output/content-reviews output/thinking_sc
 cp _init/visualization.html visualization.html
 
 # 6. 重置思维脚本和场景索引
-rm -f scripts/thinking/*
+rm -f output/thinking_scripts/*
 cp _init/ontology/_meta/thinking_scenarios.md ontology/_meta/thinking_scenarios.md
 ```
 

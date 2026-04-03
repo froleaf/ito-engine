@@ -22,7 +22,7 @@ description: 大脑模式——ITO 作为用户的认知代理对外输出。严
 - `memory/session_memory/`：了解近期思考脉络
 - `memory/plan_memory.jsonl`：了解当前关注方向
 - `memory/todo.json`：了解待办和关注点
-- `ontology/_meta/thinking_scenarios.md` + `scripts/thinking/*.md`：调用思维脚本
+- `ontology/_meta/thinking_scenarios.md` + `output/thinking_scripts/*.md`：调用思维脚本
 
 **唯一允许的写操作**：用户说"存一下"时，写入 `docs/brain/`。
 

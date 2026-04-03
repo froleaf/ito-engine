@@ -14,7 +14,7 @@ description: 从知识图谱中编译用户的个人思维方式——分析 men
 | 层 | 位置 | 作用 |
 |----|------|------|
 | **图谱实体** | `ontology/ontology.jsonld` 中的 `ThinkingScript` 节点 | 存元数据、场景标签、来源边，供 grep 查询 |
-| **内容文件** | `scripts/thinking/{ts_id}.md` | 存实际的思维步骤，供 Agent 读取并执行 |
+| **内容文件** | `output/thinking_scripts/{ts_id}.md` | 存实际的思维步骤，供 Agent 读取并执行 |
 | **场景索引** | `ontology/_meta/thinking_scenarios.md` | 轻量路由表，`/content-review` 和 `/chat` 通过 grep 匹配场景 |
 
 ## 数据来源
@@ -73,13 +73,13 @@ description: 从知识图谱中编译用户的个人思维方式——分析 men
   "description": "一句话描述这个思维方式做什么",
   "scenarioTags": ["设计取舍", "方案选择", "简化"],
   "derivedFrom": ["来源 mental_model / methodology / ThinkingDeposit 的 @id"],
-  "contentPath": "scripts/thinking/ts_{short_id}.md",
+  "contentPath": "output/thinking_scripts/ts_{short_id}.md",
   "compiledAt": "ISO 8601",
   "appliedInCount": 5
 }
 ```
 
-**2. 内容文件**（写入 `scripts/thinking/ts_{short_id}.md`）：
+**2. 内容文件**（写入 `output/thinking_scripts/ts_{short_id}.md`）：
 ```markdown
 # {脚本名称}
 
@@ -143,7 +143,7 @@ description: 从知识图谱中编译用户的个人思维方式——分析 men
 |------|---------|------|
 | ThinkingScript | `ts_` | `ts_occam_decision` |
 
-内容文件名与 @id 一致：`scripts/thinking/ts_occam_decision.md`
+内容文件名与 @id 一致：`output/thinking_scripts/ts_occam_decision.md`
 
 ## 约束
 

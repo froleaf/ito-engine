@@ -132,21 +132,29 @@ DomainRoot、Branch、BranchScaffold 是导航层节点，它们的 `userInsight
 
 ### 第五步：生成 session_memory 条目
 
-按 `templates/session_record.json` 格式组装：
+严格按 `templates/session_record.json` 格式组装，**不得自创字段名**：
 ```json
 {
   "ts": "ISO 8601",
   "interaction_type": "pass_note|write_note|chat",
+  "topic": "≤30字的主题标签",
   "domains_touched": ["领域ID列表"],
   "input_summary": "1-2句话摘要",
   "knowledge_extracted": [{"domain": "ID", "node": "名称", "action": "create|deepen"}],
   "thinking_notes": "思考要点和独立见解摘要",
   "cross_domain_links": [],
   "deposits_created": [],
+  "deposits_updated": [],
   "duration_min": 25,
   "ito_classification": {"input": 0.3, "think": 0.6, "output": 0.1}
 }
 ```
+
+**字段规范**：
+- `topic`：必填，简短主题标签，用于轨迹分析中的可读标识
+- `deposits_created`：本次新建的 Deposit ID 列表
+- `deposits_updated`：本次深化/更新的 Deposit ID 列表（不要用 deepenedDeposits 等变体）
+- `interaction_type`：使用下划线不用连字符（`write_note` 不是 `write-note`）
 
 **写入规则**：session_memory 按周分文件存储在 `memory/session_memory/` 目录下，文件名格式为 `{YYYY}-W{WW}.jsonl`（如 `2026-W10.jsonl`）。写入前：
 1. 根据当前日期计算 ISO 周数

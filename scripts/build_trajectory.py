@@ -3,6 +3,8 @@
 从 session_memory 中提取认知轨迹，识别活跃线索，
 查询图谱找到线索附近但未触及的节点。
 输出 memory/trajectory.json。
+
+依赖 session_memory 已规范化为 templates/session_record.json 标准格式。
 """
 
 import json
@@ -19,7 +21,6 @@ OUTPUT_PATH = os.path.join(BASE_DIR, "memory", "trajectory.json")
 CST = timezone(timedelta(hours=8))
 LOOKBACK_DAYS = 14
 
-# 图谱中产生边的属性
 EDGE_PROPS = {
     "subBranch", "parentBranch", "belongsTo", "isA",
     "prerequisite", "relatedTo", "contradicts", "appliesTo",
@@ -95,89 +96,51 @@ def load_graph():
     return adjacency, node_meta
 
 
-# ── 概念提取 ──────────────────────────────────────────────
+# ── 概念提取（标准字段） ─────────────────────────────────
 
 def extract_concepts(session):
-    """从一条 session 记录中提取涉及的概念 ID。"""
+    """从一条标准格式 session 记录中提取涉及的概念 ID。"""
     concepts = set()
 
-    # 领域（兼容两种字段名）
-    for key in ("domains_touched", "domains"):
-        for d in _as_list(session.get(key)):
-            if isinstance(d, str):
-                concepts.add(d)
+    for d in session.get("domains_touched", []):
+        concepts.add(d)
 
-    # Deposit（兼容多种字段名和格式）
-    for key in ("deposits_created", "newDeposits", "deepenedDeposits",
-                "deposits_updated", "depositsUpdated"):
-        for item in _as_list(session.get(key)):
+    for key in ("deposits_created", "deposits_updated"):
+        for item in session.get(key, []):
             if isinstance(item, str):
-                concepts.add(item.split("(")[0].strip())
+                concepts.add(item)
             elif isinstance(item, dict) and item.get("node"):
                 concepts.add(item["node"])
 
-    # 跨域链接
-    for key in ("cross_domain_links", "newCrossDomainLinks"):
-        for item in _as_list(session.get(key)):
-            if isinstance(item, str):
-                # "label: description" 或 纯 id
-                concepts.add(item.split(":")[0].strip())
+    for item in session.get("cross_domain_links", []):
+        if isinstance(item, str):
+            concepts.add(item.split(":")[0].strip())
 
-    # 显式触及的节点
-    for n in _as_list(session.get("nodes_touched")):
-        if isinstance(n, str):
-            concepts.add(n)
-
-    # knowledge_extracted 中的结构化节点
-    for item in _as_list(session.get("knowledge_extracted")):
+    for item in session.get("knowledge_extracted", []):
         if isinstance(item, dict) and item.get("node"):
             concepts.add(item["node"])
+        elif isinstance(item, str):
+            concepts.add(item)
 
     return concepts
 
 
-def _as_list(val):
-    if val is None:
-        return []
-    return val if isinstance(val, list) else [val]
-
-
 # ── 线索识别 ──────────────────────────────────────────────
-
-def get_session_label(session):
-    """提取 session 的可读标签。"""
-    topic = session.get("topic", "")
-    if topic:
-        return topic
-    summary = session.get("input_summary", session.get("summary", ""))
-    if summary:
-        # 取第一个句号或逗号前的内容，截断到 40 字
-        for sep in ("。", "，", "；", ".", ","):
-            if sep in summary[:60]:
-                return summary[:summary.index(sep, 0, 60)]
-        return summary[:40]
-    return ""
-
 
 def identify_threads(sessions, min_occurrences=3):
     """
     识别活跃认知线索。
-    线索 = 在 min_occurrences 个以上 session 中出现的概念簇。
-    过于宽泛的领域（出现在 >70% session 中）会被降权。
+    过于宽泛的领域（出现在 >70% session 中）被降权。
     """
     concept_sessions = defaultdict(list)
     for i, session in enumerate(sessions):
         for c in extract_concepts(session):
             concept_sessions[c].append(i)
 
-    # 过滤过于宽泛的概念（出现在 >70% session 中的 domain）
     n = len(sessions)
-    too_broad = set()
-    for c, idx in concept_sessions.items():
-        if c.startswith("domain_") and len(idx) > n * 0.7:
-            too_broad.add(c)
+    too_broad = {c for c, idx in concept_sessions.items()
+                 if c.startswith("domain_") and len(idx) > n * 0.7}
 
-    # 只保留出现 >= min_occurrences 次且不过于宽泛的概念
     recurring = {c: idx for c, idx in concept_sessions.items()
                  if len(idx) >= min_occurrences and c not in too_broad}
 
@@ -204,12 +167,11 @@ def identify_threads(sessions, min_occurrences=3):
         first_ts = sessions[all_indices[0]]["_ts"]
         last_ts = sessions[all_indices[-1]]["_ts"]
 
-        # 收集 session 标签
         topics = []
         for idx in all_indices:
-            label = get_session_label(sessions[idx])
-            if label:
-                topics.append(label)
+            t = sessions[idx].get("topic", "")
+            if t:
+                topics.append(t)
 
         threads.append({
             "concepts": sorted(cluster),
@@ -219,7 +181,6 @@ def identify_threads(sessions, min_occurrences=3):
             "session_topics": topics,
         })
 
-    # 按最近活跃时间排序
     threads.sort(key=lambda t: t["date_range"][1], reverse=True)
     return threads, too_broad
 
@@ -271,7 +232,6 @@ def build_trajectory():
 
     print(f"加载 {len(sessions)} 条 session（最近 {LOOKBACK_DAYS} 天）")
 
-    # 收集最近所有触及过的概念
     all_touched = set()
     for s in sessions:
         all_touched.update(extract_concepts(s))
@@ -283,7 +243,6 @@ def build_trajectory():
 
     adjacency, node_meta = load_graph()
 
-    # 为每条线索查找未探索的邻居
     output_threads = []
     for thread in threads[:5]:
         unexplored = find_unexplored(

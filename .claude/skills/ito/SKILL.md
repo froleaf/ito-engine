@@ -25,7 +25,20 @@ Agent 激活时，首先检查 `memory/plan_memory.jsonl` 是否为空：
 
   用户选口述 → 调用 `/cold-start`
   用户选 Obsidian → 调用 `/cold-start-obsidian`
-- **非空**：进入待命模式
+- **非空**：执行认知轨迹检查，然后进入待命模式
+
+## 认知轨迹（启动时）
+
+进入待命前，执行 `python3 scripts/build_trajectory.py` 更新 `memory/trajectory.json`，然后读取结果。如果存在活跃线索，在待命菜单前简要提示：
+
+> 📍 **最近轨迹**（{N}天/{M}次对话）：
+> - 主线：{线索1的recent_topics最后2-3个}。附近未触及：{unexplored_nearby前2个的name}
+> - 支线：{线索2}...（如有）
+
+**原则**：
+- 只展示前 2 条线索，每条 1-2 行
+- 不解释、不推荐——只告诉用户"你在哪"和"附近有什么"
+- 如果 trajectory.json 不存在或线索为空，跳过此步
 
 ## 待命模式（默认）
 
